@@ -3,7 +3,7 @@ import 'package:utmccta/Application/helpers/main_button.dart';
 import 'package:utmccta/Application/privacy_info.dart';
 
 class WelcomeScreen extends StatelessWidget {
-  String id = 'WelcomeScreen';
+  final String id = 'WelcomeScreen';
   @override
   Widget build(BuildContext context) {
     return SafeArea(
