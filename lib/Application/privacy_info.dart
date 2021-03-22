@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:utmccta/Application/helpers/main_button.dart';
 
+import 'homepage.dart';
+
 class PrivacyInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -40,7 +42,7 @@ class PrivacyInfo extends StatelessWidget {
                     offset: Offset(0, 2.5),
                     child: Text(
                       'Data exchage between two device is protected\nby end-to-end encryption.',
-                      style: Theme.of(context).textTheme.bodyText2,
+                      style: Theme.of(context).textTheme.subtitle1,
                     ),
                   ),
                 ),
@@ -63,7 +65,7 @@ class PrivacyInfo extends StatelessWidget {
                     offset: Offset(0, 2.5),
                     child: Text(
                       'Your data will only be accessed by UTM admin\nand UTM Health Professionals, if you are\ntested positive by COVID-19.',
-                      style: Theme.of(context).textTheme.bodyText2,
+                      style: Theme.of(context).textTheme.subtitle1,
                     ),
                   ),
                 ),
@@ -77,7 +79,7 @@ class PrivacyInfo extends StatelessWidget {
                   padding: const EdgeInsets.only(top: 20),
                   child: TextButton(
                     onPressed: () {
-                      Navigator.pushReplacementNamed(context, '/home');
+                      Navigator.pushReplacementNamed(context, '/login');
                     },
                     child: Container(
                       height: 50,

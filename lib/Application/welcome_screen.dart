@@ -42,7 +42,7 @@ class WelcomeScreen extends StatelessWidget {
                     offset: Offset(0, 2.5),
                     child: Text(
                       'Real-Time contact tracing using device\'s\nBluetooth and GPS.',
-                      style: Theme.of(context).textTheme.bodyText2,
+                      style: Theme.of(context).textTheme.subtitle1,
                     ),
                   ),
                 ),
@@ -65,7 +65,7 @@ class WelcomeScreen extends StatelessWidget {
                     offset: Offset(0, 2.5),
                     child: Text(
                       'Enter your visited location when ever you\nwant. Your privacy is at your hand.',
-                      style: Theme.of(context).textTheme.bodyText2,
+                      style: Theme.of(context).textTheme.subtitle1,
                     ),
                   ),
                 ),
@@ -88,7 +88,7 @@ class WelcomeScreen extends StatelessWidget {
                     offset: Offset(0, 2.5),
                     child: Text(
                       'Get contact exposure alerts and locational\nhotspot alerts directly on your phone.',
-                      style: Theme.of(context).textTheme.bodyText2,
+                      style: Theme.of(context).textTheme.subtitle1,
                     ),
                   ),
                 ),
@@ -102,10 +102,7 @@ class WelcomeScreen extends StatelessWidget {
                   padding: const EdgeInsets.only(top: 20),
                   child: TextButton(
                     onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => PrivacyInfo()));
+                      Navigator.pushNamed(context, '/privacyinfo');
                     },
                     child: Container(
                       height: 50,

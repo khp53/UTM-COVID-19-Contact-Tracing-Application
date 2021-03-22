@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:utmccta/Application/healthStatusForm.dart';
+import 'package:utmccta/Application/loginform.dart';
+import 'package:utmccta/Application/privacy_info.dart';
+import 'package:utmccta/Application/registerForm.dart';
 import 'package:utmccta/Application/welcome_screen.dart';
 import 'Application/homepage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -28,7 +32,8 @@ class _InfoScreenState extends State<InfoScreen> {
     bool _seen = (prefs.getBool('seen') ?? false);
 
     if (_seen) {
-      return Homepage().id;
+      //return Homepage().id;
+      return '/login';
     } else {
       await prefs.setBool('seen', true);
       return WelcomeScreen().id;
@@ -52,7 +57,8 @@ class _InfoScreenState extends State<InfoScreen> {
                 primaryColor: Color(0xff000000),
                 textTheme: TextTheme(
                   bodyText1: TextStyle(color: Colors.white, fontSize: 15),
-                  bodyText2: TextStyle(
+                  bodyText2: TextStyle(color: Colors.white54, fontSize: 15),
+                  subtitle1: TextStyle(
                       color: Color(0xff8F8F8F), fontSize: 12, height: 1.5),
                   headline1: TextStyle(
                       color: Colors.white,
@@ -65,6 +71,10 @@ class _InfoScreenState extends State<InfoScreen> {
               routes: {
                 WelcomeScreen().id: (context) => WelcomeScreen(),
                 Homepage().id: (context) => Homepage(),
+                '/privacyinfo': (context) => PrivacyInfo(),
+                '/register': (context) => RegisterMobileNumber(),
+                '/login': (context) => LogIn(),
+                '/healthststusform': (context) => HealthStatusForm()
               },
             );
           }
