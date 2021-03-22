@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:utmccta/Application/helpers/main_button.dart';
 
-import 'homepage.dart';
-
 class PrivacyInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

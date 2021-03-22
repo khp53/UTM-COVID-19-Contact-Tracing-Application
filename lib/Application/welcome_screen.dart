@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:utmccta/Application/helpers/main_button.dart';
-import 'package:utmccta/Application/privacy_info.dart';
 
 class WelcomeScreen extends StatelessWidget {
   final String id = 'WelcomeScreen';
