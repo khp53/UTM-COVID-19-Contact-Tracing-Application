@@ -4,6 +4,7 @@ import 'package:utmccta/Application/loginform.dart';
 import 'package:utmccta/Application/privacy_info.dart';
 import 'package:utmccta/Application/registerForm.dart';
 import 'package:utmccta/Application/welcome_screen.dart';
+import 'Application/helpers/wrapper.dart';
 import 'Application/homepage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -33,7 +34,7 @@ class _InfoScreenState extends State<InfoScreen> {
 
     if (_seen) {
       //return Homepage().id;
-      return '/login';
+      return '/wrapper';
     } else {
       await prefs.setBool('seen', true);
       return WelcomeScreen().id;
@@ -71,6 +72,7 @@ class _InfoScreenState extends State<InfoScreen> {
               routes: {
                 WelcomeScreen().id: (context) => WelcomeScreen(),
                 Homepage().id: (context) => Homepage(),
+                '/wrapper': (context) => Wrapper(),
                 '/privacyinfo': (context) => PrivacyInfo(),
                 '/register': (context) => RegisterMobileNumber(),
                 '/login': (context) => LogIn(),

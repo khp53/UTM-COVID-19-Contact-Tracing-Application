@@ -4,6 +4,10 @@ import 'package:utmccta/Application/homepage.dart';
 import 'helpers/main_button.dart';
 
 class LogIn extends StatefulWidget {
+  final Function toggle;
+
+  const LogIn({Key key, this.toggle}) : super(key: key);
+
   @override
   _LogInState createState() => _LogInState();
 }
@@ -111,7 +115,9 @@ class _LogInState extends State<LogIn> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         InkWell(
-                          onTap: () {},
+                          onTap: () {
+                            widget.toggle();
+                          },
                           child: Text(
                             "Register ",
                             style: TextStyle(
