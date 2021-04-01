@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:utmccta/Application/healthStatusForm.dart';
 import 'package:utmccta/Application/loginform.dart';
@@ -8,7 +9,9 @@ import 'Application/helpers/wrapper.dart';
 import 'Application/homepage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(UTMCCTA());
 }
 
@@ -33,7 +36,6 @@ class _InfoScreenState extends State<InfoScreen> {
     bool _seen = (prefs.getBool('seen') ?? false);
 
     if (_seen) {
-      //return Homepage().id;
       return '/wrapper';
     } else {
       await prefs.setBool('seen', true);
@@ -56,6 +58,18 @@ class _InfoScreenState extends State<InfoScreen> {
               theme: ThemeData(
                 accentColor: Color(0xffB454E7),
                 primaryColor: Color(0xff000000),
+                primaryColorLight: Color(0xffffffff),
+                primaryTextTheme: TextTheme(
+                  bodyText1: TextStyle(color: Colors.black, fontSize: 15),
+                  bodyText2: TextStyle(color: Colors.grey, fontSize: 15),
+                  subtitle1:
+                      TextStyle(color: Colors.grey, fontSize: 12, height: 1.5),
+                  headline1: TextStyle(
+                      color: Colors.black,
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                      height: 1.5),
+                ),
                 textTheme: TextTheme(
                   bodyText1: TextStyle(color: Colors.white, fontSize: 15),
                   bodyText2: TextStyle(color: Colors.white54, fontSize: 15),

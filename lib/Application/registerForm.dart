@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sms_autofill/sms_autofill.dart';
 
 import 'helpers/main_button.dart';
 import 'homepage.dart';
@@ -12,6 +13,12 @@ class RegisterMobileNumber extends StatefulWidget {
 }
 
 class _RegisterMobileNumberState extends State<RegisterMobileNumber> {
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  final TextEditingController _phoneNumberController = TextEditingController();
+  final TextEditingController _smsController = TextEditingController();
+  String _verificationId;
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -35,7 +42,7 @@ class _RegisterMobileNumberState extends State<RegisterMobileNumber> {
                     height: 10,
                   ),
                   Text(
-                    'Register',
+                    'LogIn / Register',
                     style: Theme.of(context).textTheme.headline1,
                   ),
                   SizedBox(
@@ -66,6 +73,7 @@ class _RegisterMobileNumberState extends State<RegisterMobileNumber> {
                         Expanded(
                           flex: 3,
                           child: TextFormField(
+                            controller: _phoneNumberController,
                             style: Theme.of(context).textTheme.bodyText1,
                             decoration: InputDecoration(
                                 enabledBorder: OutlineInputBorder(
@@ -105,36 +113,10 @@ class _RegisterMobileNumberState extends State<RegisterMobileNumber> {
                         width: MediaQuery.of(context).size.width,
                         decoration: mainButton(),
                         child: Center(
-                            child: Text('Register',
+                            child: Text('Login/Register',
                                 style: TextStyle(
                                     color: Colors.white, fontSize: 15))),
                       ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height / 30,
-                  ),
-                  Container(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        InkWell(
-                          onTap: () {
-                            widget.toggle();
-                          },
-                          child: Text(
-                            "Log in ",
-                            style: TextStyle(
-                              color: Theme.of(context).accentColor,
-                              fontSize: 15,
-                            ),
-                          ),
-                        ),
-                        Text(
-                          "If you already have a account.",
-                          style: Theme.of(context).textTheme.bodyText1,
-                        ),
-                      ],
                     ),
                   ),
                 ],
@@ -145,6 +127,8 @@ class _RegisterMobileNumberState extends State<RegisterMobileNumber> {
       ),
     );
   }
+
+  static SmsAutoFill() {}
 }
 
 class OTPVerification extends StatefulWidget {
