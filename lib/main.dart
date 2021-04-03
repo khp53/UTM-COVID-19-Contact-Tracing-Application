@@ -71,6 +71,11 @@ class _InfoScreenState extends State<InfoScreen> {
                       fontSize: 25,
                       fontWeight: FontWeight.bold,
                       height: 1.5),
+                  headline2: TextStyle(
+                      color: Colors.black,
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      height: 1.5),
                 ),
                 textTheme: TextTheme(
                   bodyText1: TextStyle(color: Colors.white, fontSize: 15),
@@ -80,6 +85,11 @@ class _InfoScreenState extends State<InfoScreen> {
                   headline1: TextStyle(
                       color: Colors.white,
                       fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                      height: 1.5),
+                  headline2: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20,
                       fontWeight: FontWeight.bold,
                       height: 1.5),
                 ),
@@ -113,7 +123,7 @@ class _StateMangementState extends State<StateMangement> {
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (BuildContext context, snapshot) {
           if (snapshot.hasData) {
-            print("Admin data: ${snapshot.data}");
+            print("data: ${snapshot.data}");
             return DashboardHandler();
           } else {
             return LogIn();

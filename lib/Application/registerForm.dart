@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:utmccta/DLL/userDA.dart';
+import 'package:utmccta/main.dart';
 
 import 'helpers/main_button.dart';
 import 'homepage.dart';
@@ -26,13 +27,15 @@ class _RegisterMobileNumberState extends State<RegisterMobileNumber> {
   UserDA _userDA = UserDA();
 
   Future<void> verifyPhone(phoneNo) async {
-    final PhoneVerificationCompleted verified = (AuthCredential authResult) {
+    final PhoneVerificationCompleted verified =
+        (AuthCredential authResult) async {
       setState(() {
         isLoading = false;
       });
-      _userDA.signIn(authResult).then((res) async {
+      await _userDA.signIn(authResult).then((res) async {
         if (res != null) {
-          Navigator.pushReplacementNamed(context, Homepage().id);
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (context) => Homepage()));
         }
       }).catchError((e) {
         FocusScope.of(context).unfocus();
@@ -100,7 +103,8 @@ class _RegisterMobileNumberState extends State<RegisterMobileNumber> {
     });
     await _userDA.signIn(authCreds).then((res) async {
       if (res != null) {
-        Navigator.pushReplacementNamed(context, Homepage().id);
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => Homepage()));
       } else {
         setState(() {
           isLoading = false;
@@ -115,7 +119,7 @@ class _RegisterMobileNumberState extends State<RegisterMobileNumber> {
                     style: Theme.of(context).textTheme.bodyText1,
                   ),
                   content: Text(
-                    "Something went wrong please try again!",
+                    "Invalid OTP! Please enter the correct OTP!",
                     style: Theme.of(context).textTheme.bodyText1,
                   ),
                   actions: [

@@ -16,10 +16,9 @@ class UserDA {
   // old user auto sign in
   Future signIn(AuthCredential authCreds) async {
     try {
-      UserCredential res =
-          await FirebaseAuth.instance.signInWithCredential(authCreds);
-      User user = res.user;
-      return _userFromFirebaseUser(user);
+      await FirebaseAuth.instance.signInWithCredential(authCreds);
+      //User user = res.user;
+      //return _userFromFirebaseUser(user);
     } catch (e) {
       print("Sign in error user side $e");
     }

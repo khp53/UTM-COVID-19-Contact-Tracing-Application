@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:utmccta/DLL/loginDA.dart';
-import 'package:utmccta/DLL/adminDA.dart';
+import 'package:utmccta/DLL/userDA.dart';
+import 'package:utmccta/Application/manageProfile.dart';
 
 class Homepage extends StatefulWidget {
   final String id = 'Homepage';
@@ -9,14 +9,42 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
-  AdminDA _adminDA = AdminDA();
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Center(
-        child: TextButton(
-          onPressed: () => _adminDA.signOutAdmin(),
-          child: Text('Log out'),
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: Theme.of(context).primaryColor,
+        appBar: AppBar(
+          title: Text(
+            'UTM CCTA',
+            style: Theme.of(context).textTheme.headline2,
+          ),
+          actions: [
+            InkWell(
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => ManageProfile()));
+              },
+              child: CircleAvatar(
+                backgroundImage: AssetImage('assets/img/default.png'),
+              ),
+            )
+          ],
+        ),
+        body: Container(
+          child: Column(
+            children: [
+              Flexible(
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  child: Image(
+                    fit: BoxFit.fill,
+                    image: AssetImage('assets/img/homeMainImage.png'),
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

@@ -5,11 +5,7 @@ class AdminDA {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   Admin _adminFromFirebaseUser(User user) {
-    return user != null ? Admin(uid: user.uid) : null;
-  }
-
-  Admin _adminEmailFromFirebaseUser(User user) {
-    return user != null ? Admin(email: user.email) : null;
+    return user != null ? Admin(uid: user.uid, email: user.email) : null;
   }
 
   //auth change admin stream

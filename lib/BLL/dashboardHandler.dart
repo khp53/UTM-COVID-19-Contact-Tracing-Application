@@ -11,12 +11,11 @@ class DashboardHandler extends StatefulWidget {
 }
 
 class _DashboardHandlerState extends State<DashboardHandler> {
-  AdminDA _adminDA = AdminDA();
-  Admin _admin = Admin();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   // manages login based on who is using
   @override
   Widget build(BuildContext context) {
-    if (_admin.email == "admin@utm.my") {
+    if (_auth.currentUser.email == "admin@utm.my") {
       return Dashboard();
     } else {
       return Homepage();
