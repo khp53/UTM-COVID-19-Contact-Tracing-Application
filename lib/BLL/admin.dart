@@ -1,4 +1,6 @@
 class Admin {
   String uid;
-  Admin({this.uid});
+  String email;
+
+  Admin({this.uid, this.email});
 }

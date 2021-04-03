@@ -1,17 +1,11 @@
 import 'package:flutter/material.dart';
-
 import 'package:utmccta/Application/dashboard.dart';
-import 'package:utmccta/Application/homepage.dart';
 import 'package:utmccta/Application/registerForm.dart';
-import 'package:utmccta/DLL/loginDA.dart';
-
+import 'package:utmccta/DLL/userDA.dart';
+import 'package:utmccta/DLL/adminDA.dart';
 import 'helpers/main_button.dart';
 
 class LogIn extends StatefulWidget {
-  final Function toggle;
-
-  const LogIn({Key key, this.toggle}) : super(key: key);
-
   @override
   _LogInState createState() => _LogInState();
 }
@@ -41,14 +35,15 @@ class _WebLoginLayoutState extends State<WebLoginLayout> {
   final formKey = GlobalKey<FormState>();
   bool isLoading = false;
   bool showPassword = true;
-  LoginDA _loginDA = LoginDA();
+
+  AdminDA _adminDA = AdminDA();
 
   adminLogin() async {
     if (formKey.currentState.validate()) {
       setState(() {
         isLoading = true;
       });
-      await _loginDA
+      await _adminDA
           .signInWithEmailandPasswordAdmin(emailTextEditingController.text,
               passwordTextEditingController.text)
           .then((result) async {
