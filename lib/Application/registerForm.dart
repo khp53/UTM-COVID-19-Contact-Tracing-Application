@@ -1,9 +1,7 @@
-import 'dart:math';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:utmccta/DLL/userDA.dart';
-import 'package:utmccta/main.dart';
+import 'package:argon_buttons_flutter/argon_buttons_flutter.dart';
 
 import 'helpers/main_button.dart';
 import 'homepage.dart';
@@ -18,6 +16,7 @@ class _RegisterMobileNumberState extends State<RegisterMobileNumber> {
   bool isLoading = false;
   String verificationId;
   bool codeSent = false;
+  bool _enabled = true;
 
   final TextEditingController _phoneNumberController = TextEditingController();
   final TextEditingController _otpController = TextEditingController();
@@ -27,15 +26,14 @@ class _RegisterMobileNumberState extends State<RegisterMobileNumber> {
   UserDA _userDA = UserDA();
 
   Future<void> verifyPhone(phoneNo) async {
-    final PhoneVerificationCompleted verified =
-        (AuthCredential authResult) async {
+    final PhoneVerificationCompleted verified = (AuthCredential authResult) {
       setState(() {
         isLoading = false;
       });
-      await _userDA.signIn(authResult).then((res) async {
+      _userDA.signIn(authResult).then((res) async {
         if (res != null) {
-          Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => Homepage()));
+          Navigator.pop(context);
+          Navigator.pushReplacementNamed(context, Homepage().id);
         }
       }).catchError((e) {
         FocusScope.of(context).unfocus();
@@ -103,36 +101,37 @@ class _RegisterMobileNumberState extends State<RegisterMobileNumber> {
     });
     await _userDA.signIn(authCreds).then((res) async {
       if (res != null) {
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => Homepage()));
+        Navigator.pushReplacementNamed(context, Homepage().id);
       } else {
-        setState(() {
-          isLoading = false;
-          FocusScope.of(context).unfocus();
-          showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  backgroundColor: Color(0xff171717),
-                  title: Text(
-                    "Oops!",
-                    style: Theme.of(context).textTheme.bodyText1,
-                  ),
-                  content: Text(
-                    "Invalid OTP! Please enter the correct OTP!",
-                    style: Theme.of(context).textTheme.bodyText1,
-                  ),
-                  actions: [
-                    TextButton(
-                      child: Text("OK"),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                    )
-                  ],
-                );
-              });
-        });
+        if (this.mounted) {
+          setState(() {
+            isLoading = false;
+            FocusScope.of(context).unfocus();
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    backgroundColor: Color(0xff171717),
+                    title: Text(
+                      "Oops!",
+                      style: Theme.of(context).textTheme.bodyText1,
+                    ),
+                    content: Text(
+                      "Something went wrong please try again!",
+                      style: Theme.of(context).textTheme.bodyText1,
+                    ),
+                    actions: [
+                      TextButton(
+                        child: Text("OK"),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      )
+                    ],
+                  );
+                });
+          });
+        }
       }
     });
   }
@@ -172,59 +171,32 @@ class _RegisterMobileNumberState extends State<RegisterMobileNumber> {
                           ),
                           Container(
                             padding: EdgeInsets.only(left: 5, right: 5),
-                            child: Row(
-                              children: [
-                                Flexible(
-                                  flex: 1,
-                                  child: TextFormField(
-                                    enabled: false,
-                                    style:
-                                        Theme.of(context).textTheme.bodyText1,
-                                    decoration: InputDecoration(
-                                        disabledBorder: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                          borderSide: BorderSide(
-                                            color: Colors.white70,
-                                          ),
-                                        ),
-                                        hintText: "MY(+60)",
-                                        hintStyle: Theme.of(context)
-                                            .textTheme
-                                            .bodyText2),
+                            child: TextFormField(
+                              enabled: _enabled,
+                              controller: _phoneNumberController,
+                              style: Theme.of(context).textTheme.bodyText1,
+                              decoration: InputDecoration(
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                    borderSide: BorderSide(
+                                      color: Colors.white70,
+                                    ),
                                   ),
-                                ),
-                                SizedBox(
-                                    width:
-                                        MediaQuery.of(context).size.width / 40),
-                                Flexible(
-                                  flex: 3,
-                                  child: TextFormField(
-                                    controller: _phoneNumberController,
-                                    style:
-                                        Theme.of(context).textTheme.bodyText1,
-                                    decoration: InputDecoration(
-                                        enabledBorder: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                          borderSide: BorderSide(
-                                            color: Colors.white70,
-                                          ),
-                                        ),
-                                        focusedBorder: OutlineInputBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(5),
-                                          borderSide: BorderSide(
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                        hintText: "Mobile Number",
-                                        hintStyle: Theme.of(context)
-                                            .textTheme
-                                            .bodyText2),
+                                  disabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                    borderSide: BorderSide(
+                                      color: Colors.grey,
+                                    ),
                                   ),
-                                ),
-                              ],
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                    borderSide: BorderSide(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  hintText: "Phone Number (ie: +60XXXXXXXXXX)",
+                                  hintStyle:
+                                      Theme.of(context).textTheme.bodyText2),
                             ),
                           ),
                           SizedBox(
@@ -283,17 +255,52 @@ class _RegisterMobileNumberState extends State<RegisterMobileNumber> {
                                           MainAxisAlignment.start,
                                       children: [
                                         Text(
-                                          "Did not receive OTP yet? ",
+                                          "Did not receive OTP yet?",
                                           style: Theme.of(context)
                                               .textTheme
                                               .subtitle1,
                                         ),
-                                        Text(
-                                          "Resent OTP",
-                                          style: TextStyle(
-                                            color:
-                                                Theme.of(context).accentColor,
-                                            fontSize: 15,
+                                        Padding(
+                                          padding: const EdgeInsets.fromLTRB(
+                                              0, 4, 0, 0),
+                                          child: ArgonTimerButton(
+                                            initialTimer: 60, // Optional
+                                            height: 50,
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.50,
+                                            minWidth: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.30,
+                                            color: Colors.transparent,
+                                            borderRadius: 0.0,
+                                            child: Text(
+                                              "Resend OTP",
+                                              style: TextStyle(
+                                                color: Theme.of(context)
+                                                    .accentColor,
+                                                fontSize: 12,
+                                              ),
+                                            ),
+                                            loader: (timeLeft) {
+                                              return Text(
+                                                "Wait | $timeLeft",
+                                                style: TextStyle(
+                                                  color: Color(0xff8F8F8F),
+                                                  fontSize: 12,
+                                                ),
+                                              );
+                                            },
+                                            onTap: (startTimer, btnState) {
+                                              if (btnState ==
+                                                  ButtonState.Idle) {
+                                                startTimer(20);
+                                              }
+                                              verifyPhone(
+                                                  _phoneNumberController.text);
+                                            },
                                           ),
                                         ),
                                       ],
@@ -307,6 +314,7 @@ class _RegisterMobileNumberState extends State<RegisterMobileNumber> {
                               onPressed: () {
                                 setState(() {
                                   isLoading = false;
+                                  _enabled = !_enabled;
                                 });
 
                                 codeSent

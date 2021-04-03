@@ -10,22 +10,21 @@ class _ManageProfileState extends State<ManageProfile> {
   UserDA _userDA = UserDA();
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'UTM CCTA',
-          style: Theme.of(context).textTheme.headline2,
+    return Container(
+      padding: EdgeInsets.all(5),
+      child: ListTile(
+        tileColor: Color(0xff131313),
+        onTap: () {
+          _userDA.signOutUser();
+          //Navigator.pop(context);
+        },
+        leading: Icon(
+          Icons.exit_to_app,
+          color: Colors.white,
         ),
-      ),
-      body: Container(
-        child: Center(
-          child: TextButton(
-            onPressed: () {
-              _userDA.signOutUser();
-              Navigator.of(context).pop();
-            },
-            child: Text('Log Out'),
-          ),
+        title: Text(
+          'Log Out',
+          style: Theme.of(context).textTheme.bodyText1,
         ),
       ),
     );

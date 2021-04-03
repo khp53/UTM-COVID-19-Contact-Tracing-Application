@@ -122,11 +122,10 @@ class _StateMangementState extends State<StateMangement> {
     return StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (BuildContext context, snapshot) {
-          if (snapshot.hasData) {
-            print("data: ${snapshot.data}");
-            return DashboardHandler();
-          } else {
+          if (!snapshot.hasData) {
             return LogIn();
+          } else {
+            return DashboardHandler();
           }
         });
   }

@@ -25,7 +25,7 @@ class UserDA {
   }
 
   //enter otp method for new users
-  signInWithOTP(smsCode, verId) {
+  signInWithOTP(smsCode, verId) async {
     AuthCredential authCreds =
         PhoneAuthProvider.credential(verificationId: verId, smsCode: smsCode);
     signIn(authCreds);
