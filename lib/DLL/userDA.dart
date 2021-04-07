@@ -14,7 +14,7 @@ class UserDA {
   }
 
   // old user auto sign in
-  Future signIn(AuthCredential authCreds) async {
+  signIn(AuthCredential authCreds) async {
     try {
       await FirebaseAuth.instance.signInWithCredential(authCreds);
       //User user = res.user;

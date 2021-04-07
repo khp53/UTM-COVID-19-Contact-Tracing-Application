@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:utmccta/DLL/userDA.dart';
+import 'package:utmccta/main.dart';
 
 class ManageProfile extends StatefulWidget {
   @override
@@ -16,7 +17,7 @@ class _ManageProfileState extends State<ManageProfile> {
         tileColor: Color(0xff131313),
         onTap: () {
           _userDA.signOutUser();
-          //Navigator.pop(context);
+          Navigator.pushReplacementNamed(context, StateMangement().id);
         },
         leading: Icon(
           Icons.exit_to_app,
