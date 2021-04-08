@@ -1,6 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:utmccta/Application/healthStatusForm.dart';
+import 'package:utmccta/BLL/userHandler.dart';
+import 'package:utmccta/BLL/users.dart';
 import 'package:utmccta/DLL/userDA.dart';
 import 'package:argon_buttons_flutter/argon_buttons_flutter.dart';
 import 'package:utmccta/main.dart';
@@ -28,39 +31,44 @@ class _RegisterMobileNumberState extends State<RegisterMobileNumber> {
   AuthCredential authCreds;
 
   UserDA _userDA = UserDA();
+  Users _users = Users();
+
+  Users _userFromFirebaseUser(User user) {
+    return user != null ? Users(uid: user.uid) : null;
+  }
 
   Future<void> verifyPhone(phoneNo) async {
-    if (formKey.currentState.validate()) {
-      final PhoneVerificationCompleted verified = (AuthCredential authResult) {
-        _userDA.signIn(authResult);
-      };
+    //if (formKey.currentState.validate()) {
+    final PhoneVerificationCompleted verified = (AuthCredential authResult) {
+      _userDA.signIn(authResult);
+    };
 
-      final PhoneVerificationFailed verificationfailed =
-          (FirebaseAuthException authException) {
-        setState(() {
-          print('Error message:' + authException.message);
-        });
-      };
+    final PhoneVerificationFailed verificationfailed =
+        (FirebaseAuthException authException) {
+      setState(() {
+        print('Error message:' + authException.message);
+      });
+    };
 
-      final PhoneCodeSent smsSent = (String verId, [int forceResend]) {
-        this.verificationId = verId;
-        setState(() {
-          this.codeSent = true;
-        });
-      };
+    final PhoneCodeSent smsSent = (String verId, [int forceResend]) {
+      this.verificationId = verId;
+      setState(() {
+        this.codeSent = true;
+      });
+    };
 
-      final PhoneCodeAutoRetrievalTimeout autoTimeout = (String verId) {
-        this.verificationId = verId;
-      };
+    final PhoneCodeAutoRetrievalTimeout autoTimeout = (String verId) {
+      this.verificationId = verId;
+    };
 
-      await FirebaseAuth.instance.verifyPhoneNumber(
-          phoneNumber: phoneNo,
-          timeout: const Duration(seconds: 120),
-          verificationCompleted: verified,
-          verificationFailed: verificationfailed,
-          codeSent: smsSent,
-          codeAutoRetrievalTimeout: autoTimeout);
-    }
+    await FirebaseAuth.instance.verifyPhoneNumber(
+        phoneNumber: phoneNo,
+        timeout: const Duration(seconds: 120),
+        verificationCompleted: verified,
+        verificationFailed: verificationfailed,
+        codeSent: smsSent,
+        codeAutoRetrievalTimeout: autoTimeout);
+    //}
   }
 
   signInUser() async {
@@ -86,13 +94,26 @@ class _RegisterMobileNumberState extends State<RegisterMobileNumber> {
           setState(() {
             isLoading = true;
           });
-          Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(
-              builder: (BuildContext context) => Homepage(),
-            ),
-            (route) => false,
-          );
+          User user = authResult.user;
+          _userFromFirebaseUser(user);
+
+          if (authResult.additionalUserInfo.isNewUser) {
+            return Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                builder: (BuildContext context) => HealthStatusForm(),
+              ),
+              (route) => false,
+            );
+          } else {
+            return Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                builder: (BuildContext context) => Homepage(),
+              ),
+              (route) => false,
+            );
+          }
         }
       } else {
         setState(() {

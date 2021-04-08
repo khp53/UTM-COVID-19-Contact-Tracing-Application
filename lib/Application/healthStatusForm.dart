@@ -8,6 +8,10 @@ class HealthStatusForm extends StatefulWidget {
 class _HealthStatusFormState extends State<HealthStatusForm> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Registration'),
+      ),
+    );
   }
 }

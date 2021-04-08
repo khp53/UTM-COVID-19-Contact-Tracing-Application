@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:utmccta/BLL/users.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -38,5 +39,10 @@ class UserDA {
     } catch (e) {
       print(e);
     }
+  }
+
+  //check if user id has a collection in db
+  getUserDbInfo() {
+    return FirebaseFirestore.instance.collection("Users/${Users().uid}");
   }
 }
