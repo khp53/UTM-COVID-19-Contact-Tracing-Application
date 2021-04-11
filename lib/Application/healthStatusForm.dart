@@ -36,7 +36,7 @@ class _HealthStatusFormState extends State<HealthStatusForm> {
               Container(
                 child: Text(
                   _healthStatusFormHandler.getQuestionText(0),
-                  style: Theme.of(context).textTheme.bodyText1,
+                  style: Theme.of(context).textTheme.headline3,
                 ),
               ),
               SizedBox(
