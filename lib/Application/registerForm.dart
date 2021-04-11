@@ -3,13 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:utmccta/Application/healthStatusForm.dart';
 import 'package:utmccta/BLL/userHandler.dart';
-import 'package:utmccta/BLL/users.dart';
 import 'package:utmccta/DLL/userDA.dart';
 import 'package:argon_buttons_flutter/argon_buttons_flutter.dart';
 import 'package:utmccta/main.dart';
-
 import 'helpers/main_button.dart';
-import 'homepage.dart';
 
 class RegisterMobileNumber extends StatefulWidget {
   @override
@@ -17,14 +14,16 @@ class RegisterMobileNumber extends StatefulWidget {
 }
 
 class _RegisterMobileNumberState extends State<RegisterMobileNumber> {
+  // form key for text fields
   final formKey = new GlobalKey<FormState>();
+  // loading status
   bool isLoading = false;
   String verificationId;
-  String _emptyError = '';
   bool codeSent = false;
-  bool _enabled = true;
+  // visibility status toggle of edit number button
   bool _visibility = false;
 
+  //text field controller
   final TextEditingController _phoneNumberController = TextEditingController();
   final TextEditingController _otpController = TextEditingController();
 
@@ -32,10 +31,6 @@ class _RegisterMobileNumberState extends State<RegisterMobileNumber> {
 
   UserDA _userDA = UserDA();
   //Users _users = Users();
-
-  Users _userFromFirebaseUser(User user) {
-    return user != null ? Users(uid: user.uid) : null;
-  }
 
   Future<void> verifyPhone(phoneNo) async {
     if (formKey.currentState.validate()) {
@@ -77,7 +72,7 @@ class _RegisterMobileNumberState extends State<RegisterMobileNumber> {
     }
   }
 
-  signInUser() async {
+  signInUser(phoneNo) async {
     if (formKey.currentState.validate()) {
       setState(() {
         isLoading = false;
@@ -100,14 +95,14 @@ class _RegisterMobileNumberState extends State<RegisterMobileNumber> {
           setState(() {
             isLoading = true;
           });
-          User user = authResult.user;
-          _userFromFirebaseUser(user);
 
           if (authResult.additionalUserInfo.isNewUser) {
             return Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(
-                builder: (BuildContext context) => RegisterUserData(),
+                builder: (BuildContext context) => RegisterUserData(
+                  phoneNo: phoneNo,
+                ),
               ),
               (route) => false,
             );
@@ -115,7 +110,7 @@ class _RegisterMobileNumberState extends State<RegisterMobileNumber> {
             return Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(
-                builder: (BuildContext context) => RegisterUserData(),
+                builder: (BuildContext context) => HealthStatusForm(),
               ),
               (route) => false,
             );
@@ -412,7 +407,7 @@ class _RegisterMobileNumberState extends State<RegisterMobileNumber> {
                             padding: EdgeInsets.only(right: 2),
                             child: TextButton(
                               onPressed: () {
-                                signInUser();
+                                signInUser(_phoneNumberController.text);
                               },
                               child: Container(
                                 height: 50,
@@ -442,6 +437,9 @@ class _RegisterMobileNumberState extends State<RegisterMobileNumber> {
 //Complete registration after mobile number has been authenticated and user id has been created
 
 class RegisterUserData extends StatefulWidget {
+  final String phoneNo;
+  //constructor
+  const RegisterUserData({Key key, this.phoneNo}) : super(key: key);
   @override
   _RegisterUserDataState createState() => _RegisterUserDataState();
 }
@@ -449,6 +447,8 @@ class RegisterUserData extends StatefulWidget {
 class _RegisterUserDataState extends State<RegisterUserData> {
   final formKey = new GlobalKey<FormState>();
   bool isLoading = false;
+
+  UserHandler _userHandler = UserHandler();
 
   // Define the text controllers to capture user data
   final TextEditingController _userIDController = TextEditingController();
@@ -458,6 +458,26 @@ class _RegisterUserDataState extends State<RegisterUserData> {
   final TextEditingController _currentAddressController =
       TextEditingController();
   final TextEditingController _postCodeController = TextEditingController();
+
+  registerUserData() {
+    if (formKey.currentState.validate()) {
+      setState(() {
+        isLoading = false;
+      });
+      _userHandler.registerUserDataHandler(
+          _userIDController.text,
+          _icNoController.text,
+          _nameController.text,
+          widget.phoneNo,
+          _emailController.text,
+          _currentAddressController.text,
+          _postCodeController.text);
+      Navigator.pushReplacementNamed(context, '/healthstatusform');
+      setState(() {
+        isLoading = true;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -492,16 +512,15 @@ class _RegisterUserDataState extends State<RegisterUserData> {
                     ),
                     Container(
                       child: Text(
-                        'Please complete your registration by providing us your information.\nThis information will only be accesed by an UTM admin\nIf you are tested positive with COVID-19.',
+                        'Please complete your registration by providing us your information. This information will only be accesed by an UTM admin, if you are tested positive with COVID-19.',
                         style: Theme.of(context).textTheme.subtitle1,
                       ),
                     ),
                     SizedBox(
-                      height: MediaQuery.of(context).size.height / 45,
+                      height: MediaQuery.of(context).size.height / 35,
                     ),
                     //userID or Matric number Form Field.
                     Container(
-                      padding: EdgeInsets.only(left: 5, right: 5),
                       child: TextFormField(
                         controller: _userIDController,
                         validator: (value) {
@@ -529,13 +548,12 @@ class _RegisterUserDataState extends State<RegisterUserData> {
                     ),
 
                     SizedBox(
-                      height: MediaQuery.of(context).size.height / 65,
+                      height: MediaQuery.of(context).size.height / 40,
                     ),
                     //IC number or Passport Number Form Field.
                     Container(
-                      padding: EdgeInsets.only(left: 5, right: 5),
                       child: TextFormField(
-                        controller: _userIDController,
+                        controller: _icNoController,
                         validator: (value) {
                           return value.isEmpty
                               ? "Please Enter a valid IC or Passport No.!"
@@ -560,11 +578,10 @@ class _RegisterUserDataState extends State<RegisterUserData> {
                       ),
                     ),
                     SizedBox(
-                      height: MediaQuery.of(context).size.height / 65,
+                      height: MediaQuery.of(context).size.height / 40,
                     ),
                     //Full name Form Field.
                     Container(
-                      padding: EdgeInsets.only(left: 5, right: 5),
                       child: TextFormField(
                         controller: _nameController,
                         validator: (value) {
@@ -591,11 +608,10 @@ class _RegisterUserDataState extends State<RegisterUserData> {
                       ),
                     ),
                     SizedBox(
-                      height: MediaQuery.of(context).size.height / 65,
+                      height: MediaQuery.of(context).size.height / 40,
                     ),
                     //Email Form Field.
                     Container(
-                      padding: EdgeInsets.only(left: 5, right: 5),
                       child: TextFormField(
                         controller: _emailController,
                         validator: (value) {
@@ -624,11 +640,10 @@ class _RegisterUserDataState extends State<RegisterUserData> {
                       ),
                     ),
                     SizedBox(
-                      height: MediaQuery.of(context).size.height / 65,
+                      height: MediaQuery.of(context).size.height / 40,
                     ),
                     //Current Address Form Field.
                     Container(
-                      padding: EdgeInsets.only(left: 5, right: 5),
                       child: TextFormField(
                         controller: _currentAddressController,
                         validator: (value) {
@@ -655,12 +670,12 @@ class _RegisterUserDataState extends State<RegisterUserData> {
                       ),
                     ),
                     SizedBox(
-                      height: MediaQuery.of(context).size.height / 65,
+                      height: MediaQuery.of(context).size.height / 40,
                     ),
                     //Postcode Form Field.
                     Container(
-                      padding: EdgeInsets.only(left: 5, right: 5),
                       child: TextFormField(
+                        keyboardType: TextInputType.number,
                         controller: _postCodeController,
                         validator: (value) {
                           return value.isEmpty
@@ -686,7 +701,7 @@ class _RegisterUserDataState extends State<RegisterUserData> {
                       ),
                     ),
                     SizedBox(
-                      height: MediaQuery.of(context).size.height / 75,
+                      height: MediaQuery.of(context).size.height / 55,
                     ),
                   ],
                 ),
@@ -695,10 +710,11 @@ class _RegisterUserDataState extends State<RegisterUserData> {
           ),
         ),
         bottomNavigationBar: Container(
-          padding: EdgeInsets.only(right: 2),
           child: !isLoading
               ? TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    registerUserData();
+                  },
                   child: Container(
                     height: 50,
                     width: MediaQuery.of(context).size.width,

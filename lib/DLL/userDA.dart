@@ -41,8 +41,11 @@ class UserDA {
     }
   }
 
-  //check if user id has a collection in db
-  getUserDbInfo() {
-    return FirebaseFirestore.instance.collection("Users/${Users().uid}");
+  //save user data to firestore db
+  Future uploadUserInfo(userMap) async {
+    return await FirebaseFirestore.instance
+        .collection("Users")
+        .doc(_auth.currentUser.uid)
+        .set(userMap);
   }
 }
