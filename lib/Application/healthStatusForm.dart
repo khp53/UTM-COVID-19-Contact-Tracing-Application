@@ -39,204 +39,209 @@ class _HealthStatusFormState extends State<HealthStatusForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
-      appBar: AppBar(
-        title: Text('Questions'),
+    return SafeArea(
+      child: Scaffold(
         backgroundColor: Theme.of(context).primaryColor,
-      ),
-      body: SingleChildScrollView(
-        child: Container(
-          padding: EdgeInsets.all(MediaQuery.of(context).size.width / 25),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              // declaration text
-              Container(
-                child: Text(
-                  'Please answer the questions to complete the registration! This information will only be accesed by an UTM admin, if you are tested positive with COVID-19.',
-                  style: Theme.of(context).textTheme.subtitle1,
-                ),
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height / 35,
-              ),
-              // question 1
-              Container(
-                child: Text(
-                  _healthStatusFormHandler.getQuestionText(0),
-                  style: Theme.of(context).textTheme.headline3,
-                ),
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height / 45,
-              ),
-              // radio button value
-              _q1RadioButton(
-                title: "No",
-                value: 0,
-                onChanged: (newValue) =>
-                    setState(() => _question1Value = newValue),
-              ),
-              _q1RadioButton(
-                title: "Yes",
-                value: 1,
-                onChanged: (newValue) =>
-                    setState(() => _question1Value = newValue),
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height / 35,
-              ),
-              // question 2
-              Container(
-                child: Text(
-                  _healthStatusFormHandler.getQuestionText(1),
-                  style: Theme.of(context).textTheme.headline3,
-                ),
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height / 45,
-              ),
-              // radio button value
-              _q2RadioButton(
-                title: "No",
-                value: 0,
-                onChanged: (newValue) =>
-                    setState(() => _question2Value = newValue),
-              ),
-              _q2RadioButton(
-                title: "Yes",
-                value: 1,
-                onChanged: (newValue) =>
-                    setState(() => _question2Value = newValue),
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height / 35,
-              ),
-              // question 3
-              Container(
-                child: Text(
-                  _healthStatusFormHandler.getQuestionText(2),
-                  style: Theme.of(context).textTheme.headline3,
-                ),
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height / 45,
-              ),
-              // radio button value
-              _q3RadioButton(
-                title: "No",
-                value: 0,
-                onChanged: (newValue) =>
-                    setState(() => _question3Value = newValue),
-              ),
-              _q3RadioButton(
-                title: "Yes",
-                value: 1,
-                onChanged: (newValue) =>
-                    setState(() => _question3Value = newValue),
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height / 35,
-              ),
-              // question 4
-              Container(
-                child: Text(
-                  _healthStatusFormHandler.getQuestionText(3),
-                  style: Theme.of(context).textTheme.headline3,
-                ),
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height / 45,
-              ),
-              // radio button value
-              _q4RadioButton(
-                title: "No",
-                value: 0,
-                onChanged: (newValue) =>
-                    setState(() => _question4Value = newValue),
-              ),
-              _q4RadioButton(
-                title: "Yes",
-                value: 1,
-                onChanged: (newValue) =>
-                    setState(() => _question4Value = newValue),
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height / 35,
-              ),
-              // question 5
-              Container(
-                child: Text(
-                  _healthStatusFormHandler.getQuestionText(4),
-                  style: Theme.of(context).textTheme.headline3,
-                ),
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height / 45,
-              ),
-              // radio button value
-              _q5RadioButton(
-                title: "No",
-                value: 0,
-                onChanged: (newValue) =>
-                    setState(() => _question5Value = newValue),
-              ),
-              _q5RadioButton(
-                title: "Yes",
-                value: 1,
-                onChanged: (newValue) =>
-                    setState(() => _question5Value = newValue),
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height / 35,
-              ),
-              // question 6
-              Container(
-                child: Text(
-                  _healthStatusFormHandler.getQuestionText(5),
-                  style: Theme.of(context).textTheme.headline3,
-                ),
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height / 45,
-              ),
-              // radio button value
-              _q6RadioButton(
-                title: "No",
-                value: 0,
-                onChanged: (newValue) =>
-                    setState(() => _question6Value = newValue),
-              ),
-              _q6RadioButton(
-                title: "Yes",
-                value: 1,
-                onChanged: (newValue) =>
-                    setState(() => _question6Value = newValue),
-              ),
-              SizedBox(
-                height: MediaQuery.of(context).size.height / 35,
-              ),
-            ],
+        appBar: AppBar(
+          title: Text(
+            'UTM CCTA',
+            style: Theme.of(context).textTheme.headline2,
           ),
         ),
-      ),
-      bottomNavigationBar: Container(
-        child: !isLoading
-            ? TextButton(
-                onPressed: () {
-                  saveHealthStatusData();
-                },
-                child: Container(
-                  height: 50,
-                  width: MediaQuery.of(context).size.width,
-                  decoration: mainButton(),
-                  child: Center(
-                      child: Text('Complete Registration',
-                          style: TextStyle(color: Colors.white, fontSize: 15))),
+        body: SingleChildScrollView(
+          child: Container(
+            padding: EdgeInsets.all(MediaQuery.of(context).size.width / 25),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                // declaration text
+                Container(
+                  child: Text(
+                    'Please answer the questions to complete the registration! This information will only be accesed by an UTM admin, if you are tested positive with COVID-19.',
+                    style: Theme.of(context).textTheme.subtitle1,
+                  ),
                 ),
-              )
-            : CircularProgressIndicator(),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height / 35,
+                ),
+                // question 1
+                Container(
+                  child: Text(
+                    _healthStatusFormHandler.getQuestionText(0),
+                    style: Theme.of(context).textTheme.headline3,
+                  ),
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height / 45,
+                ),
+                // radio button value
+                _q1RadioButton(
+                  title: "No",
+                  value: 0,
+                  onChanged: (newValue) =>
+                      setState(() => _question1Value = newValue),
+                ),
+                _q1RadioButton(
+                  title: "Yes",
+                  value: 1,
+                  onChanged: (newValue) =>
+                      setState(() => _question1Value = newValue),
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height / 35,
+                ),
+                // question 2
+                Container(
+                  child: Text(
+                    _healthStatusFormHandler.getQuestionText(1),
+                    style: Theme.of(context).textTheme.headline3,
+                  ),
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height / 45,
+                ),
+                // radio button value
+                _q2RadioButton(
+                  title: "No",
+                  value: 0,
+                  onChanged: (newValue) =>
+                      setState(() => _question2Value = newValue),
+                ),
+                _q2RadioButton(
+                  title: "Yes",
+                  value: 1,
+                  onChanged: (newValue) =>
+                      setState(() => _question2Value = newValue),
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height / 35,
+                ),
+                // question 3
+                Container(
+                  child: Text(
+                    _healthStatusFormHandler.getQuestionText(2),
+                    style: Theme.of(context).textTheme.headline3,
+                  ),
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height / 45,
+                ),
+                // radio button value
+                _q3RadioButton(
+                  title: "No",
+                  value: 0,
+                  onChanged: (newValue) =>
+                      setState(() => _question3Value = newValue),
+                ),
+                _q3RadioButton(
+                  title: "Yes",
+                  value: 1,
+                  onChanged: (newValue) =>
+                      setState(() => _question3Value = newValue),
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height / 35,
+                ),
+                // question 4
+                Container(
+                  child: Text(
+                    _healthStatusFormHandler.getQuestionText(3),
+                    style: Theme.of(context).textTheme.headline3,
+                  ),
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height / 45,
+                ),
+                // radio button value
+                _q4RadioButton(
+                  title: "No",
+                  value: 0,
+                  onChanged: (newValue) =>
+                      setState(() => _question4Value = newValue),
+                ),
+                _q4RadioButton(
+                  title: "Yes",
+                  value: 1,
+                  onChanged: (newValue) =>
+                      setState(() => _question4Value = newValue),
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height / 35,
+                ),
+                // question 5
+                Container(
+                  child: Text(
+                    _healthStatusFormHandler.getQuestionText(4),
+                    style: Theme.of(context).textTheme.headline3,
+                  ),
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height / 45,
+                ),
+                // radio button value
+                _q5RadioButton(
+                  title: "No",
+                  value: 0,
+                  onChanged: (newValue) =>
+                      setState(() => _question5Value = newValue),
+                ),
+                _q5RadioButton(
+                  title: "Yes",
+                  value: 1,
+                  onChanged: (newValue) =>
+                      setState(() => _question5Value = newValue),
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height / 35,
+                ),
+                // question 6
+                Container(
+                  child: Text(
+                    _healthStatusFormHandler.getQuestionText(5),
+                    style: Theme.of(context).textTheme.headline3,
+                  ),
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height / 45,
+                ),
+                // radio button value
+                _q6RadioButton(
+                  title: "No / Negative",
+                  value: 0,
+                  onChanged: (newValue) =>
+                      setState(() => _question6Value = newValue),
+                ),
+                _q6RadioButton(
+                  title: "Yes / Positive",
+                  value: 1,
+                  onChanged: (newValue) =>
+                      setState(() => _question6Value = newValue),
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height / 35,
+                ),
+              ],
+            ),
+          ),
+        ),
+        bottomNavigationBar: Container(
+          child: !isLoading
+              ? TextButton(
+                  onPressed: () {
+                    saveHealthStatusData();
+                  },
+                  child: Container(
+                    height: 50,
+                    width: MediaQuery.of(context).size.width,
+                    decoration: mainButton(),
+                    child: Center(
+                        child: Text('Complete Registration',
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 15))),
+                  ),
+                )
+              : CircularProgressIndicator(),
+        ),
       ),
     );
   }
