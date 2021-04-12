@@ -17,7 +17,7 @@ class _ManageProfileState extends State<ManageProfile> {
         tileColor: Color(0xff131313),
         onTap: () {
           _userDA.signOutUser();
-          Navigator.pushReplacementNamed(context, StateMangement().id);
+          Navigator.pushReplacementNamed(context, '/authManagement');
         },
         leading: Icon(
           Icons.exit_to_app,

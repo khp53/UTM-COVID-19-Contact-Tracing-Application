@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:utmccta/Application/healthStatusForm.dart';
+import 'package:utmccta/Application/homepage.dart';
 import 'package:utmccta/BLL/userHandler.dart';
 import 'package:utmccta/DLL/userDA.dart';
 import 'package:argon_buttons_flutter/argon_buttons_flutter.dart';
@@ -35,10 +36,51 @@ class _RegisterMobileNumberState extends State<RegisterMobileNumber> {
   Future<void> verifyPhone(phoneNo) async {
     if (formKey.currentState.validate()) {
       setState(() {
-        isLoading = true;
+        isLoading = false;
       });
-      final PhoneVerificationCompleted verified = (AuthCredential authResult) {
-        _userDA.signIn(authResult);
+      final PhoneVerificationCompleted verified =
+          (AuthCredential authResult) async {
+        final UserCredential authRes = await FirebaseAuth.instance
+            .signInWithCredential(authResult)
+            .catchError((onError) {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text('OTP not valid')));
+          print('SignIn Error: ${onError.toString()}\n\n');
+        });
+
+        if (authRes != null) {
+          if (this.mounted) {
+            //checks if widget is still active and not disposed
+            setState(() {
+              isLoading = true;
+            });
+            if (authRes.additionalUserInfo.isNewUser) {
+              return Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (BuildContext context) => RegisterUserData(
+                    phoneNo: phoneNo,
+                  ),
+                ),
+                (route) => false,
+              );
+            } else {
+              return Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(
+                  builder: (BuildContext context) => Homepage(),
+                ),
+                (route) => false,
+              );
+            }
+          }
+        } else {
+          setState(() {
+            isLoading = true;
+          });
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text('Log In Failed')));
+        }
       };
 
       final PhoneVerificationFailed verificationfailed =
@@ -110,7 +152,7 @@ class _RegisterMobileNumberState extends State<RegisterMobileNumber> {
             return Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(
-                builder: (BuildContext context) => HealthStatusForm(),
+                builder: (BuildContext context) => Homepage(),
               ),
               (route) => false,
             );
@@ -384,7 +426,7 @@ class _RegisterMobileNumberState extends State<RegisterMobileNumber> {
                                         child: TextButton(
                                           onPressed: () {
                                             Navigator.pushReplacementNamed(
-                                                context, StateMangement().id);
+                                                context, '/authManagement');
                                           },
                                           child: Text(
                                             "Edit Number",
@@ -464,6 +506,7 @@ class _RegisterUserDataState extends State<RegisterUserData> {
       setState(() {
         isLoading = false;
       });
+
       _userHandler.registerUserDataHandler(
           _userIDController.text,
           _icNoController.text,
@@ -472,7 +515,12 @@ class _RegisterUserDataState extends State<RegisterUserData> {
           _emailController.text,
           _currentAddressController.text,
           _postCodeController.text);
-      Navigator.pushReplacementNamed(context, '/healthstatusform');
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+            builder: (BuildContext context) => HealthStatusForm()),
+        (route) => false,
+      );
       setState(() {
         isLoading = true;
       });

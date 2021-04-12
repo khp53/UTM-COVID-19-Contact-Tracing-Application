@@ -2,12 +2,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:utmccta/Application/healthStatusForm.dart';
-import 'package:utmccta/Application/loginform.dart';
+import 'package:utmccta/Application/loginForm.dart';
 import 'package:utmccta/Application/privacy_info.dart';
 import 'package:utmccta/Application/registerForm.dart';
 import 'package:utmccta/Application/welcome_screen.dart';
 import 'package:utmccta/BLL/dashboardHandler.dart';
-
 import 'Application/homepage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -38,10 +37,10 @@ class _InfoScreenState extends State<InfoScreen> {
     bool _seen = (prefs.getBool('seen') ?? false);
 
     if (_seen) {
-      return StateMangement().id;
+      return '/authManagement';
     } else {
       await prefs.setBool('seen', true);
-      return WelcomeScreen().id;
+      return '/welcome';
     }
   }
 
@@ -98,13 +97,13 @@ class _InfoScreenState extends State<InfoScreen> {
               ),
               initialRoute: snapshot.data,
               routes: {
-                StateMangement().id: (context) => StateMangement(),
-                WelcomeScreen().id: (context) => WelcomeScreen(),
-                Homepage().id: (context) => Homepage(),
+                '/authManagement': (context) => StateMangement(),
+                '/welcome': (context) => WelcomeScreen(),
+                '/home': (context) => Homepage(),
                 '/privacyinfo': (context) => PrivacyInfo(),
                 '/register': (context) => RegisterMobileNumber(),
                 '/login': (context) => LogIn(),
-                '/healthststusform': (context) => HealthStatusForm()
+                '/healthstatusform': (context) => HealthStatusForm()
               },
             );
           }
@@ -113,7 +112,6 @@ class _InfoScreenState extends State<InfoScreen> {
 }
 
 class StateMangement extends StatefulWidget {
-  final String id = 'statemanagement';
   @override
   _StateMangementState createState() => _StateMangementState();
 }
@@ -132,7 +130,7 @@ class _StateMangementState extends State<StateMangement> {
           if (snapshot.data is User && snapshot.data != null) {
             return DashboardHandler();
           }
-          return HealthStatusForm();
+          return LogIn();
         });
   }
 }

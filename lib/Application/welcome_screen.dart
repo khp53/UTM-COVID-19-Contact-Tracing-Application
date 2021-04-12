@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:utmccta/Application/helpers/main_button.dart';
 
 class WelcomeScreen extends StatelessWidget {
-  final String id = 'WelcomeScreen';
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
