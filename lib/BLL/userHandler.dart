@@ -3,7 +3,9 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:utmccta/Application/helpers/main_button.dart';
 import 'package:utmccta/Application/manageProfile.dart';
+import 'package:utmccta/BLL/users.dart';
 import 'package:utmccta/DLL/userDA.dart';
 import 'package:flutter/material.dart';
 
@@ -38,43 +40,65 @@ class UserHandler extends StatefulWidget {
 
 class _UserHandlerState extends State<UserHandler> {
   UserDA _userDA = UserDA();
+  Users _users = Users();
   // show name and risk status at the top of manage profile page
   Widget profileList() {
     return StreamBuilder(
         stream: _userDA.getUserProfile().snapshots(),
         builder: (context, snapshot1) {
-          return snapshot1.hasData
+          _users.email = snapshot1.data.data()["email"];
+          _users.userID = snapshot1.data.data()["userID"];
+          _users.icNo = snapshot1.data.data()["icNo"];
+          _users.mobileNumber = snapshot1.data.data()["mobileNumber"];
+          _users.name = snapshot1.data.data()["name"];
+          _users.img = snapshot1.data.data()["img"];
+          _users.address = snapshot1.data.data()["address"];
+          _users.postcode = snapshot1.data.data()["postcode"];
+          return snapshot1.connectionState == ConnectionState.active
               ? StreamBuilder(
                   stream: _userDA.getUserRiskStat().snapshots(),
                   builder: (context, snapshot2) {
-                    return snapshot2.hasData
+                    _users.riskStatus = snapshot2.data.data()["riskStatus"];
+                    return snapshot2.connectionState == ConnectionState.active
                         ? ClipRRect(
                             borderRadius: BorderRadius.all(Radius.circular(5)),
                             child: ListTile(
                               onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => EditProfileMobile()));
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => EditProfileMobile(
+                                      email: _users.email,
+                                      address: _users.address,
+                                      postcode: _users.postcode,
+                                    ),
+                                  ),
+                                );
                               },
                               contentPadding: EdgeInsets.all(10),
                               tileColor: Color(0xff131313),
                               leading: CircleAvatar(
                                 radius: 30,
-                                backgroundImage:
-                                    NetworkImage(snapshot1.data.data()["img"]),
+                                backgroundImage: NetworkImage(_users.img),
                               ),
                               title: Text(
-                                snapshot1.data.data()["name"],
+                                _users.name,
                                 style: Theme.of(context).textTheme.headline2,
                               ),
                               subtitle: Text(
-                                snapshot2.data.data()["riskStatus"],
+                                _users.riskStatus,
                                 style: Theme.of(context).textTheme.headline4,
+                              ),
+                              trailing: Icon(
+                                Icons.edit,
+                                color: Colors.white,
                               ),
                             ),
                           )
                         : Center(child: CircularProgressIndicator());
                   })
-              : Center(child: CircularProgressIndicator());
+              : Center(
+                  child: CircularProgressIndicator(),
+                );
         });
   }
 
@@ -166,52 +190,15 @@ class _UserHandlerState extends State<UserHandler> {
         });
   }
 
-  // show user image preview when editing
-  File _image;
-  final picker = ImagePicker();
-
-  Future getImage() async {
-    final pickedFile = await picker.getImage(source: ImageSource.gallery);
-    setState(() {
-      _image = File(pickedFile.path);
-    });
-  }
-
   // update the profile
-  updateProfile(url, address, email) async {
-    Map<String, String> data = {"img": url, "email": email, "address": address};
+  updateProfile(url, email, address, postcode) async {
+    Map<String, dynamic> data = {
+      "img": url,
+      "email": email,
+      "address": address,
+      "postcode": int.parse(postcode)
+    };
     await _userDA.updateProfile(data);
-  }
-
-  // upload image
-  uploadImage() async {
-    await _userDA.uploadUserImage(_image);
-    final ref = _userDA.refDirectory();
-    final url = await ref.getDownloadURL();
-  }
-
-  Widget showImagePreview() {
-    return StreamBuilder(
-        stream: _userDA.getUserProfile().snapshots(),
-        builder: (context, snapshot) {
-          return snapshot.hasData
-              ? Center(
-                  child: CircleAvatar(
-                    radius: 30,
-                    backgroundImage: NetworkImage(snapshot.data.data()["img"]),
-                    child: IconButton(
-                      onPressed: () {
-                        getImage();
-                      },
-                      icon: Icon(
-                        Icons.edit,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                )
-              : Center(child: CircularProgressIndicator());
-        });
   }
 
   @override

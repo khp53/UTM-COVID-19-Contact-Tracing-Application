@@ -1,7 +1,16 @@
+import 'dart:io';
+
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:utmccta/BLL/userHandler.dart';
+import 'package:utmccta/BLL/users.dart';
 import 'package:utmccta/DLL/userDA.dart';
 import 'package:utmccta/main.dart';
+
+import 'helpers/main_button.dart';
 
 class ManageProfile extends StatefulWidget {
   @override
@@ -10,6 +19,15 @@ class ManageProfile extends StatefulWidget {
 
 class _ManageProfileState extends State<ManageProfile> {
   UserHandler _userHandler = UserHandler();
+  _launchHelpDesk() async {
+    const url = 'https://digital.utm.my/contact/';
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not reach to $url';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -30,15 +48,14 @@ class _ManageProfileState extends State<ManageProfile> {
               child: ListTile(
                 tileColor: Color(0xff131313),
                 onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => EditProfileMobile()));
+                  _launchHelpDesk();
                 },
                 leading: Icon(
-                  Icons.edit,
+                  Icons.help,
                   color: Colors.white,
                 ),
                 title: Text(
-                  'Edit Profile',
+                  'Help Desk',
                   style: Theme.of(context).textTheme.bodyText1,
                 ),
               ),
@@ -93,6 +110,11 @@ class _ManageProfileState extends State<ManageProfile> {
 }
 
 class EditProfileMobile extends StatefulWidget {
+  final String email;
+  final String address;
+  final int postcode;
+  const EditProfileMobile({Key key, this.email, this.address, this.postcode})
+      : super(key: key);
   @override
   _EditProfileMobileState createState() => _EditProfileMobileState();
 }
@@ -100,113 +122,100 @@ class EditProfileMobile extends StatefulWidget {
 // edit and update profile after selecting from manage profile screen
 class _EditProfileMobileState extends State<EditProfileMobile> {
   UserHandler _userHandler = UserHandler();
-  final TextEditingController _icNoController = TextEditingController();
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _currentAddressController =
-      TextEditingController();
-  final TextEditingController _postCodeController = TextEditingController();
+  UserDA _userDA = UserDA();
+
+  bool isLoading = false;
+
+  // show user image preview when editing
+  File _image;
+  final picker = ImagePicker();
+
+  Future getImage() async {
+    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+    setState(() {
+      _image = File(pickedFile.path);
+    });
+  }
+
+  TextEditingController email;
+  TextEditingController address;
+  TextEditingController postcode;
+  @override
+  void initState() {
+    super.initState();
+    email = TextEditingController();
+    address = TextEditingController();
+    postcode = TextEditingController();
+    email.text = widget.email;
+    address.text = widget.address;
+    postcode.text = widget.postcode.toString();
+    email.addListener(() {});
+    address.addListener(() {});
+    postcode.addListener(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-          appBar: AppBar(
-            title: Text(
-              'Edit Profile',
-              style: Theme.of(context).textTheme.headline2,
-            ),
+        appBar: AppBar(
+          title: Text(
+            'Edit Profile',
+            style: Theme.of(context).textTheme.headline2,
           ),
-          backgroundColor: Theme.of(context).primaryColor,
-          body: SingleChildScrollView(
+        ),
+        backgroundColor: Theme.of(context).primaryColor,
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(15),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                _userHandler.createState().showImagePreview(),
-                //IC number or Passport Number Form Field.
-                Container(
-                  child: TextFormField(
-                    controller: _icNoController,
-                    validator: (value) {
-                      return value.isEmpty
-                          ? "Please Enter a valid IC or Passport No.!"
-                          : null;
-                    },
-                    style: Theme.of(context).textTheme.bodyText1,
-                    decoration: InputDecoration(
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5),
-                          borderSide: BorderSide(
-                            color: Colors.white70,
-                          ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5),
-                          borderSide: BorderSide(
-                            color: Colors.white,
-                          ),
-                        ),
-                        hintText: "IC/Passport Number",
-                        hintStyle: Theme.of(context).textTheme.bodyText2),
-                  ),
-                ),
+                StreamBuilder(
+                    stream: _userDA.getUserProfile().snapshots(),
+                    builder: (context, snapshot) {
+                      return snapshot.hasData
+                          ? Center(
+                              child: CircleAvatar(
+                                radius: 30,
+                                backgroundImage:
+                                    NetworkImage(snapshot.data.data()["img"]),
+                                child: IconButton(
+                                  onPressed: () {
+                                    getImage();
+                                  },
+                                  icon: Icon(
+                                    Icons.edit,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            )
+                          : Center(child: CircularProgressIndicator());
+                    }),
+
                 SizedBox(
-                  height: MediaQuery.of(context).size.height / 40,
-                ),
-                //Full name Form Field.
-                Container(
-                  child: TextFormField(
-                    controller: _nameController,
-                    validator: (value) {
-                      return value.isEmpty ? "Please Enter your name!" : null;
-                    },
-                    style: Theme.of(context).textTheme.bodyText1,
-                    decoration: InputDecoration(
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5),
-                          borderSide: BorderSide(
-                            color: Colors.white70,
-                          ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5),
-                          borderSide: BorderSide(
-                            color: Colors.white,
-                          ),
-                        ),
-                        hintText: "Full Name",
-                        hintStyle: Theme.of(context).textTheme.bodyText2),
-                  ),
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height / 40,
+                  height: MediaQuery.of(context).size.height / 30,
                 ),
                 //Email Form Field.
                 Container(
                   child: TextFormField(
-                    controller: _emailController,
-                    validator: (value) {
-                      return RegExp(
-                                  r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                              .hasMatch(value)
-                          ? null
-                          : "Provide a valid email";
-                    },
+                    controller: email,
                     style: Theme.of(context).textTheme.bodyText1,
                     decoration: InputDecoration(
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5),
-                          borderSide: BorderSide(
-                            color: Colors.white70,
-                          ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5),
+                        borderSide: BorderSide(
+                          color: Colors.white70,
                         ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5),
-                          borderSide: BorderSide(
-                            color: Colors.white,
-                          ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5),
+                        borderSide: BorderSide(
+                          color: Colors.white,
                         ),
-                        hintText: "Email Address",
-                        hintStyle: Theme.of(context).textTheme.bodyText2),
+                      ),
+                    ),
                   ),
                 ),
                 SizedBox(
@@ -215,28 +224,22 @@ class _EditProfileMobileState extends State<EditProfileMobile> {
                 //Current Address Form Field.
                 Container(
                   child: TextFormField(
-                    controller: _currentAddressController,
-                    validator: (value) {
-                      return value.isEmpty
-                          ? "Please Enter your full address!"
-                          : null;
-                    },
+                    controller: address,
                     style: Theme.of(context).textTheme.bodyText1,
                     decoration: InputDecoration(
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5),
-                          borderSide: BorderSide(
-                            color: Colors.white70,
-                          ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5),
+                        borderSide: BorderSide(
+                          color: Colors.white70,
                         ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5),
-                          borderSide: BorderSide(
-                            color: Colors.white,
-                          ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5),
+                        borderSide: BorderSide(
+                          color: Colors.white,
                         ),
-                        hintText: "Full Address",
-                        hintStyle: Theme.of(context).textTheme.bodyText2),
+                      ),
+                    ),
                   ),
                 ),
                 SizedBox(
@@ -246,36 +249,85 @@ class _EditProfileMobileState extends State<EditProfileMobile> {
                 Container(
                   child: TextFormField(
                     keyboardType: TextInputType.number,
-                    controller: _postCodeController,
-                    validator: (value) {
-                      return value.isEmpty
-                          ? "Please Enter your area postcode!"
-                          : null;
-                    },
+                    controller: postcode,
                     style: Theme.of(context).textTheme.bodyText1,
                     decoration: InputDecoration(
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5),
-                          borderSide: BorderSide(
-                            color: Colors.white70,
-                          ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5),
+                        borderSide: BorderSide(
+                          color: Colors.white70,
                         ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5),
-                          borderSide: BorderSide(
-                            color: Colors.white,
-                          ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(5),
+                        borderSide: BorderSide(
+                          color: Colors.white,
                         ),
-                        hintText: "Postcode",
-                        hintStyle: Theme.of(context).textTheme.bodyText2),
+                      ),
+                    ),
                   ),
                 ),
                 SizedBox(
-                  height: MediaQuery.of(context).size.height / 55,
+                  height: MediaQuery.of(context).size.height / 25,
                 ),
+                Container(
+                  child: !isLoading
+                      ? TextButton(
+                          onPressed: () async {
+                            if (_image != null) {
+                              setState(() {
+                                isLoading = true;
+                              });
+                              await _userDA.uploadUserImage(_image);
+                              final ref = FirebaseStorage.instance
+                                  .ref()
+                                  .child("user_image")
+                                  .child(FirebaseAuth
+                                          .instance.currentUser.phoneNumber +
+                                      '.jpg');
+                              final url = await ref.getDownloadURL();
+
+                              _userHandler.createState().updateProfile(
+                                  url, email.text, address.text, postcode.text);
+                              setState(() {
+                                isLoading = false;
+                              });
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                      content:
+                                          Text('Profile Update Sucessful')));
+                            } else {
+                              setState(() {
+                                isLoading = false;
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text('Update Failed')));
+                              });
+                              print("error");
+                            }
+                          },
+                          child: Container(
+                            height: 50,
+                            decoration: mainButton(),
+                            child: Center(
+                                child: Text('Submit',
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 15))),
+                          ),
+                        )
+                      : CircularProgressIndicator(),
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height / 25,
+                ),
+                Container(
+                  child: Text(
+                      'For security and privacy reasons you cannot change your name or ic/passport number. If you no longer have your phone number you can contact UTM CCTA from our help desk!'),
+                )
               ],
             ),
-          )),
+          ),
+        ),
+      ),
     );
   }
 }

@@ -66,8 +66,8 @@ class UserDA {
   //update user data
   Future<void> updateProfile(Map data) async {
     return FirebaseFirestore.instance
-        .collection('users')
-        .doc(FirebaseAuth.instance.currentUser.uid)
+        .collection('Users')
+        .doc(_auth.currentUser.uid)
         .update(data);
   }
 
