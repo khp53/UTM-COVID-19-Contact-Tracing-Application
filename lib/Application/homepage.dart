@@ -63,10 +63,7 @@ class _HomepageState extends State<Homepage> {
             label: 'History',
           ),
           BottomNavigationBarItem(
-            icon: CircleAvatar(
-              radius: 15,
-              backgroundImage: AssetImage('assets/img/default.png'),
-            ),
+            icon: Icon(Icons.people),
             label: 'User',
           ),
         ],

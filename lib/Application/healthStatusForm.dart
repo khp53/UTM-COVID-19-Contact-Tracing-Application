@@ -44,7 +44,7 @@ class _HealthStatusFormState extends State<HealthStatusForm> {
         backgroundColor: Theme.of(context).primaryColor,
         appBar: AppBar(
           title: Text(
-            'UTM CCTA',
+            'Questions',
             style: Theme.of(context).textTheme.headline2,
           ),
         ),

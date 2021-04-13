@@ -21,13 +21,40 @@ class HealthStatusFormHandler {
   // handle user health data
   collectUserHealthData(
       q1Answer, q2Answer, q3Answer, q4Answer, q5Answer, q6Answer) {
-    Map<String, bool> userHealthMap = {
+    String riskStatus = '';
+    // check risk condition
+    if (q1Answer == true) {
+      riskStatus = 'Low risk few symptoms';
+    } else if (q2Answer == true) {
+      riskStatus = 'High risk few symptoms';
+    } else if (q2Answer == true && q1Answer == true) {
+      riskStatus = 'High risk all symptoms';
+    } else if (q3Answer == true || q4Answer == true || q5Answer == true) {
+      riskStatus = 'High risk no symptoms';
+    } else if (q1Answer == true && q3Answer == true) {
+      riskStatus = 'High risk few symptoms';
+    } else if (q4Answer == true) {
+      riskStatus = 'High risk no symptoms';
+    } else if (q4Answer == true && q1Answer == true) {
+      riskStatus = 'High risk few symptoms';
+    } else if (q4Answer == true && q2Answer == true) {
+      riskStatus = 'High risk few symptoms';
+    } else if (q4Answer == true && q1Answer == true && q2Answer == true) {
+      riskStatus = 'High risk all symptoms';
+    } else if (q6Answer == true || q5Answer == true || q4Answer == true) {
+      riskStatus = 'High risk no symptoms';
+    } else {
+      riskStatus = 'Low risk no symptoms';
+    }
+
+    Map<String, dynamic> userHealthMap = {
       "generalSymptoms": q1Answer,
       "covidSymptoms": q2Answer,
       "immunocompromised": q3Answer,
       "traveled": q4Answer,
       "closeContact": q5Answer,
       "covidStatus": q6Answer,
+      "riskStatus": riskStatus
     };
     _healthStatusDA.uploadUserInfo(userHealthMap);
   }

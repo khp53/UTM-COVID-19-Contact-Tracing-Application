@@ -79,8 +79,6 @@ class _InfoScreenState extends State<InfoScreen> {
                 textTheme: TextTheme(
                   bodyText1: TextStyle(color: Colors.white, fontSize: 15),
                   bodyText2: TextStyle(color: Colors.white54, fontSize: 15),
-                  headline3:
-                      TextStyle(color: Colors.white, fontSize: 15, height: 1.8),
                   subtitle1: TextStyle(
                       color: Color(0xff8F8F8F), fontSize: 12, height: 1.5),
                   headline1: TextStyle(
@@ -93,6 +91,10 @@ class _InfoScreenState extends State<InfoScreen> {
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                       height: 1.5),
+                  headline3:
+                      TextStyle(color: Colors.white, fontSize: 15, height: 1.8),
+                  headline4: TextStyle(
+                      color: Color(0xffB454E7), fontSize: 15, height: 1.8),
                 ),
               ),
               initialRoute: snapshot.data,
