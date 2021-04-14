@@ -9,21 +9,10 @@ class UserDA {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Users _userFromFirebaseUser(User user) {
-    return user != null ? Users(uid: user.uid) : null;
-  }
-
-  //auth change user stream
-  Stream<Users> get userAuthChangeStream {
-    return _auth.authStateChanges().map(_userFromFirebaseUser);
-  }
-
   // old user auto sign in
   signIn(AuthCredential authCreds) async {
     try {
       await FirebaseAuth.instance.signInWithCredential(authCreds);
-      //User user = res.user;
-      //return _userFromFirebaseUser(user);
     } catch (e) {
       print("Sign in error user side $e");
     }

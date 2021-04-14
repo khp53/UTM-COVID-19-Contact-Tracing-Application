@@ -1,9 +1,3 @@
-import 'dart:io';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:utmccta/Application/helpers/main_button.dart';
 import 'package:utmccta/Application/manageProfile.dart';
 import 'package:utmccta/BLL/users.dart';
 import 'package:utmccta/DLL/userDA.dart';
@@ -40,65 +34,80 @@ class UserHandler extends StatefulWidget {
 
 class _UserHandlerState extends State<UserHandler> {
   UserDA _userDA = UserDA();
-  Users _users = Users();
+
   // show name and risk status at the top of manage profile page
   Widget profileList() {
     return StreamBuilder(
         stream: _userDA.getUserProfile().snapshots(),
         builder: (context, snapshot1) {
-          _users.email = snapshot1.data.data()["email"];
-          _users.userID = snapshot1.data.data()["userID"];
-          _users.icNo = snapshot1.data.data()["icNo"];
-          _users.mobileNumber = snapshot1.data.data()["mobileNumber"];
-          _users.name = snapshot1.data.data()["name"];
-          _users.img = snapshot1.data.data()["img"];
-          _users.address = snapshot1.data.data()["address"];
-          _users.postcode = snapshot1.data.data()["postcode"];
-          return snapshot1.connectionState == ConnectionState.active
-              ? StreamBuilder(
-                  stream: _userDA.getUserRiskStat().snapshots(),
-                  builder: (context, snapshot2) {
-                    _users.riskStatus = snapshot2.data.data()["riskStatus"];
-                    return snapshot2.connectionState == ConnectionState.active
-                        ? ClipRRect(
-                            borderRadius: BorderRadius.all(Radius.circular(5)),
-                            child: ListTile(
-                              onTap: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) => EditProfileMobile(
-                                      email: _users.email,
-                                      address: _users.address,
-                                      postcode: _users.postcode,
-                                    ),
-                                  ),
-                                );
-                              },
-                              contentPadding: EdgeInsets.all(10),
-                              tileColor: Color(0xff131313),
-                              leading: CircleAvatar(
-                                radius: 30,
-                                backgroundImage: NetworkImage(_users.img),
-                              ),
-                              title: Text(
-                                _users.name,
-                                style: Theme.of(context).textTheme.headline2,
-                              ),
-                              subtitle: Text(
-                                _users.riskStatus,
-                                style: Theme.of(context).textTheme.headline4,
-                              ),
-                              trailing: Icon(
-                                Icons.edit,
-                                color: Colors.white,
+          if (snapshot1.hasError) {
+            return Text('Something went wrong');
+          }
+
+          if (snapshot1.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          }
+          if (snapshot1.hasData) {
+            return StreamBuilder(
+                stream: _userDA.getUserRiskStat().snapshots(),
+                builder: (context, snapshot2) {
+                  if (snapshot2.hasError) {
+                    return Text('Something went wrong');
+                  }
+
+                  if (snapshot2.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+                  if (snapshot2.hasData) {
+                    Users _users = Users(
+                        snapshot1.data.data()["name"],
+                        snapshot1.data.data()["img"],
+                        snapshot2.data.data()["riskStatus"],
+                        snapshot1.data.data()["userID"],
+                        snapshot1.data.data()["mobileNumber"],
+                        snapshot1.data.data()["email"],
+                        snapshot1.data.data()["address"],
+                        snapshot1.data.data()["icNo"],
+                        snapshot1.data.data()["postcode"]);
+                    return ClipRRect(
+                      borderRadius: BorderRadius.all(Radius.circular(5)),
+                      child: ListTile(
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => EditProfileMobile(
+                                email: _users.email,
+                                address: _users.address,
+                                postcode: _users.postcode,
                               ),
                             ),
-                          )
-                        : Center(child: CircularProgressIndicator());
-                  })
-              : Center(
-                  child: CircularProgressIndicator(),
-                );
+                          );
+                        },
+                        contentPadding: EdgeInsets.all(10),
+                        tileColor: Color(0xff131313),
+                        leading: CircleAvatar(
+                          radius: 30,
+                          backgroundImage: NetworkImage(_users.img),
+                        ),
+                        title: Text(
+                          _users.name,
+                          style: Theme.of(context).textTheme.headline2,
+                        ),
+                        subtitle: Text(
+                          _users.riskStatus,
+                          style: Theme.of(context).textTheme.headline4,
+                        ),
+                        trailing: Icon(
+                          Icons.edit,
+                          color: Colors.white,
+                        ),
+                      ),
+                    );
+                  }
+                  return Center(child: CircularProgressIndicator());
+                });
+          }
+          return Center(child: CircularProgressIndicator());
         });
   }
 

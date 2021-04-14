@@ -30,9 +30,6 @@ class _RegisterMobileNumberState extends State<RegisterMobileNumber> {
 
   AuthCredential authCreds;
 
-  UserDA _userDA = UserDA();
-  //Users _users = Users();
-
   Future<void> verifyPhone(phoneNo) async {
     if (formKey.currentState.validate()) {
       setState(() {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:utmccta/BLL/googleNearbyAPI.dart';
 import 'package:utmccta/DLL/userDA.dart';
 import 'package:utmccta/Application/manageProfile.dart';
 
@@ -81,6 +82,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  GoogleNearbyAPI _api = GoogleNearbyAPI();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -94,7 +96,8 @@ class _HomeState extends State<Home> {
                 image: AssetImage('assets/img/homeMainImage.png'),
               ),
             ),
-          )
+          ),
+          Flexible(child: _api.createState().submitButton())
         ],
       ),
     );
