@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:utmccta/Application/dashboard.dart';
 import 'package:utmccta/Application/registerForm.dart';
+import 'package:utmccta/BLL/dashboardHandler.dart';
 import 'package:utmccta/DLL/userDA.dart';
 import 'package:utmccta/DLL/adminDA.dart';
 import 'helpers/main_button.dart';
@@ -48,8 +49,8 @@ class _WebLoginLayoutState extends State<WebLoginLayout> {
               passwordTextEditingController.text)
           .then((result) async {
         if (result != null) {
-          Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => Dashboard()));
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => DashboardHandler()));
         } else {
           setState(() {
             isLoading = false;
@@ -87,11 +88,7 @@ class _WebLoginLayoutState extends State<WebLoginLayout> {
       child: Scaffold(
         backgroundColor: Theme.of(context).primaryColorLight,
         body: isLoading
-            ? Container(
-                child: Center(
-                    child: CircularProgressIndicator(
-                backgroundColor: Theme.of(context).accentColor,
-              )))
+            ? Container(child: Center(child: CircularProgressIndicator()))
             : SingleChildScrollView(
                 child: Container(
                   padding: EdgeInsets.fromLTRB(

@@ -26,15 +26,15 @@ class TraceContactsDA {
   CollectionReference traceContactsCollection() {
     return _firestore
         .collection('TraceContacts')
-        .doc(loggedInUser.uid)
-        .collection('met_with');
+        .doc(_auth.currentUser.uid)
+        .collection('contactedWith');
   }
 
   DocumentReference traceContactsDocument() {
-    return _firestore.collection('TraceContacts').doc(loggedInUser.uid);
+    return _firestore.collection('TraceContacts').doc(_auth.currentUser.uid);
   }
 
-  Future<String> getEmailOfContactedPerson({String uid}) async {
+  Future<String> getEmailOfContactedPerson({uid}) async {
     String email = '';
     await _firestore.collection('Users').doc(uid).get().then((doc) {
       if (doc.exists) {

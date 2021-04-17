@@ -8,6 +8,24 @@
             "name": "utmccta",
             "request": "launch",
             "type": "dart"
+        },
+        {
+            "name": "ONEPLUS 5t",
+            "request": "launch",
+            "type": "dart",
+            "deviceId": "5089e993"
+        },
+        {
+            "name": "Redmi Note 8",
+            "request": "launch",
+            "type": "dart",
+            "deviceId": "2178ec"
+        },
+    ],
+    "compounds": [
+        {
+            "name": "All Devices",
+            "configurations": ["ONEPLUS 5t", "Redmi Note 8",]
         }
     ]
 }

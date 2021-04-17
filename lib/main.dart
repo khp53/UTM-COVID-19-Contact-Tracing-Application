@@ -58,6 +58,7 @@ class _InfoScreenState extends State<InfoScreen> {
               debugShowCheckedModeBanner: false,
               theme: ThemeData(
                 accentColor: Color(0xffB454E7),
+                primaryColorDark: Color(0xff5C001E),
                 primaryColor: Color(0xff000000),
                 primaryColorLight: Color(0xffffffff),
                 primaryTextTheme: TextTheme(

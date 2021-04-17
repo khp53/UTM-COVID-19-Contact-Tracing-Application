@@ -43,7 +43,6 @@ class _UserHandlerState extends State<UserHandler> {
           if (snapshot1.hasError) {
             return Text('Something went wrong');
           }
-
           if (snapshot1.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
           }

@@ -14,12 +14,12 @@ class _GoogleNearbyAPIState extends State<GoogleNearbyAPI> {
   Location location = Location();
   final Strategy strategy = Strategy.P2P_STAR;
   TraceContactsDA _traceContactsDA = TraceContactsDA();
-  bool isLoading = false;
 
   List<dynamic> contactTraces = [];
   List<dynamic> contactTime = [];
   List<dynamic> contactLocation = [];
 
+  // add the discovered contacts to list
   void addContactsToList() async {
     await _traceContactsDA.getCurrentUser();
     _traceContactsDA.traceContactsCollection().snapshots().listen((snapshot) {
@@ -38,10 +38,10 @@ class _GoogleNearbyAPIState extends State<GoogleNearbyAPI> {
           contactLocation.add(currLocation);
         }
       }
-      setState(() {});
     });
   }
 
+  // remove contacts older then 14 days
   void removeOldContactListFromDB(int threshold) async {
     await _traceContactsDA.getCurrentUser();
     // get time and date
@@ -59,13 +59,18 @@ class _GoogleNearbyAPIState extends State<GoogleNearbyAPI> {
         }
       }
     });
-
-    setState(() {});
   }
 
+  // ask location and external storage permission
+  // bluetooth will be automatically activated when discovery starts
+  void getPermissions() {
+    Nearby().askLocationAndExternalStoragePermission();
+  }
+
+  // open your device through a encrypted channel for other ccta users to discover
   void discovery() async {
     try {
-      bool a = await Nearby()
+      bool d = await Nearby()
           .startDiscovery(_traceContactsDA.loggedInUserID(), strategy,
               onEndpointFound: (id, name, serviceId) async {
         print('I saw id:$id with name:$name');
@@ -74,7 +79,7 @@ class _GoogleNearbyAPIState extends State<GoogleNearbyAPI> {
         //  also get the current time & location and add it to the database
         _traceContactsDA
             .traceContactsDocument()
-            .collection('met_with')
+            .collection('contactedWith')
             .doc(name)
             .set({
           'contactEmail':
@@ -87,46 +92,40 @@ class _GoogleNearbyAPIState extends State<GoogleNearbyAPI> {
       }, onEndpointLost: (id) {
         print(id);
       });
-      print('DISCOVERING: ${a.toString()}');
+      print('DISCOVERING: ${d.toString()}');
     } catch (e) {
       print(e);
     }
   }
 
-  Widget submitButton() {
-    return Container(
-        child: !isLoading
-            ? TextButton(
-                onPressed: () async {
-                  try {
-                    bool a = await Nearby().startAdvertising(
-                      _traceContactsDA.loggedInUserID(),
-                      strategy,
-                      onConnectionInitiated: null,
-                      onConnectionResult: (id, status) {
-                        print(status);
-                      },
-                      onDisconnected: (id) {
-                        print('Disconnected $id');
-                      },
-                    );
+  void adverise() async {
+    try {
+      bool a = await Nearby().startAdvertising(
+        _traceContactsDA.loggedInUserID(),
+        strategy,
+        onConnectionInitiated: null,
+        onConnectionResult: (id, status) {
+          print(status);
+        },
+        onDisconnected: (id) {
+          print('Disconnected $id');
+        },
+      );
 
-                    print('ADVERTISING ${a.toString()}');
-                  } catch (e) {
-                    print(e);
-                  }
+      print('ADVERTISING ${a.toString()}');
+    } catch (e) {
+      print(e);
+    }
+  }
 
-                  discovery();
-                },
-                child: Container(
-                  height: 50,
-                  decoration: mainButton(),
-                  child: Center(
-                      child: Text('Submit',
-                          style: TextStyle(color: Colors.white, fontSize: 15))),
-                ),
-              )
-            : CircularProgressIndicator());
+  // stop discovery
+  void stopDiscovery() async {
+    return await Nearby().stopDiscovery();
+  }
+
+  // stop advertising
+  void stopAdvertising() async {
+    return await Nearby().stopAdvertising();
   }
 
   @override

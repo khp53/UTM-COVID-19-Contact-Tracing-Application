@@ -1,11 +1,13 @@
-import 'package:utmccta/BLL/admin.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:utmccta/BLL/admin.dart';
 
 class AdminDA {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   Admin _adminFromFirebaseUser(User user) {
-    return user != null ? Admin(uid: user.uid, email: user.email) : null;
+    return user != null ? Admin(uid: user.uid) : null;
   }
 
   //auth change admin stream
@@ -32,5 +34,10 @@ class AdminDA {
     } catch (e) {
       print(e);
     }
+  }
+
+  // get admin profile based on admin UID
+  DocumentReference getUserProfile() {
+    return _firestore.collection("Admin").doc(_auth.currentUser.uid);
   }
 }
