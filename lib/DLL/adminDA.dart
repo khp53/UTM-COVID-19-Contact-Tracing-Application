@@ -40,4 +40,14 @@ class AdminDA {
   DocumentReference getUserProfile() {
     return _firestore.collection("Admin").doc(_auth.currentUser.uid);
   }
+
+  //get all user details
+  CollectionReference getAllUserDetails() {
+    return _firestore.collection("Users");
+  }
+
+  //get all user details
+  CollectionReference getAllUserHealthDetails() {
+    return _firestore.collection("HealthStatus");
+  }
 }

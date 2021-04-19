@@ -59,4 +59,17 @@ class TraceContactsDA {
     });
     return phoneNumber;
   }
+
+  Future<String> getNameOfContactedPerson({String uid}) async {
+    String phoneNumber = '';
+    await _firestore.collection('Users').doc(uid).get().then((doc) {
+      if (doc.exists) {
+        phoneNumber = doc.data()['name'];
+      } else {
+        // doc.data() will be undefined in this case
+        print("No such document!");
+      }
+    });
+    return phoneNumber;
+  }
 }

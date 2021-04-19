@@ -62,7 +62,7 @@ class _InfoScreenState extends State<InfoScreen> {
                 primaryColor: Color(0xff000000),
                 primaryColorLight: Color(0xffffffff),
                 primaryTextTheme: TextTheme(
-                  bodyText1: TextStyle(color: Colors.black, fontSize: 15),
+                  bodyText1: TextStyle(color: Colors.black, fontSize: 20),
                   bodyText2: TextStyle(color: Colors.grey, fontSize: 15),
                   subtitle1:
                       TextStyle(color: Colors.grey, fontSize: 12, height: 1.5),

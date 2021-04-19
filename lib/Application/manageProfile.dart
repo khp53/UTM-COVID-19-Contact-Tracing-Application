@@ -6,9 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:utmccta/BLL/userHandler.dart';
-import 'package:utmccta/BLL/users.dart';
+import 'package:utmccta/Application/helpers/helpDesk.dart';
 import 'package:utmccta/DLL/userDA.dart';
 import 'package:utmccta/main.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 import 'helpers/main_button.dart';
 
@@ -19,14 +20,7 @@ class ManageProfile extends StatefulWidget {
 
 class _ManageProfileState extends State<ManageProfile> {
   UserHandler _userHandler = UserHandler();
-  _launchHelpDesk() async {
-    const url = 'https://digital.utm.my/contact/';
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not reach to $url';
-    }
-  }
+  String url = 'https://digital.utm.my/contact/';
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +42,8 @@ class _ManageProfileState extends State<ManageProfile> {
               child: ListTile(
                 tileColor: Color(0xff131313),
                 onTap: () {
-                  _launchHelpDesk();
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => HelpDesk(url)));
                 },
                 leading: Icon(
                   Icons.help,

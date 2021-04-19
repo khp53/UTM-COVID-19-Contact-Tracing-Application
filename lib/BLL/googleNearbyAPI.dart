@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:location/location.dart';
+import 'package:geolocator/geolocator.dart';
+//import 'package:location/location.dart';
 import 'package:nearby_connections/nearby_connections.dart';
 import 'package:utmccta/Application/helpers/main_button.dart';
 import 'package:utmccta/DLL/traceContactsDA.dart';
@@ -11,7 +12,7 @@ class GoogleNearbyAPI extends StatefulWidget {
 }
 
 class _GoogleNearbyAPIState extends State<GoogleNearbyAPI> {
-  Location location = Location();
+  //Location location = Location();
   final Strategy strategy = Strategy.P2P_STAR;
   TraceContactsDA _traceContactsDA = TraceContactsDA();
 
@@ -77,17 +78,22 @@ class _GoogleNearbyAPIState extends State<GoogleNearbyAPI> {
         // in utm ccta's case the user name will be the document ID
         //  When I discover someone I will see their email and add that email to the database of my contacts
         //  also get the current time & location and add it to the database
+        Position position = await Geolocator.getCurrentPosition(
+            desiredAccuracy: LocationAccuracy.high);
         _traceContactsDA
             .traceContactsDocument()
             .collection('contactedWith')
             .doc(name)
             .set({
+          'contactName':
+              await _traceContactsDA.getNameOfContactedPerson(uid: name),
           'contactEmail':
               await _traceContactsDA.getEmailOfContactedPerson(uid: name),
           'contactNumber':
               await _traceContactsDA.getPhoneNoOfContactedPerson(uid: name),
-          'contact time': DateTime.now(),
-          'contact location': (await location.getLocation()).toString(),
+          'contactTime': DateTime.now(),
+          'contactLocationLatitude': position.latitude,
+          'contactLocationLongitudee': position.longitude,
         });
       }, onEndpointLost: (id) {
         print(id);

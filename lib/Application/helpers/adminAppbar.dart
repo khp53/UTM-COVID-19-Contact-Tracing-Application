@@ -12,6 +12,7 @@ class AdminAppBar extends StatefulWidget implements PreferredSizeWidget {
 
 class _AdminAppBarState extends State<AdminAppBar> {
   AdminDA _adminDA = AdminDA();
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -21,24 +22,25 @@ class _AdminAppBarState extends State<AdminAppBar> {
         'Admin Dashboard  UTM CCTA',
         style: Theme.of(context).primaryTextTheme.headline2,
       ),
+      leading: IconButton(
+        icon: Icon(Icons.menu),
+        onPressed: () => _scaffoldKey.currentState.openDrawer(),
+      ),
       actions: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
-          child: TextButton(
-              onPressed: () {
-                setState(() {
-                  _adminDA.signOutAdmin();
-                });
-              },
-              child: Container(
-                height: 35,
-                width: MediaQuery.of(context).size.width / 12,
-                decoration: mainButton(),
-                child: Center(
-                    child: Text('Sign Out',
-                        style: TextStyle(color: Colors.white, fontSize: 15))),
-              )),
-        ),
+        TextButton(
+            onPressed: () {
+              setState(() {
+                _adminDA.signOutAdmin();
+              });
+            },
+            child: Container(
+              height: 35,
+              width: MediaQuery.of(context).size.width / 12,
+              decoration: mainButton(),
+              child: Center(
+                  child: Text('Sign Out',
+                      style: TextStyle(color: Colors.white, fontSize: 15))),
+            )),
       ],
     );
   }
