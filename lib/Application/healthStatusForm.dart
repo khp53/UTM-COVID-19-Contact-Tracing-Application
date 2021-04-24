@@ -1,5 +1,7 @@
+import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:utmccta/Application/helpers/main_button.dart';
+import 'package:utmccta/Application/homepage.dart';
 import 'package:utmccta/BLL/healthStatusFormHandler.dart';
 
 class HealthStatusForm extends StatefulWidget {
@@ -9,8 +11,10 @@ class HealthStatusForm extends StatefulWidget {
 
 class _HealthStatusFormState extends State<HealthStatusForm> {
   HealthStatusFormHandler _healthStatusFormHandler = HealthStatusFormHandler();
+
   //loading status
   bool isLoading = false;
+
   // radio button on click value
   int _question1Value = 1;
   int _question2Value = 1;
@@ -22,7 +26,7 @@ class _HealthStatusFormState extends State<HealthStatusForm> {
   // send data to handller
   saveHealthStatusData() {
     setState(() {
-      isLoading = false;
+      isLoading = true;
     });
     _healthStatusFormHandler.collectUserHealthData(
         _question1Value == 1 ? true : false,
@@ -33,8 +37,37 @@ class _HealthStatusFormState extends State<HealthStatusForm> {
         _question6Value == 1 ? true : false);
     Navigator.pushReplacementNamed(context, '/home');
     setState(() {
-      isLoading = true;
+      isLoading = false;
     });
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            backgroundColor: Color(0xff131313),
+            title: Text(
+              "Registration Complete!",
+              style: Theme.of(context).textTheme.bodyText1,
+            ),
+            content: SizedBox(
+              height: MediaQuery.of(context).size.height / 4,
+              child: FlareActor(
+                'assets/img/Done animation.flr',
+                  alignment:Alignment.center,
+                  fit:BoxFit.contain,
+                  animation:"Done"
+              ),
+            ),
+            actions: [
+              TextButton(
+                child: Text("OK"),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              )
+            ],
+          );
+        });
   }
 
   @override
@@ -49,7 +82,8 @@ class _HealthStatusFormState extends State<HealthStatusForm> {
           ),
         ),
         body: SingleChildScrollView(
-          child: Container(
+          child: !isLoading
+              ? Container(
             padding: EdgeInsets.all(MediaQuery.of(context).size.width / 25),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -222,31 +256,30 @@ class _HealthStatusFormState extends State<HealthStatusForm> {
                 ),
               ],
             ),
-          ),
+          ): Center(child: CircularProgressIndicator()),
         ),
         bottomNavigationBar: Container(
-          child: !isLoading
-              ? TextButton(
-                  onPressed: () {
-                    saveHealthStatusData();
-                  },
-                  child: Container(
-                    height: 50,
-                    width: MediaQuery.of(context).size.width,
-                    decoration: mainButton(),
-                    child: Center(
-                        child: Text('Complete Registration',
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 15))),
-                  ),
-                )
-              : CircularProgressIndicator(),
+          child: TextButton(
+            onPressed: () {
+              saveHealthStatusData();
+            },
+            child: Container(
+              height: 50,
+              width: MediaQuery.of(context).size.width,
+              decoration: mainButton(),
+              child: Center(
+                  child: Text('Complete Registration',
+                      style:
+                      TextStyle(color: Colors.white, fontSize: 15))),
+            ),
+          )
+
         ),
       ),
     );
   }
 
-  // buiild q1 radio list
+  // build q1 radio list
   Widget _q1RadioButton({String title, int value, Function onChanged}) {
     return Theme(
       data: Theme.of(context).copyWith(unselectedWidgetColor: Colors.white54),

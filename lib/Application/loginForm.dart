@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:utmccta/Application/dashboard.dart';
 import 'package:utmccta/Application/registerForm.dart';
 import 'package:utmccta/BLL/dashboardHandler.dart';
-import 'package:utmccta/DLL/userDA.dart';
 import 'package:utmccta/DLL/adminDA.dart';
-import 'helpers/main_button.dart';
 
 class LogIn extends StatefulWidget {
   @override
@@ -196,23 +193,17 @@ class _WebLoginLayoutState extends State<WebLoginLayout> {
                           SizedBox(
                             height: MediaQuery.of(context).size.height / 25,
                           ),
-                          Container(
-                            padding: EdgeInsets.only(right: 2),
-                            child: TextButton(
-                              onPressed: () {
-                                adminLogin();
-                              },
-                              child: Container(
-                                height: 50,
-                                width: MediaQuery.of(context).size.width,
-                                decoration: mainButton(),
-                                child: Center(
-                                    child: Text('Log in',
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 15))),
-                              ),
-                            ),
+                          MaterialButton(
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                            elevation: 0,
+                            color: Theme.of(context).accentColor,
+                            onPressed: () {
+                              adminLogin();
+                            },
+                            child: Center(
+                                child: Text('Log in',
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 15))),
                           ),
                         ],
                       ),

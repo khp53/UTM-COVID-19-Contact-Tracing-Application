@@ -1,16 +1,11 @@
 import 'dart:io';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:utmccta/BLL/userHandler.dart';
 import 'package:utmccta/Application/helpers/helpDesk.dart';
 import 'package:utmccta/DLL/userDA.dart';
-import 'package:utmccta/main.dart';
-import 'package:webview_flutter/webview_flutter.dart';
-
 import 'helpers/main_button.dart';
 
 class ManageProfile extends StatefulWidget {
@@ -108,8 +103,10 @@ class EditProfileMobile extends StatefulWidget {
   final String email;
   final String address;
   final int postcode;
+
   const EditProfileMobile({Key key, this.email, this.address, this.postcode})
       : super(key: key);
+
   @override
   _EditProfileMobileState createState() => _EditProfileMobileState();
 }
@@ -135,6 +132,7 @@ class _EditProfileMobileState extends State<EditProfileMobile> {
   TextEditingController email;
   TextEditingController address;
   TextEditingController postcode;
+
   @override
   void initState() {
     super.initState();
@@ -267,7 +265,12 @@ class _EditProfileMobileState extends State<EditProfileMobile> {
                 ),
                 Container(
                   child: !isLoading
-                      ? TextButton(
+                      ? MaterialButton(
+                          elevation: 0,
+                          color: Theme.of(context).accentColor,
+                          height: 50,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5)),
                           onPressed: () async {
                             if (_image != null) {
                               setState(() {
@@ -300,14 +303,10 @@ class _EditProfileMobileState extends State<EditProfileMobile> {
                               print("error");
                             }
                           },
-                          child: Container(
-                            height: 50,
-                            decoration: mainButton(),
-                            child: Center(
-                                child: Text('Submit',
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 15))),
-                          ),
+                          child: Center(
+                              child: Text('Submit',
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 15))),
                         )
                       : CircularProgressIndicator(),
                 ),

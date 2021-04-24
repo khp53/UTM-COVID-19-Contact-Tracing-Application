@@ -110,20 +110,19 @@ class MobileWelcomeLayout extends StatelessWidget {
               Expanded(
                 flex: 1,
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 20),
-                  child: TextButton(
+                  padding: const EdgeInsets.only(top: 40),
+                  child: MaterialButton(
+                    elevation: 0,
+                    color: Theme.of(context).accentColor,
+                    //height: 50,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
                     onPressed: () {
                       Navigator.pushNamed(context, '/privacyinfo');
                     },
-                    child: Container(
-                      height: 50,
-                      width: MediaQuery.of(context).size.width,
-                      decoration: mainButton(),
-                      child: Center(
-                          child: Text('Continue',
-                              style: TextStyle(
-                                  color: Colors.white, fontSize: 15))),
-                    ),
+                    child: Center(
+                        child: Text('Continue',
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 15))),
                   ),
                 ),
               ),
@@ -235,20 +234,19 @@ class WebWelcomeLayout extends StatelessWidget {
               Expanded(
                 flex: 1,
                 child: Padding(
-                  padding: const EdgeInsets.only(top: 20),
-                  child: TextButton(
+                  padding: const EdgeInsets.only(top: 40),
+                  child: MaterialButton(
+                    elevation: 0,
+                    color: Theme.of(context).accentColor,
+                    //height: 50,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
                     onPressed: () {
                       Navigator.pushNamed(context, '/privacyinfo');
                     },
-                    child: Container(
-                      height: 50,
-                      width: MediaQuery.of(context).size.width,
-                      decoration: mainButton(),
-                      child: Center(
-                          child: Text('Continue',
-                              style: TextStyle(
-                                  color: Colors.white, fontSize: 15))),
-                    ),
+                    child: Center(
+                        child: Text('Continue',
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 15))),
                   ),
                 ),
               ),

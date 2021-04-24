@@ -68,6 +68,10 @@ class _GoogleNearbyAPIState extends State<GoogleNearbyAPI> {
     Nearby().askLocationAndExternalStoragePermission();
   }
 
+  checkIfGPSOn() async{
+    await Nearby().checkLocationEnabled();
+  }
+
   // open your device through a encrypted channel for other ccta users to discover
   void discovery() async {
     try {

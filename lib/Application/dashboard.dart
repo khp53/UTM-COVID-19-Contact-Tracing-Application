@@ -1,11 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:utmccta/Application/locationPage.dart';
 import 'package:utmccta/BLL/adminHandler.dart';
-import 'package:utmccta/BLL/users.dart';
 import 'package:utmccta/DLL/adminDA.dart';
-import 'package:utmccta/Application/helpers/adminAppbar.dart';
 
 class Dashboard extends StatefulWidget {
   @override
@@ -63,44 +58,5 @@ class _DashBoadrdAdminState extends State<DashBoadrdAdmin> {
         ),
       ),
     );
-  }
-}
-
-class UserDetails extends StatelessWidget {
-  final String userID;
-  final String mobileNumber;
-  final String email;
-  final String address;
-  final String icNo;
-  final String img;
-  final String name;
-  final int postcode;
-  final String riskStatus;
-  final bool closeContact;
-  final bool covidStatus;
-  final bool covidSymptoms;
-  final bool generalSymptoms;
-  final bool immunocompromised;
-  final bool traveled;
-
-  UserDetails(
-      {this.name,
-      this.img,
-      this.riskStatus,
-      this.userID,
-      this.mobileNumber,
-      this.email,
-      this.address,
-      this.icNo,
-      this.postcode,
-      this.closeContact,
-      this.covidStatus,
-      this.covidSymptoms,
-      this.generalSymptoms,
-      this.immunocompromised,
-      this.traveled});
-  @override
-  Widget build(BuildContext context) {
-    return Container();
   }
 }

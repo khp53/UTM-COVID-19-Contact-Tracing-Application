@@ -17,10 +17,12 @@ class RegisterMobileNumber extends StatefulWidget {
 class _RegisterMobileNumberState extends State<RegisterMobileNumber> {
   // form key for text fields
   final formKey = new GlobalKey<FormState>();
+
   // loading status
   bool isLoading = false;
   String verificationId;
   bool codeSent = false;
+
   // visibility status toggle of edit number button
   bool _visibility = false;
 
@@ -224,59 +226,53 @@ class _RegisterMobileNumberState extends State<RegisterMobileNumber> {
                     SizedBox(
                       height: MediaQuery.of(context).size.height / 15,
                     ),
-                    Container(
-                      padding: EdgeInsets.only(left: 5, right: 5),
-                      child: TextFormField(
-                        controller: _phoneNumberController,
-                        keyboardType: TextInputType.phone,
-                        validator: (value) {
-                          return value.isEmpty
-                              ? "Please Enter a Valid Phone Number"
-                              : null;
-                        },
-                        style: Theme.of(context).textTheme.bodyText1,
-                        decoration: InputDecoration(
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5),
-                              borderSide: BorderSide(
-                                color: Colors.white70,
-                              ),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5),
-                              borderSide: BorderSide(
-                                color: Colors.white,
-                              ),
-                            ),
-                            hintText: "Phone Number (ie: +60XXXXXXXXXX)",
-                            hintStyle: Theme.of(context).textTheme.bodyText2),
+                    TextFormField(
+                      controller: _phoneNumberController,
+                      keyboardType: TextInputType.phone,
+                      textInputAction: TextInputAction.done,
+                      validator: (value) {
+                        return value.isEmpty
+                            ? "Please Enter a Valid Phone Number"
+                            : null;
+                      },
+                      style: Theme.of(context).textTheme.bodyText1,
+                      decoration: InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5),
+                          borderSide: BorderSide(
+                            color: Colors.white70,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5),
+                          borderSide: BorderSide(
+                            color: Colors.white,
+                          ),
+                        ),
+                        labelText: "Phone Number (ie: +60XXXXXXXXXX)",
+                        labelStyle: Theme.of(context).textTheme.bodyText2,
                       ),
                     ),
                     SizedBox(
-                      height: MediaQuery.of(context).size.height / 40,
+                      height: MediaQuery.of(context).size.height / 30,
                     ),
-                    Container(
-                      padding: EdgeInsets.only(right: 2),
-                      child: !isLoading
-                          ? TextButton(
-                              onPressed: () {
-                                verifyPhone(_phoneNumberController.text);
-                              },
-                              child: Container(
-                                height: 50,
-                                width: MediaQuery.of(context).size.width,
-                                decoration: mainButton(),
-                                child: Center(
-                                    child: Text('Verify',
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 15))),
-                              ),
-                            )
-                          : Container(
-                              padding: EdgeInsets.only(top: 5),
-                              child: CircularProgressIndicator()),
-                    ),
+                    !isLoading
+                        ? MaterialButton(
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                            height: 50,
+                            elevation: 0,
+                            color: Theme.of(context).accentColor,
+                            onPressed: () {
+                              verifyPhone(_phoneNumberController.text);
+                            },
+                            child: Center(
+                                child: Text('Verify',
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 15))),
+                          )
+                        : Container(
+                            padding: EdgeInsets.only(top: 5),
+                            child: CircularProgressIndicator()),
                   ],
                 ),
               ),
@@ -321,7 +317,6 @@ class _RegisterMobileNumberState extends State<RegisterMobileNumber> {
                           ),
                           Column(children: [
                             Container(
-                              padding: EdgeInsets.only(left: 5, right: 5),
                               alignment: Alignment.centerLeft,
                               child: Text(
                                 'Enter the OTP sent to ${_phoneNumberController.text}',
@@ -332,7 +327,6 @@ class _RegisterMobileNumberState extends State<RegisterMobileNumber> {
                               height: MediaQuery.of(context).size.height / 60,
                             ),
                             Container(
-                              padding: EdgeInsets.only(left: 5, right: 5),
                               child: TextFormField(
                                 keyboardType: TextInputType.number,
                                 inputFormatters: <TextInputFormatter>[
@@ -353,16 +347,15 @@ class _RegisterMobileNumberState extends State<RegisterMobileNumber> {
                                         color: Colors.white,
                                       ),
                                     ),
-                                    hintText: "OTP",
-                                    hintStyle:
+                                    labelText: "OTP",
+                                    labelStyle:
                                         Theme.of(context).textTheme.bodyText2),
                               ),
                             ),
                             SizedBox(
-                              height: MediaQuery.of(context).size.height / 70,
+                              height: MediaQuery.of(context).size.height / 80,
                             ),
                             Container(
-                              padding: EdgeInsets.only(left: 5, right: 5),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
@@ -379,7 +372,8 @@ class _RegisterMobileNumberState extends State<RegisterMobileNumber> {
                                       padding: const EdgeInsets.fromLTRB(
                                           0, 3.5, 0, 0),
                                       child: ArgonTimerButton(
-                                        initialTimer: 120, // Optional
+                                        initialTimer: 120,
+                                        // Optional
                                         height: 50,
                                         width:
                                             MediaQuery.of(context).size.width *
@@ -442,26 +436,22 @@ class _RegisterMobileNumberState extends State<RegisterMobileNumber> {
                               ),
                             ),
                           ]),
-                          Container(
-                            padding: EdgeInsets.only(right: 2),
-                            child: TextButton(
-                              onPressed: () {
-                                signInUser(_phoneNumberController.text);
-                              },
-                              child: Container(
-                                height: 50,
-                                width: MediaQuery.of(context).size.width,
-                                decoration: mainButton(),
-                                child: Center(
-                                  child: Text(
-                                    'Login',
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 15),
-                                  ),
-                                ),
+                          MaterialButton(
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                            height: 50,
+                            elevation: 0,
+                            color: Theme.of(context).accentColor,
+                            onPressed: () {
+                              signInUser(_phoneNumberController.text);
+                            },
+                            child: Center(
+                              child: Text(
+                                'Login',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 15),
                               ),
                             ),
-                          )
+                          ),
                         ],
                       ),
                     ),
@@ -477,8 +467,10 @@ class _RegisterMobileNumberState extends State<RegisterMobileNumber> {
 
 class RegisterUserData extends StatefulWidget {
   final String phoneNo;
+
   //constructor
   const RegisterUserData({Key key, this.phoneNo}) : super(key: key);
+
   @override
   _RegisterUserDataState createState() => _RegisterUserDataState();
 }
@@ -529,7 +521,8 @@ class _RegisterUserDataState extends State<RegisterUserData> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Theme.of(context).primaryColor,
-        body: SingleChildScrollView(
+        body: !isLoading
+            ? SingleChildScrollView(
           child: Container(
             padding: EdgeInsets.fromLTRB(
                 20, MediaQuery.of(context).size.height / 12, 20, 20),
@@ -587,8 +580,8 @@ class _RegisterUserDataState extends State<RegisterUserData> {
                                 color: Colors.white,
                               ),
                             ),
-                            hintText: "Matric Number (i.e: A20XX4123)",
-                            hintStyle: Theme.of(context).textTheme.bodyText2),
+                            labelText: "Matric Number (i.e: A20XX4123)",
+                            labelStyle: Theme.of(context).textTheme.bodyText2),
                       ),
                     ),
 
@@ -618,8 +611,8 @@ class _RegisterUserDataState extends State<RegisterUserData> {
                                 color: Colors.white,
                               ),
                             ),
-                            hintText: "IC/Passport Number",
-                            hintStyle: Theme.of(context).textTheme.bodyText2),
+                            labelText: "IC/Passport Number",
+                            labelStyle: Theme.of(context).textTheme.bodyText2),
                       ),
                     ),
                     SizedBox(
@@ -648,8 +641,8 @@ class _RegisterUserDataState extends State<RegisterUserData> {
                                 color: Colors.white,
                               ),
                             ),
-                            hintText: "Full Name",
-                            hintStyle: Theme.of(context).textTheme.bodyText2),
+                            labelText: "Full Name",
+                            labelStyle: Theme.of(context).textTheme.bodyText2),
                       ),
                     ),
                     SizedBox(
@@ -680,8 +673,8 @@ class _RegisterUserDataState extends State<RegisterUserData> {
                                 color: Colors.white,
                               ),
                             ),
-                            hintText: "Email Address",
-                            hintStyle: Theme.of(context).textTheme.bodyText2),
+                            labelText: "Email Address",
+                            labelStyle: Theme.of(context).textTheme.bodyText2),
                       ),
                     ),
                     SizedBox(
@@ -710,8 +703,8 @@ class _RegisterUserDataState extends State<RegisterUserData> {
                                 color: Colors.white,
                               ),
                             ),
-                            hintText: "Full Address",
-                            hintStyle: Theme.of(context).textTheme.bodyText2),
+                            labelText: "Full Address",
+                            labelStyle: Theme.of(context).textTheme.bodyText2),
                       ),
                     ),
                     SizedBox(
@@ -741,8 +734,8 @@ class _RegisterUserDataState extends State<RegisterUserData> {
                                 color: Colors.white,
                               ),
                             ),
-                            hintText: "Postcode",
-                            hintStyle: Theme.of(context).textTheme.bodyText2),
+                            labelText: "Postcode",
+                            labelStyle: Theme.of(context).textTheme.bodyText2),
                       ),
                     ),
                     SizedBox(
@@ -753,24 +746,22 @@ class _RegisterUserDataState extends State<RegisterUserData> {
               ),
             ),
           ),
-        ),
+        ) :  Center(child: CircularProgressIndicator()),
         bottomNavigationBar: Container(
-          child: !isLoading
-              ? TextButton(
-                  onPressed: () {
-                    registerUserData();
-                  },
-                  child: Container(
-                    height: 50,
-                    width: MediaQuery.of(context).size.width,
-                    decoration: mainButton(),
-                    child: Center(
-                        child: Text('Submit',
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 15))),
-                  ),
-                )
-              : CircularProgressIndicator(),
+          child: TextButton(
+            onPressed: () {
+              registerUserData();
+            },
+            child: Container(
+              height: 50,
+              width: MediaQuery.of(context).size.width,
+              decoration: mainButton(),
+              child: Center(
+                  child: Text('Submit',
+                      style:
+                      TextStyle(color: Colors.white, fontSize: 15))),
+            ),
+          )
         ),
       ),
     );

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:utmccta/Application/helpers/main_button.dart';
 import 'package:utmccta/DLL/adminDA.dart';
 
 class AdminAppBar extends StatefulWidget implements PreferredSizeWidget {
@@ -27,20 +26,19 @@ class _AdminAppBarState extends State<AdminAppBar> {
         onPressed: () => _scaffoldKey.currentState.openDrawer(),
       ),
       actions: [
-        TextButton(
-            onPressed: () {
-              setState(() {
-                _adminDA.signOutAdmin();
-              });
-            },
-            child: Container(
-              height: 35,
-              width: MediaQuery.of(context).size.width / 12,
-              decoration: mainButton(),
-              child: Center(
-                  child: Text('Sign Out',
-                      style: TextStyle(color: Colors.white, fontSize: 15))),
-            )),
+        MaterialButton(
+          elevation: 0,
+          color: Theme.of(context).accentColor,
+          onPressed: () {
+            setState(() {
+              _adminDA.signOutAdmin();
+            });
+          },
+          child: Text(
+            'Sign Out',
+            style: TextStyle(color: Colors.white, fontSize: 15),
+          ),
+        ),
       ],
     );
   }

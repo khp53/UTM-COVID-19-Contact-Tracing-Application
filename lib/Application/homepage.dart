@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:utmccta/Application/locationEntryForm.dart';
 import 'package:utmccta/BLL/googleNearbyAPI.dart';
-import 'package:utmccta/DLL/userDA.dart';
 import 'package:utmccta/Application/manageProfile.dart';
-
-import 'helpers/main_button.dart';
 
 class Homepage extends StatefulWidget {
   @override
@@ -12,16 +10,15 @@ class Homepage extends StatefulWidget {
 
 class _HomepageState extends State<Homepage> {
   int _selectedIndex = 0;
+
   //stab text style
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+
   // classes or widgets to show after clicking bottom nav
   static List<Widget> _widgetOptions = <Widget>[
     Home(),
-    Text(
-      'Location Entry',
-      style: optionStyle,
-    ),
+    LocationEntryForm(),
     Text(
       'Location History',
       style: optionStyle,
@@ -39,15 +36,15 @@ class _HomepageState extends State<Homepage> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
-      appBar: AppBar(
-        title: Text(
-          'UTM CCTA',
-          style: Theme.of(context).textTheme.headline2,
+        backgroundColor: Theme.of(context).primaryColor,
+        appBar: AppBar(
+          title: Text(
+            'UTM CCTA',
+            style: Theme.of(context).textTheme.headline2,
+          ),
         ),
-      ),
-      body: _widgetOptions.elementAt(_selectedIndex),
-      bottomNavigationBar: BottomNavigationBar(
+        body: _widgetOptions.elementAt(_selectedIndex),
+        bottomNavigationBar: BottomNavigationBar(
         elevation: 2,
         unselectedItemColor: Colors.white,
         type: BottomNavigationBarType.fixed,
@@ -86,6 +83,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   GoogleNearbyAPI _api = GoogleNearbyAPI();
   bool isLoading = false;
+
   @override
   void initState() {
     super.initState();
@@ -102,7 +100,11 @@ class _HomeState extends State<Home> {
             ? Container(
                 padding:
                     EdgeInsets.only(left: 40, right: 40, top: 10, bottom: 10),
-                child: TextButton(
+                child: MaterialButton(
+                  height: 50,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                  elevation: 0,
+                  color: Theme.of(context).accentColor,
                   onPressed: () async {
                     if (this.mounted) {
                       setState(() {
@@ -112,14 +114,9 @@ class _HomeState extends State<Home> {
                     _api.createState().adverise();
                     _api.createState().discovery();
                   },
-                  child: Container(
-                    height: 50,
-                    decoration: mainButton(),
-                    child: Center(
-                        child: Text('Start Scanning',
-                            style:
-                                TextStyle(color: Colors.white, fontSize: 15))),
-                  ),
+                  child: Center(
+                      child: Text('Start Scanning',
+                          style: TextStyle(color: Colors.white, fontSize: 15))),
                 ),
               )
             : Column(
@@ -149,7 +146,11 @@ class _HomeState extends State<Home> {
                   Container(
                     padding: EdgeInsets.only(
                         left: 40, right: 40, top: 10, bottom: 10),
-                    child: TextButton(
+                    child: MaterialButton(
+                      elevation: 0,
+                      color: Color(0xffFF725E),
+                      height: 50,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
                       onPressed: () async {
                         if (this.mounted) {
                           setState(() {
@@ -159,14 +160,10 @@ class _HomeState extends State<Home> {
                         _api.createState().stopAdvertising();
                         _api.createState().stopDiscovery();
                       },
-                      child: Container(
-                        height: 50,
-                        decoration: mainButtonStop(),
-                        child: Center(
-                          child: Text(
-                            'Stop Scanning',
-                            style: TextStyle(color: Colors.white, fontSize: 15),
-                          ),
+                      child: Center(
+                        child: Text(
+                          'Stop Scanning',
+                          style: TextStyle(color: Colors.white, fontSize: 15),
                         ),
                       ),
                     ),
@@ -181,6 +178,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Container(
+        padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -191,10 +189,17 @@ class _HomeState extends State<Home> {
                 image: AssetImage('assets/img/homeMainImage.png'),
               ),
             ),
+            SizedBox(
+              height: 10,
+            ),
             Container(
               padding: EdgeInsets.symmetric(vertical: 10),
-              child: Icon(
+              child: _api.createState().checkIfGPSOn() == true ?
+              Icon(
                 Icons.gps_fixed,
+                color: Colors.white,
+              ) : Icon(
+                Icons.gps_off,
                 color: Colors.white,
               ),
             ),
