@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:utmccta/Application/dashboard.dart';
 import 'package:utmccta/Application/firebaseCloudMessagingConsole.dart';
-import 'package:utmccta/Application/helpers/adminAppbar.dart';
 import 'package:utmccta/Application/helpers/main_button.dart';
 import 'package:utmccta/Application/locationPage.dart';
 import 'package:utmccta/BLL/adminHandler.dart';
 import 'package:utmccta/DLL/adminDA.dart';
 import 'package:utmccta/main.dart';
 
-class SideNav extends StatefulWidget {
+class DashBoardSideNavClinic extends StatefulWidget {
   @override
-  _SideNavState createState() => _SideNavState();
+  _DashBoardSideNavClinicState createState() => _DashBoardSideNavClinicState();
 }
 
-class _SideNavState extends State<SideNav> with SingleTickerProviderStateMixin {
+class _DashBoardSideNavClinicState extends State<DashBoardSideNavClinic>
+    with SingleTickerProviderStateMixin {
   AdminHandler _adminHandler = AdminHandler();
   TabController tabController;
   int active = 0;
@@ -46,7 +46,7 @@ class _SideNavState extends State<SideNav> with SingleTickerProviderStateMixin {
           backgroundColor: Colors.white,
           elevation: 1,
           title: Text(
-            'Admin Dashboard  UTM CCTA',
+            'UTM Clinic Dashboard UTM CCTA',
             style: Theme.of(context).primaryTextTheme.headline2,
           ),
           leading: MediaQuery.of(context).size.width < 1300
@@ -100,7 +100,7 @@ class _SideNavState extends State<SideNav> with SingleTickerProviderStateMixin {
                 physics: NeverScrollableScrollPhysics(),
                 controller: tabController,
                 children: [
-                  Dashboard(),
+                  DashboardHealthAuthorities(),
                   LocationPage(),
                   FirebaseCloudMessagingConsole(),
                 ],

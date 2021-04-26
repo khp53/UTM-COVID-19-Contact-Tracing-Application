@@ -1,8 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:utmccta/Application/healthStatusForm.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:utmccta/Application/loginForm.dart';
 import 'package:utmccta/Application/privacy_info.dart';
 import 'package:utmccta/Application/registerForm.dart';
@@ -132,7 +133,11 @@ class _StateMangementState extends State<StateMangement> {
             );
           }
           if (snapshot.data is User && snapshot.data != null) {
-            return DashboardHandler();
+            if (kIsWeb) {
+              return DashboardHandler();
+            } else {
+              return Homepage();
+            }
           }
           return LogIn();
         });

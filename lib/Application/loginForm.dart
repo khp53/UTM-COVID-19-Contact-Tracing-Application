@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:utmccta/Application/registerForm.dart';
 import 'package:utmccta/BLL/dashboardHandler.dart';
 import 'package:utmccta/DLL/adminDA.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class LogIn extends StatefulWidget {
   @override
@@ -11,13 +12,11 @@ class LogIn extends StatefulWidget {
 class _LogInState extends State<LogIn> {
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(builder: (context, constraints) {
-      if (constraints.maxWidth > 800) {
-        return WebLoginLayout();
-      } else {
-        return RegisterMobileNumber();
-      }
-    });
+    if (kIsWeb) {
+      return WebLoginLayout();
+    } else {
+      return RegisterMobileNumber();
+    }
   }
 }
 
@@ -142,8 +141,8 @@ class _WebLoginLayoutState extends State<WebLoginLayout> {
                                       color: Colors.black,
                                     ),
                                   ),
-                                  hintText: "Email",
-                                  hintStyle: Theme.of(context)
+                                  labelText: "Email",
+                                  labelStyle: Theme.of(context)
                                       .primaryTextTheme
                                       .bodyText2),
                             ),
@@ -184,8 +183,8 @@ class _WebLoginLayoutState extends State<WebLoginLayout> {
                                       color: Colors.black,
                                     ),
                                   ),
-                                  hintText: "Password",
-                                  hintStyle: Theme.of(context)
+                                  labelText: "Password",
+                                  labelStyle: Theme.of(context)
                                       .primaryTextTheme
                                       .bodyText2),
                             ),
@@ -194,9 +193,11 @@ class _WebLoginLayoutState extends State<WebLoginLayout> {
                             height: MediaQuery.of(context).size.height / 25,
                           ),
                           MaterialButton(
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5)),
                             elevation: 0,
                             color: Theme.of(context).accentColor,
+                            height: 70,
                             onPressed: () {
                               adminLogin();
                             },

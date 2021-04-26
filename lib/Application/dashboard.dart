@@ -1,23 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:utmccta/BLL/adminHandler.dart';
-import 'package:utmccta/DLL/adminDA.dart';
-
-class Dashboard extends StatefulWidget {
-  @override
-  _DashboardState createState() => _DashboardState();
-}
-
-class _DashboardState extends State<Dashboard> {
-  AdminDA _adminDA = AdminDA();
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: DashBoadrdAdmin(),
-      ),
-    );
-  }
-}
 
 class DashBoadrdAdmin extends StatefulWidget {
   @override
@@ -57,6 +39,24 @@ class _DashBoadrdAdminState extends State<DashBoadrdAdmin> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class DashboardHealthAuthorities extends StatefulWidget {
+  @override
+  _DashboardHealthAuthoritiesState createState() =>
+      _DashboardHealthAuthoritiesState();
+}
+
+class _DashboardHealthAuthoritiesState
+    extends State<DashboardHealthAuthorities> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.blueAccent,
+      height: 500,
+      width: 500,
     );
   }
 }

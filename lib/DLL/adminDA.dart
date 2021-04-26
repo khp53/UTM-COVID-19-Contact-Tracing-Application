@@ -38,7 +38,9 @@ class AdminDA {
 
   // get admin profile based on admin UID
   DocumentReference getUserProfile() {
-    return _firestore.collection("Admin").doc(_auth.currentUser.uid);
+    return _firestore
+        .collection("System Administrators")
+        .doc(_auth.currentUser.uid);
   }
 
   //get all user details

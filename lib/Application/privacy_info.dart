@@ -92,7 +92,8 @@ class MobilePrivacyLayout extends StatelessWidget {
                     elevation: 0,
                     color: Theme.of(context).accentColor,
                     //height: 50,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5)),
                     onPressed: () {
                       Navigator.pushReplacementNamed(context, '/login');
                     },
@@ -191,8 +192,9 @@ class WebPrivacyLayout extends StatelessWidget {
                   child: MaterialButton(
                     elevation: 0,
                     color: Theme.of(context).accentColor,
-                    //height: 50,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                    height: 50,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5)),
                     onPressed: () {
                       Navigator.pushReplacementNamed(context, '/login');
                     },

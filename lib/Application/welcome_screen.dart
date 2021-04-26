@@ -115,7 +115,8 @@ class MobileWelcomeLayout extends StatelessWidget {
                     elevation: 0,
                     color: Theme.of(context).accentColor,
                     //height: 50,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5)),
                     onPressed: () {
                       Navigator.pushNamed(context, '/privacyinfo');
                     },
@@ -238,8 +239,9 @@ class WebWelcomeLayout extends StatelessWidget {
                   child: MaterialButton(
                     elevation: 0,
                     color: Theme.of(context).accentColor,
-                    //height: 50,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                    height: 50,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5)),
                     onPressed: () {
                       Navigator.pushNamed(context, '/privacyinfo');
                     },
