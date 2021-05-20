@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -63,6 +62,7 @@ class _InfoScreenState extends State<InfoScreen> {
                 primaryColorDark: Color(0xff5C001E),
                 primaryColor: Color(0xff000000),
                 primaryColorLight: Color(0xffffffff),
+                dialogBackgroundColor: Color(0xff131313),
                 primaryTextTheme: TextTheme(
                   bodyText1: TextStyle(color: Colors.black, fontSize: 20),
                   bodyText2: TextStyle(color: Colors.grey, fontSize: 15),
