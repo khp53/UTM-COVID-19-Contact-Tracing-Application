@@ -6,10 +6,21 @@ class LocationEntryDA {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   // upload user manual location entry
-  Future uploadUserLocationEntry(locationMap) async {
+  Future setUserLocationEntry(locationMap) async {
     return await _firestore
         .collection("LocationEntry")
         .doc(_auth.currentUser.uid)
-        .set(locationMap);
+        .set({
+      "locationEntry": FieldValue.arrayUnion([locationMap])
+    });
+  }
+
+  Future updateUserLocationEntry(locationMap) async {
+    return await _firestore
+        .collection("LocationEntry")
+        .doc(_auth.currentUser.uid)
+        .update({
+      "locationEntry": FieldValue.arrayUnion([locationMap])
+    });
   }
 }

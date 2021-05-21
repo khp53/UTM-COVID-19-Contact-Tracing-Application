@@ -11,19 +11,16 @@ class _LocationEntryHandlerState extends State<LocationEntryHandler> {
   LocationEntryDA _locationEntryDA = new LocationEntryDA();
   // upload data from location form to firebase using dll
   uploadLoacationEntryData(
-      locationName, fullAddress, visitTime, visitDate, entryDate) {
+      locationName, fullAddress, visitTime, visitDate, entryDate) async {
     Map<String, dynamic> locationMap = {
-      "locationEntry": FieldValue.arrayUnion([
-        {
-          "locationName": locationName,
-          "fullAddress": fullAddress,
-          "visitTime": visitTime,
-          "visitDate": visitDate,
-          "entryDate": entryDate,
-        }
-      ])
+      "locationName": locationName,
+      "fullAddress": fullAddress,
+      "visitTime": visitTime,
+      "visitDate": visitDate,
+      "entryDate": entryDate,
     };
-    _locationEntryDA.uploadUserLocationEntry(locationMap);
+    //await _locationEntryDA.setUserLocationEntry(locationMap);
+    await _locationEntryDA.updateUserLocationEntry(locationMap);
   }
 
   @override
