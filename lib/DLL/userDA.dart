@@ -75,4 +75,12 @@ class UserDA {
         .child(_auth.currentUser.phoneNumber + '.jpg')
         .putFile(img);
   }
+
+  // set a blank location entry collection
+  Future createBlankLocationEntry() async {
+    return await FirebaseFirestore.instance
+        .collection("LocationEntry")
+        .doc(_auth.currentUser.uid)
+        .set({"locationEntry": FieldValue.arrayUnion([])});
+  }
 }

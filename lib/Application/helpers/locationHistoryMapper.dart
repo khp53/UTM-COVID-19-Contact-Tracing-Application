@@ -10,11 +10,14 @@ class LocationHistoryMapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text(_locationName, style: Theme.of(context).textTheme.bodyText1),
+      title:
+          Text(_locationName, style: Theme.of(context).textTheme.bodyText1) ??
+              '',
       subtitle: Text(
-        _locationVisitDate,
-        style: Theme.of(context).textTheme.headline4,
-      ),
+            _locationVisitDate,
+            style: Theme.of(context).textTheme.headline4,
+          ) ??
+          '',
     );
   }
 }

@@ -39,7 +39,7 @@ class _LocationEntryFormState extends State<LocationEntryForm> {
             builder: (BuildContext context) => AlertDialog(
                   title: Text(
                     "Manual Location Entry Success!",
-                    style: Theme.of(context).textTheme.headline2,
+                    style: Theme.of(context).textTheme.bodyText2,
                   ),
                   backgroundColor: Theme.of(context).dialogBackgroundColor,
                   content: SizedBox(

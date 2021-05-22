@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:nearby_connections/nearby_connections.dart';
 import 'package:utmccta/Application/locationEntryForm.dart';
 import 'package:utmccta/Application/locationHistoryPage.dart';
 import 'package:utmccta/BLL/googleNearbyAPI.dart';
@@ -89,6 +91,7 @@ class _HomeState extends State<Home> {
     _api.createState().removeOldContactListFromDB(14);
     _api.createState().addContactsToList();
     _api.createState().getPermissions();
+    _api.createState().checkIfGPSOn();
   }
 
   Widget scanButton() {
@@ -106,13 +109,35 @@ class _HomeState extends State<Home> {
                   elevation: 0,
                   color: Theme.of(context).accentColor,
                   onPressed: () async {
-                    if (this.mounted) {
-                      setState(() {
-                        isLoading = true;
-                      });
+                    if (!(await Geolocator.isLocationServiceEnabled())) {
+                      showDialog(
+                          context: context,
+                          builder: (BuildContext context) => AlertDialog(
+                                title: Text(
+                                  "Attention!",
+                                  style: Theme.of(context).textTheme.headline2,
+                                ),
+                                backgroundColor:
+                                    Theme.of(context).dialogBackgroundColor,
+                                content: Text(
+                                  "Please Turn On GPS or Location Services!",
+                                  style: Theme.of(context).textTheme.bodyText2,
+                                ),
+                                actions: [
+                                  TextButton(
+                                      onPressed: () => Navigator.pop(context),
+                                      child: Text("OK"))
+                                ],
+                              ));
+                    } else {
+                      if (this.mounted) {
+                        setState(() {
+                          isLoading = true;
+                        });
+                      }
+                      _api.createState().adverise();
+                      _api.createState().discovery();
                     }
-                    _api.createState().adverise();
-                    _api.createState().discovery();
                   },
                   child: Center(
                       child: Text('Start Scanning',
@@ -195,15 +220,10 @@ class _HomeState extends State<Home> {
             ),
             Container(
               padding: EdgeInsets.symmetric(vertical: 10),
-              child: _api.createState().checkIfGPSOn() == true
-                  ? Icon(
-                      Icons.gps_fixed,
-                      color: Colors.white,
-                    )
-                  : Icon(
-                      Icons.gps_off,
-                      color: Colors.white,
-                    ),
+              child: Icon(
+                Icons.gps_fixed,
+                color: Colors.white,
+              ),
             ),
             Container(
               padding: EdgeInsets.symmetric(vertical: 10),

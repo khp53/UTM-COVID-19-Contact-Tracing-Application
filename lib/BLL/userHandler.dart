@@ -21,6 +21,7 @@ class UserHandler extends StatefulWidget {
       "postcode": int.parse(postcode)
     };
     _userDA.uploadUserInfo(userInfoMap);
+    _userDA.createBlankLocationEntry();
   }
 
   // signOut The user

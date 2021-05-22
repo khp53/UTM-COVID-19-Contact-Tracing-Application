@@ -16,7 +16,7 @@ class _LocationHistoryPageState extends State<LocationHistoryPage> {
         stream: _entryDA.getUserLocationEntryData().snapshots(),
         builder: (context, snapshot) {
           //print(snapshot.data.data()['locationEntry']);
-          if (snapshot.hasData) {
+          if (snapshot.data != null) {
             switch (snapshot.connectionState) {
               case ConnectionState.none:
                 return Text("No Connections");
@@ -56,6 +56,12 @@ class _LocationHistoryPageState extends State<LocationHistoryPage> {
               default:
                 break;
             }
+          } else {
+            return Container(
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.height,
+              color: Colors.black,
+            );
           }
           return Center(child: CircularProgressIndicator());
         });
