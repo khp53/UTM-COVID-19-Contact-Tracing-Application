@@ -39,7 +39,7 @@ class _LocationEntryFormState extends State<LocationEntryForm> {
             builder: (BuildContext context) => AlertDialog(
                   title: Text(
                     "Manual Location Entry Success!",
-                    style: Theme.of(context).textTheme.bodyText2,
+                    style: Theme.of(context).textTheme.headline2,
                   ),
                   backgroundColor: Theme.of(context).dialogBackgroundColor,
                   content: SizedBox(
@@ -85,6 +85,14 @@ class _LocationEntryFormState extends State<LocationEntryForm> {
                         Text(
                           'Location Entry',
                           style: Theme.of(context).textTheme.headline2,
+                        ),
+                        SizedBox(
+                          height: 15,
+                        ),
+                        Text(
+                          'All the location entry names and visit dates to the locations can be seen in the location history tab!',
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.headline4,
                         ),
                         SizedBox(
                           height: MediaQuery.of(context).size.height / 35,

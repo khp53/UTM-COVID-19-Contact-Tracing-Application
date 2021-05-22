@@ -12,15 +12,11 @@ class LocationEntryDA {
         .doc(_auth.currentUser.uid)
         .set({
       "locationEntry": FieldValue.arrayUnion([locationMap])
-    });
+    }, SetOptions(merge: true));
   }
 
-  Future updateUserLocationEntry(locationMap) async {
-    return await _firestore
-        .collection("LocationEntry")
-        .doc(_auth.currentUser.uid)
-        .update({
-      "locationEntry": FieldValue.arrayUnion([locationMap])
-    });
+  // get all the location data
+  DocumentReference getUserLocationEntryData() {
+    return _firestore.collection("LocationEntry").doc(_auth.currentUser.uid);
   }
 }

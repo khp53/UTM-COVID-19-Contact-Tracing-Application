@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:utmccta/Application/locationEntryForm.dart';
+import 'package:utmccta/Application/locationHistoryPage.dart';
 import 'package:utmccta/BLL/googleNearbyAPI.dart';
 import 'package:utmccta/Application/manageProfile.dart';
 
@@ -19,10 +20,7 @@ class _HomepageState extends State<Homepage> {
   static List<Widget> _widgetOptions = <Widget>[
     Home(),
     LocationEntryForm(),
-    Text(
-      'Location History',
-      style: optionStyle,
-    ),
+    LocationHistoryPage(),
     ManageProfile()
   ];
 
@@ -36,15 +34,16 @@ class _HomepageState extends State<Homepage> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-        backgroundColor: Theme.of(context).primaryColor,
-        appBar: AppBar(
-          title: Text(
-            'UTM CCTA',
-            style: Theme.of(context).textTheme.headline2,
-          ),
+      resizeToAvoidBottomInset: true,
+      backgroundColor: Theme.of(context).primaryColor,
+      appBar: AppBar(
+        title: Text(
+          'UTM CCTA',
+          style: Theme.of(context).textTheme.headline2,
         ),
-        body: _widgetOptions.elementAt(_selectedIndex),
-        bottomNavigationBar: BottomNavigationBar(
+      ),
+      body: _widgetOptions.elementAt(_selectedIndex),
+      bottomNavigationBar: BottomNavigationBar(
         elevation: 2,
         unselectedItemColor: Colors.white,
         type: BottomNavigationBarType.fixed,
@@ -102,7 +101,8 @@ class _HomeState extends State<Home> {
                     EdgeInsets.only(left: 40, right: 40, top: 10, bottom: 10),
                 child: MaterialButton(
                   height: 50,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5)),
                   elevation: 0,
                   color: Theme.of(context).accentColor,
                   onPressed: () async {
@@ -150,7 +150,8 @@ class _HomeState extends State<Home> {
                       elevation: 0,
                       color: Color(0xffFF725E),
                       height: 50,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5)),
                       onPressed: () async {
                         if (this.mounted) {
                           setState(() {
@@ -194,14 +195,15 @@ class _HomeState extends State<Home> {
             ),
             Container(
               padding: EdgeInsets.symmetric(vertical: 10),
-              child: _api.createState().checkIfGPSOn() == true ?
-              Icon(
-                Icons.gps_fixed,
-                color: Colors.white,
-              ) : Icon(
-                Icons.gps_off,
-                color: Colors.white,
-              ),
+              child: _api.createState().checkIfGPSOn() == true
+                  ? Icon(
+                      Icons.gps_fixed,
+                      color: Colors.white,
+                    )
+                  : Icon(
+                      Icons.gps_off,
+                      color: Colors.white,
+                    ),
             ),
             Container(
               padding: EdgeInsets.symmetric(vertical: 10),

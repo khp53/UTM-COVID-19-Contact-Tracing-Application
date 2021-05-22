@@ -19,8 +19,8 @@ class _LocationEntryHandlerState extends State<LocationEntryHandler> {
       "visitDate": visitDate,
       "entryDate": entryDate,
     };
-    //await _locationEntryDA.setUserLocationEntry(locationMap);
-    await _locationEntryDA.updateUserLocationEntry(locationMap);
+    await _locationEntryDA.setUserLocationEntry(locationMap);
+    //await _locationEntryDA.updateUserLocationEntry(locationMap);
   }
 
   @override

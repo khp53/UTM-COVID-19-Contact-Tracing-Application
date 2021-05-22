@@ -36,6 +36,7 @@ dependencies:
   webview_flutter: ^2.0.4
   flare_flutter: ^3.0.0
   datetime_picker_formfield: ^2.0.0
+  timelines: ^0.1.0
 
 dev_dependencies:
   flutter_test:
