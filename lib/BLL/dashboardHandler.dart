@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:utmccta/Application/helpers/DashboardSideNavAdmin.dart';
 import 'package:utmccta/Application/helpers/DashboardSideNavClinic.dart';
-import 'package:utmccta/Application/homepage.dart';
 import 'package:utmccta/Application/loginForm.dart';
 
 class DashboardHandler extends StatefulWidget {
@@ -17,7 +16,7 @@ class _DashboardHandlerState extends State<DashboardHandler> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-        stream: FirebaseAuth.instance.authStateChanges(),
+        stream: _auth.authStateChanges(),
         builder: (BuildContext context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(

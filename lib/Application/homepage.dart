@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:nearby_connections/nearby_connections.dart';
 import 'package:utmccta/Application/locationEntryForm.dart';
 import 'package:utmccta/Application/locationHistoryPage.dart';
 import 'package:utmccta/BLL/googleNearbyAPI.dart';
@@ -15,8 +14,8 @@ class _HomepageState extends State<Homepage> {
   int _selectedIndex = 0;
 
   //stab text style
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+  // static const TextStyle optionStyle =
+  //     TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
 
   // classes or widgets to show after clicking bottom nav
   static List<Widget> _widgetOptions = <Widget>[

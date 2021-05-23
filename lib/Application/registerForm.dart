@@ -4,9 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:utmccta/Application/healthStatusForm.dart';
 import 'package:utmccta/Application/homepage.dart';
 import 'package:utmccta/BLL/userHandler.dart';
-import 'package:utmccta/DLL/userDA.dart';
 import 'package:argon_buttons_flutter/argon_buttons_flutter.dart';
-import 'package:utmccta/main.dart';
 import 'helpers/main_button.dart';
 
 class RegisterMobileNumber extends StatefulWidget {
@@ -258,7 +256,8 @@ class _RegisterMobileNumberState extends State<RegisterMobileNumber> {
                     ),
                     !isLoading
                         ? MaterialButton(
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5)),
                             height: 50,
                             elevation: 0,
                             color: Theme.of(context).accentColor,
@@ -437,7 +436,8 @@ class _RegisterMobileNumberState extends State<RegisterMobileNumber> {
                             ),
                           ]),
                           MaterialButton(
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5)),
                             height: 50,
                             elevation: 0,
                             color: Theme.of(context).accentColor,
@@ -523,246 +523,251 @@ class _RegisterUserDataState extends State<RegisterUserData> {
         backgroundColor: Theme.of(context).primaryColor,
         body: !isLoading
             ? SingleChildScrollView(
-          child: Container(
-            padding: EdgeInsets.fromLTRB(
-                20, MediaQuery.of(context).size.height / 12, 20, 20),
-            child: Center(
-              child: Form(
-                key: formKey,
-                child: Column(
-                  children: [
-                    SizedBox(
-                      width: 74,
-                      height: 74,
-                      child: Image(
-                        image: AssetImage('assets/img/logo.png'),
-                      ),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      'Register',
-                      style: Theme.of(context).textTheme.headline1,
-                    ),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height / 15,
-                    ),
-                    Container(
-                      child: Text(
-                        'Please complete your registration by providing us your information. This information will only be accesed by an UTM admin, if you are tested positive with COVID-19.',
-                        style: Theme.of(context).textTheme.subtitle1,
-                      ),
-                    ),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height / 35,
-                    ),
-                    //userID or Matric number Form Field.
-                    Container(
-                      child: TextFormField(
-                        controller: _userIDController,
-                        validator: (value) {
-                          return value.isEmpty
-                              ? "Please Enter a valid matric number!"
-                              : null;
-                        },
-                        style: Theme.of(context).textTheme.bodyText1,
-                        decoration: InputDecoration(
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5),
-                              borderSide: BorderSide(
-                                color: Colors.white70,
-                              ),
+                child: Container(
+                  padding: EdgeInsets.fromLTRB(
+                      20, MediaQuery.of(context).size.height / 12, 20, 20),
+                  child: Center(
+                    child: Form(
+                      key: formKey,
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            width: 74,
+                            height: 74,
+                            child: Image(
+                              image: AssetImage('assets/img/logo.png'),
                             ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5),
-                              borderSide: BorderSide(
-                                color: Colors.white,
-                              ),
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            'Register',
+                            style: Theme.of(context).textTheme.headline1,
+                          ),
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height / 15,
+                          ),
+                          Container(
+                            child: Text(
+                              'Please complete your registration by providing us your information. This information will only be accesed by an UTM admin, if you are tested positive with COVID-19.',
+                              style: Theme.of(context).textTheme.subtitle1,
                             ),
-                            labelText: "Matric Number (i.e: A20XX4123)",
-                            labelStyle: Theme.of(context).textTheme.bodyText2),
-                      ),
-                    ),
+                          ),
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height / 35,
+                          ),
+                          //userID or Matric number Form Field.
+                          Container(
+                            child: TextFormField(
+                              controller: _userIDController,
+                              validator: (value) {
+                                return value.isEmpty
+                                    ? "Please Enter a valid matric number!"
+                                    : null;
+                              },
+                              style: Theme.of(context).textTheme.bodyText1,
+                              decoration: InputDecoration(
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                    borderSide: BorderSide(
+                                      color: Colors.white70,
+                                    ),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                    borderSide: BorderSide(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  labelText: "Matric Number (i.e: A20XX4123)",
+                                  labelStyle:
+                                      Theme.of(context).textTheme.bodyText2),
+                            ),
+                          ),
 
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height / 40,
-                    ),
-                    //IC number or Passport Number Form Field.
-                    Container(
-                      child: TextFormField(
-                        controller: _icNoController,
-                        validator: (value) {
-                          return value.isEmpty
-                              ? "Please Enter a valid IC or Passport No.!"
-                              : null;
-                        },
-                        style: Theme.of(context).textTheme.bodyText1,
-                        decoration: InputDecoration(
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5),
-                              borderSide: BorderSide(
-                                color: Colors.white70,
-                              ),
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height / 40,
+                          ),
+                          //IC number or Passport Number Form Field.
+                          Container(
+                            child: TextFormField(
+                              controller: _icNoController,
+                              validator: (value) {
+                                return value.isEmpty
+                                    ? "Please Enter a valid IC or Passport No.!"
+                                    : null;
+                              },
+                              style: Theme.of(context).textTheme.bodyText1,
+                              decoration: InputDecoration(
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                    borderSide: BorderSide(
+                                      color: Colors.white70,
+                                    ),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                    borderSide: BorderSide(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  labelText: "IC/Passport Number",
+                                  labelStyle:
+                                      Theme.of(context).textTheme.bodyText2),
                             ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5),
-                              borderSide: BorderSide(
-                                color: Colors.white,
-                              ),
+                          ),
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height / 40,
+                          ),
+                          //Full name Form Field.
+                          Container(
+                            child: TextFormField(
+                              controller: _nameController,
+                              validator: (value) {
+                                return value.isEmpty
+                                    ? "Please Enter your name!"
+                                    : null;
+                              },
+                              style: Theme.of(context).textTheme.bodyText1,
+                              decoration: InputDecoration(
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                    borderSide: BorderSide(
+                                      color: Colors.white70,
+                                    ),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                    borderSide: BorderSide(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  labelText: "Full Name",
+                                  labelStyle:
+                                      Theme.of(context).textTheme.bodyText2),
                             ),
-                            labelText: "IC/Passport Number",
-                            labelStyle: Theme.of(context).textTheme.bodyText2),
+                          ),
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height / 40,
+                          ),
+                          //Email Form Field.
+                          Container(
+                            child: TextFormField(
+                              controller: _emailController,
+                              validator: (value) {
+                                return RegExp(
+                                            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                        .hasMatch(value)
+                                    ? null
+                                    : "Provide a valid email";
+                              },
+                              style: Theme.of(context).textTheme.bodyText1,
+                              decoration: InputDecoration(
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                    borderSide: BorderSide(
+                                      color: Colors.white70,
+                                    ),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                    borderSide: BorderSide(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  labelText: "Email Address",
+                                  labelStyle:
+                                      Theme.of(context).textTheme.bodyText2),
+                            ),
+                          ),
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height / 40,
+                          ),
+                          //Current Address Form Field.
+                          Container(
+                            child: TextFormField(
+                              controller: _currentAddressController,
+                              validator: (value) {
+                                return value.isEmpty
+                                    ? "Please Enter your full address!"
+                                    : null;
+                              },
+                              style: Theme.of(context).textTheme.bodyText1,
+                              decoration: InputDecoration(
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                    borderSide: BorderSide(
+                                      color: Colors.white70,
+                                    ),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                    borderSide: BorderSide(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  labelText: "Full Address",
+                                  labelStyle:
+                                      Theme.of(context).textTheme.bodyText2),
+                            ),
+                          ),
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height / 40,
+                          ),
+                          //Postcode Form Field.
+                          Container(
+                            child: TextFormField(
+                              keyboardType: TextInputType.number,
+                              controller: _postCodeController,
+                              validator: (value) {
+                                return value.isEmpty
+                                    ? "Please Enter your area postcode!"
+                                    : null;
+                              },
+                              style: Theme.of(context).textTheme.bodyText1,
+                              decoration: InputDecoration(
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                    borderSide: BorderSide(
+                                      color: Colors.white70,
+                                    ),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                    borderSide: BorderSide(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  labelText: "Postcode",
+                                  labelStyle:
+                                      Theme.of(context).textTheme.bodyText2),
+                            ),
+                          ),
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height / 55,
+                          ),
+                        ],
                       ),
                     ),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height / 40,
-                    ),
-                    //Full name Form Field.
-                    Container(
-                      child: TextFormField(
-                        controller: _nameController,
-                        validator: (value) {
-                          return value.isEmpty
-                              ? "Please Enter your name!"
-                              : null;
-                        },
-                        style: Theme.of(context).textTheme.bodyText1,
-                        decoration: InputDecoration(
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5),
-                              borderSide: BorderSide(
-                                color: Colors.white70,
-                              ),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5),
-                              borderSide: BorderSide(
-                                color: Colors.white,
-                              ),
-                            ),
-                            labelText: "Full Name",
-                            labelStyle: Theme.of(context).textTheme.bodyText2),
-                      ),
-                    ),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height / 40,
-                    ),
-                    //Email Form Field.
-                    Container(
-                      child: TextFormField(
-                        controller: _emailController,
-                        validator: (value) {
-                          return RegExp(
-                                      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                                  .hasMatch(value)
-                              ? null
-                              : "Provide a valid email";
-                        },
-                        style: Theme.of(context).textTheme.bodyText1,
-                        decoration: InputDecoration(
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5),
-                              borderSide: BorderSide(
-                                color: Colors.white70,
-                              ),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5),
-                              borderSide: BorderSide(
-                                color: Colors.white,
-                              ),
-                            ),
-                            labelText: "Email Address",
-                            labelStyle: Theme.of(context).textTheme.bodyText2),
-                      ),
-                    ),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height / 40,
-                    ),
-                    //Current Address Form Field.
-                    Container(
-                      child: TextFormField(
-                        controller: _currentAddressController,
-                        validator: (value) {
-                          return value.isEmpty
-                              ? "Please Enter your full address!"
-                              : null;
-                        },
-                        style: Theme.of(context).textTheme.bodyText1,
-                        decoration: InputDecoration(
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5),
-                              borderSide: BorderSide(
-                                color: Colors.white70,
-                              ),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5),
-                              borderSide: BorderSide(
-                                color: Colors.white,
-                              ),
-                            ),
-                            labelText: "Full Address",
-                            labelStyle: Theme.of(context).textTheme.bodyText2),
-                      ),
-                    ),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height / 40,
-                    ),
-                    //Postcode Form Field.
-                    Container(
-                      child: TextFormField(
-                        keyboardType: TextInputType.number,
-                        controller: _postCodeController,
-                        validator: (value) {
-                          return value.isEmpty
-                              ? "Please Enter your area postcode!"
-                              : null;
-                        },
-                        style: Theme.of(context).textTheme.bodyText1,
-                        decoration: InputDecoration(
-                            enabledBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5),
-                              borderSide: BorderSide(
-                                color: Colors.white70,
-                              ),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(5),
-                              borderSide: BorderSide(
-                                color: Colors.white,
-                              ),
-                            ),
-                            labelText: "Postcode",
-                            labelStyle: Theme.of(context).textTheme.bodyText2),
-                      ),
-                    ),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height / 55,
-                    ),
-                  ],
+                  ),
                 ),
-              ),
-            ),
-          ),
-        ) :  Center(child: CircularProgressIndicator()),
+              )
+            : Center(child: CircularProgressIndicator()),
         bottomNavigationBar: Container(
-          child: TextButton(
-            onPressed: () {
-              registerUserData();
-            },
-            child: Container(
-              height: 50,
-              width: MediaQuery.of(context).size.width,
-              decoration: mainButton(),
-              child: Center(
-                  child: Text('Submit',
-                      style:
-                      TextStyle(color: Colors.white, fontSize: 15))),
-            ),
-          )
-        ),
+            child: TextButton(
+          onPressed: () {
+            registerUserData();
+          },
+          child: Container(
+            height: 50,
+            width: MediaQuery.of(context).size.width,
+            decoration: mainButton(),
+            child: Center(
+                child: Text('Submit',
+                    style: TextStyle(color: Colors.white, fontSize: 15))),
+          ),
+        )),
       ),
     );
   }

@@ -2,7 +2,6 @@ import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:utmccta/Application/helpers/dateField.dart';
 import 'package:utmccta/Application/helpers/dateTimeField.dart';
-import 'package:utmccta/Application/helpers/main_button.dart';
 import 'package:utmccta/BLL/locationEntryHandler.dart';
 
 class LocationEntryForm extends StatefulWidget {

@@ -1,9 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-//import 'package:location/location.dart';
 import 'package:nearby_connections/nearby_connections.dart';
-import 'package:utmccta/Application/helpers/main_button.dart';
 import 'package:utmccta/DLL/traceContactsDA.dart';
 
 class GoogleNearbyAPI extends StatefulWidget {
