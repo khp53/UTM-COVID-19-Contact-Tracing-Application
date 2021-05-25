@@ -86,130 +86,175 @@ class _WebLoginLayoutState extends State<WebLoginLayout> {
         body: isLoading
             ? Container(child: Center(child: CircularProgressIndicator()))
             : SingleChildScrollView(
-                child: Container(
-                  padding: EdgeInsets.fromLTRB(
-                      MediaQuery.of(context).size.width / 4,
-                      MediaQuery.of(context).size.height / 12,
-                      MediaQuery.of(context).size.width / 4,
-                      20),
-                  child: Center(
-                    child: Form(
-                      key: formKey,
-                      child: Column(
+                child: Row(
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: Stack(
                         children: [
-                          SizedBox(
-                            width: 74,
-                            height: 74,
+                          Container(
+                            color: Theme.of(context).primaryColorDark,
+                            width: MediaQuery.of(context).size.width,
+                            height: MediaQuery.of(context).size.height,
                             child: Image(
-                              image: AssetImage('assets/img/logo.png'),
+                              image: AssetImage('assets/img/homeMainImage.png'),
+                              fit: BoxFit.contain,
                             ),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Text(
-                            'Log in',
-                            style: Theme.of(context).primaryTextTheme.headline1,
-                          ),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height / 15,
                           ),
                           Container(
-                            padding: EdgeInsets.only(left: 5, right: 5),
-                            child: TextFormField(
-                              validator: (val) {
-                                return RegExp(
-                                            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                                        .hasMatch(val)
-                                    ? null
-                                    : "Provide a valid email";
-                              },
-                              textInputAction: TextInputAction.done,
-                              controller: emailTextEditingController,
-                              style:
-                                  Theme.of(context).primaryTextTheme.bodyText1,
-                              decoration: InputDecoration(
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5),
-                                    borderSide: BorderSide(
-                                      color: Colors.black54,
-                                    ),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5),
-                                    borderSide: BorderSide(
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                  labelText: "Email",
-                                  labelStyle: Theme.of(context)
-                                      .primaryTextTheme
-                                      .bodyText2),
-                            ),
-                          ),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height / 35,
-                          ),
-                          Container(
-                            padding: EdgeInsets.only(left: 5, right: 5),
-                            child: TextFormField(
-                              textInputAction: TextInputAction.done,
-                              validator: (val) {
-                                return val.length > 6
-                                    ? null
-                                    : "Password should be 6+ chars";
-                              },
-                              controller: passwordTextEditingController,
-                              obscureText: showPassword,
-                              style:
-                                  Theme.of(context).primaryTextTheme.bodyText1,
-                              decoration: InputDecoration(
-                                  suffixIcon: GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          showPassword = !showPassword;
-                                        });
-                                      },
-                                      child: Icon(Icons.toggle_off)),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5),
-                                    borderSide: BorderSide(
-                                      color: Colors.black54,
-                                    ),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5),
-                                    borderSide: BorderSide(
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                  labelText: "Password",
-                                  labelStyle: Theme.of(context)
-                                      .primaryTextTheme
-                                      .bodyText2),
-                            ),
-                          ),
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height / 25,
-                          ),
-                          MaterialButton(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5)),
-                            elevation: 0,
-                            color: Theme.of(context).accentColor,
-                            height: 70,
-                            onPressed: () {
-                              adminLogin();
-                            },
+                            padding: EdgeInsets.only(top: 30),
                             child: Center(
-                                child: Text('Log in',
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 15))),
+                              child: Text(
+                                'UTM COVID-19 Contact Tracing System',
+                                textAlign: TextAlign.center,
+                                style: Theme.of(context).textTheme.headline1,
+                              ),
+                            ),
                           ),
                         ],
                       ),
                     ),
-                  ),
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        padding: EdgeInsets.fromLTRB(
+                            MediaQuery.of(context).size.width / 20,
+                            MediaQuery.of(context).size.height / 15,
+                            MediaQuery.of(context).size.width / 20,
+                            20),
+                        child: Center(
+                          child: Form(
+                            key: formKey,
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  width: 74,
+                                  height: 74,
+                                  child: Image(
+                                    image: AssetImage('assets/img/logo.png'),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Text(
+                                  'Log in',
+                                  style: Theme.of(context)
+                                      .primaryTextTheme
+                                      .headline1,
+                                ),
+                                SizedBox(
+                                  height:
+                                      MediaQuery.of(context).size.height / 15,
+                                ),
+                                Container(
+                                  padding: EdgeInsets.only(left: 5, right: 5),
+                                  child: TextFormField(
+                                    validator: (val) {
+                                      return RegExp(
+                                                  r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                                              .hasMatch(val)
+                                          ? null
+                                          : "Provide a valid email";
+                                    },
+                                    textInputAction: TextInputAction.done,
+                                    controller: emailTextEditingController,
+                                    style: Theme.of(context)
+                                        .primaryTextTheme
+                                        .bodyText1,
+                                    decoration: InputDecoration(
+                                        enabledBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                          borderSide: BorderSide(
+                                            color: Colors.black54,
+                                          ),
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                          borderSide: BorderSide(
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                        labelText: "Email",
+                                        labelStyle: Theme.of(context)
+                                            .primaryTextTheme
+                                            .bodyText2),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height:
+                                      MediaQuery.of(context).size.height / 35,
+                                ),
+                                Container(
+                                  padding: EdgeInsets.only(left: 5, right: 5),
+                                  child: TextFormField(
+                                    textInputAction: TextInputAction.done,
+                                    validator: (val) {
+                                      return val.length > 6
+                                          ? null
+                                          : "Password should be 6+ chars";
+                                    },
+                                    controller: passwordTextEditingController,
+                                    obscureText: showPassword,
+                                    style: Theme.of(context)
+                                        .primaryTextTheme
+                                        .bodyText1,
+                                    decoration: InputDecoration(
+                                        suffixIcon: GestureDetector(
+                                            onTap: () {
+                                              setState(() {
+                                                showPassword = !showPassword;
+                                              });
+                                            },
+                                            child: Icon(Icons.toggle_off)),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                          borderSide: BorderSide(
+                                            color: Colors.black54,
+                                          ),
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                          borderSide: BorderSide(
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                        labelText: "Password",
+                                        labelStyle: Theme.of(context)
+                                            .primaryTextTheme
+                                            .bodyText2),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height:
+                                      MediaQuery.of(context).size.height / 25,
+                                ),
+                                MaterialButton(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(5)),
+                                  elevation: 0,
+                                  color: Theme.of(context).accentColor,
+                                  height: 70,
+                                  onPressed: () {
+                                    adminLogin();
+                                  },
+                                  child: Center(
+                                      child: Text('Log in',
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 15))),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
       ),

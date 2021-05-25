@@ -11,11 +11,49 @@ class _DashBoadrdAdminState extends State<DashBoadrdAdmin> {
 
   @override
   Widget build(BuildContext context) {
+    var w = MediaQuery.of(context).size.width;
+    var h = MediaQuery.of(context).size.height;
     return SingleChildScrollView(
       child: Container(
         padding: EdgeInsets.all(20),
         child: Column(
           children: [
+            Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    margin: EdgeInsets.only(right: 10),
+                    width: w / 2,
+                    height: h / 2,
+                    decoration: new BoxDecoration(
+                      color: Color(0xff8E2D50),
+                      borderRadius: new BorderRadius.all(
+                        Radius.circular(25),
+                      ),
+                    ),
+                    child:
+                        _adminHandler.createState().getTotalUserNumber(context),
+                  ),
+                ),
+                Expanded(
+                  child: Container(
+                    margin: EdgeInsets.only(left: 10),
+                    width: w / 2,
+                    height: h / 2,
+                    decoration: new BoxDecoration(
+                      color: Color(0xffC56CFF),
+                      borderRadius: new BorderRadius.all(
+                        Radius.circular(25),
+                      ),
+                    ),
+                    child: _adminHandler.createState().getTotalCovidPositive(),
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 35,
+            ),
             Text(
               'User\'s Personal Details',
               style: Theme.of(context).primaryTextTheme.headline1,

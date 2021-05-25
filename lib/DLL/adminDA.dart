@@ -52,4 +52,9 @@ class AdminDA {
   CollectionReference getAllUserHealthDetails() {
     return _firestore.collection("HealthStatus");
   }
+
+  //get all covid-19 status
+  CollectionReference getAllUserCovidStatus() {
+    return _firestore.collection("HealthStatus");
+  }
 }

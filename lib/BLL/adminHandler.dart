@@ -287,10 +287,121 @@ class _AdminHandlerState extends State<AdminHandler> {
                               ]);
                         });
                   }
-                  return CircularProgressIndicator();
+                  return Center(child: CircularProgressIndicator());
                 });
           }
-          return CircularProgressIndicator();
+          return Center(child: CircularProgressIndicator());
+        });
+  }
+
+  //get covid positive number
+  Widget getTotalCovidPositive() {
+    return StreamBuilder(
+        stream: _adminDA
+            .getAllUserCovidStatus()
+            .where("covidStatus", isEqualTo: true)
+            .snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Text('Something went wrong');
+          }
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          }
+          if (snapshot.hasData) {
+            return Row(
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 30),
+                    child: Text(
+                      'Total\nNumber of\nCOVID Positive',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 50,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Container(
+                    width: 250,
+                    height: 250,
+                    decoration: new BoxDecoration(
+                      border: Border.all(
+                          color: Theme.of(context).accentColor, width: 25),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Center(
+                      child: Text(
+                        '${snapshot.data.docs.length}',
+                        style: TextStyle(
+                            color: snapshot.data.docs.length > 20
+                                ? Colors.red
+                                : Colors.green,
+                            fontSize: 80,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            );
+          }
+          return Center(child: CircularProgressIndicator());
+        });
+  }
+
+  // get total user number
+  Widget getTotalUserNumber(BuildContext context) {
+    return StreamBuilder(
+        stream: _adminDA.getAllUserDetails().snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Text('Something went wrong');
+          }
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          }
+          if (snapshot.hasData) {
+            return Row(
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 30),
+                    child: Text(
+                      'Total\nNumber of\nUsers',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 50,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Container(
+                    width: 250,
+                    height: 250,
+                    decoration: new BoxDecoration(
+                      border: Border.all(
+                          color: Theme.of(context).primaryColorDark, width: 25),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Center(
+                      child: Text(
+                        '${snapshot.data.docs.length}',
+                        style: TextStyle(
+                            color: Theme.of(context).accentColor,
+                            fontSize: 80,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            );
+          }
+          return Center(child: CircularProgressIndicator());
         });
   }
 
