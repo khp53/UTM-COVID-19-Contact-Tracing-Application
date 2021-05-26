@@ -44,7 +44,7 @@ class _DashBoardSideNavAdminState extends State<DashBoardSideNavAdmin>
         key: _scaffoldKey,
         appBar: AppBar(
           backgroundColor: Colors.white,
-          elevation: 1,
+          //elevation: 1,
           title: Text(
             'Admin Dashboard  UTM CCTA',
             style: Theme.of(context).primaryTextTheme.headline2,

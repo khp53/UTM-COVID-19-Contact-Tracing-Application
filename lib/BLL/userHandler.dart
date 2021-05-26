@@ -60,15 +60,22 @@ class _UserHandlerState extends State<UserHandler> {
                   }
                   if (snapshot2.hasData) {
                     Users _users = Users(
-                        snapshot1.data.data()["name"],
-                        snapshot1.data.data()["img"],
-                        snapshot2.data.data()["riskStatus"],
-                        snapshot1.data.data()["userID"],
-                        snapshot1.data.data()["mobileNumber"],
-                        snapshot1.data.data()["email"],
-                        snapshot1.data.data()["address"],
-                        snapshot1.data.data()["icNo"],
-                        snapshot1.data.data()["postcode"]);
+                      snapshot1.data.data()["name"],
+                      snapshot1.data.data()["img"],
+                      snapshot2.data.data()["riskStatus"],
+                      snapshot1.data.data()["userID"],
+                      snapshot1.data.data()["mobileNumber"],
+                      snapshot1.data.data()["email"],
+                      snapshot1.data.data()["address"],
+                      snapshot1.data.data()["icNo"],
+                      snapshot1.data.data()["postcode"],
+                      snapshot2.data.data()["closeContact"],
+                      snapshot2.data.data()["covidStatus"],
+                      snapshot2.data.data()["covidSymptoms"],
+                      snapshot2.data.data()["generalSymtoms"],
+                      snapshot2.data.data()["immunocompromised"],
+                      snapshot2.data.data()["traveled"],
+                    );
                     return ClipRRect(
                       borderRadius: BorderRadius.all(Radius.circular(5)),
                       child: ListTile(

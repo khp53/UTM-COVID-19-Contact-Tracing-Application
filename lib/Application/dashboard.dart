@@ -55,25 +55,20 @@ class _DashBoadrdAdminState extends State<DashBoadrdAdmin> {
               height: 35,
             ),
             Text(
-              'User\'s Personal Details',
+              'User\'s Personal & Health Details',
               style: Theme.of(context).primaryTextTheme.headline1,
             ),
             SizedBox(
               height: 20,
             ),
             Card(
+              elevation: 0,
+              color: Color(0xffF5F5F5),
               child: _adminHandler.createState().getUserDetails(),
             ),
             SizedBox(
               height: 20,
             ),
-            Text(
-              'User\'s Health Details',
-              style: Theme.of(context).primaryTextTheme.headline1,
-            ),
-            Card(
-              child: _adminHandler.createState().getUserHealthDetails(),
-            )
           ],
         ),
       ),

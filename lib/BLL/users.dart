@@ -8,81 +8,59 @@ class Users {
   final String name;
   final int postcode;
   final String riskStatus;
+  final bool closeContact;
+  final bool covidStatus;
+  final bool covidSymptoms;
+  final bool generalSymtoms;
+  final bool immunocompromised;
+  final bool traveled;
 
-  Users(this.name, this.img, this.riskStatus, this.userID, this.mobileNumber,
-      this.email, this.address, this.icNo, this.postcode);
+  Users(
+      this.name,
+      this.img,
+      this.riskStatus,
+      this.userID,
+      this.mobileNumber,
+      this.email,
+      this.address,
+      this.icNo,
+      this.postcode,
+      this.closeContact,
+      this.covidStatus,
+      this.covidSymptoms,
+      this.generalSymtoms,
+      this.immunocompromised,
+      this.traveled);
 
-  // setter
-  set userID(String userID) {
-    userID = userID;
-  }
-
-  set mobileNumber(String mobileNumber) {
-    mobileNumber = mobileNumber;
-  }
-
-  set email(String email) {
-    email = email;
-  }
-
-  set address(String address) {
-    address = address;
-  }
-
-  set icNo(String icNo) {
-    icNo = icNo;
-  }
-
-  set postcode(int postcode) {
-    postcode = postcode;
-  }
-
-  set img(String img) {
-    img = img;
-  }
-
-  set name(String name) {
-    name = name;
-  }
-
-  set riskStatus(String riskStatus) {
-    riskStatus = riskStatus;
-  }
-
-  //getters
-  String get getUserID {
-    return userID;
-  }
-
-  String get getMobileNumber {
-    return mobileNumber;
-  }
-
-  String get getEmail {
-    return email;
-  }
-
-  String get getAddress {
-    return address;
-  }
-
-  String get getIcNo {
-    return icNo;
-  }
-
-  int get getPostcode {
-    return postcode;
-  }
-
-  String get getRiskStatus {
-    return riskStatus;
-  }
-
-  String get getImg {
-    return img;
-  }
-
-  String get getName {
-    return name;
-  }
+  Users.fromMap(Map<String, dynamic> userMap)
+      : assert(userMap['userID'] != null),
+        assert(userMap['mobileNumber'] != null),
+        assert(userMap['email'] != null),
+        assert(userMap['address'] != null),
+        assert(userMap['icNo'] != null),
+        assert(userMap['img'] != null),
+        assert(userMap['name'] != null),
+        assert(userMap['postcode'] != null),
+        assert(userMap['riskStatus'] != null),
+        assert(userMap['closeContact'] != null),
+        assert(userMap['covidStatus'] != null),
+        assert(userMap['covidSymptoms'] != null),
+        assert(userMap['generalSymtoms'] != null),
+        assert(userMap['immunocompromised'] != null),
+        assert(userMap['traveled'] != null),
+        userID = userMap['userID'],
+        mobileNumber = userMap['mobileNumber'],
+        email = userMap['email'],
+        address = userMap['address'],
+        icNo = userMap['icNo'],
+        img = userMap['img'],
+        name = userMap['name'],
+        postcode = userMap['postcode'],
+        riskStatus = userMap['riskStatus'],
+        closeContact = userMap['closeContact'],
+        covidStatus = userMap['covidStatus'],
+        covidSymptoms = userMap['covidSymptoms'],
+        generalSymtoms = userMap['generalSymtoms'],
+        immunocompromised = userMap['immunocompromised'],
+        traveled = userMap['traveled'];
 }

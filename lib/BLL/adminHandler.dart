@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:utmccta/BLL/admin.dart';
 import 'package:utmccta/BLL/healthStatusFormHandler.dart';
@@ -76,6 +77,14 @@ class _AdminHandlerState extends State<AdminHandler> {
                             snapshot.data.docs[index].data()["address"],
                             snapshot.data.docs[index].data()["icNo"],
                             snapshot.data.docs[index].data()["postcode"],
+                            snapshot1.data.docs[index].data()["closeContact"],
+                            snapshot1.data.docs[index].data()["covidStatus"],
+                            snapshot1.data.docs[index].data()["covidSymptoms"],
+                            snapshot1.data.docs[index]
+                                .data()["generalSymptoms"],
+                            snapshot1.data.docs[index]
+                                .data()["immunocompromised"],
+                            snapshot1.data.docs[index].data()["traveled"],
                           );
                           return ExpansionTile(
                               childrenPadding:
@@ -95,64 +104,53 @@ class _AdminHandlerState extends State<AdminHandler> {
                               ),
                               children: [
                                 Align(
-                                  alignment: Alignment.centerLeft,
+                                  alignment: Alignment.center,
                                   child: Text(
-                                    'Matric No: ${_users.userID}',
+                                    'User Information',
                                     style: Theme.of(context)
                                         .primaryTextTheme
                                         .bodyText1,
-                                    textAlign: TextAlign.start,
+                                    textAlign: TextAlign.center,
                                   ),
                                 ),
                                 SizedBox(
-                                  height: 10,
+                                  height: 15,
                                 ),
-                                Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                        'IC/Passport No: ${_users.icNo}',
-                                        style: Theme.of(context)
-                                            .primaryTextTheme
-                                            .bodyText1,
-                                        textAlign: TextAlign.start)),
+                                renderDataTableUserInfo(
+                                  _users.userID,
+                                  _users.mobileNumber,
+                                  _users.email,
+                                  _users.icNo,
+                                  _users.address,
+                                  _users.postcode,
+                                  context,
+                                ),
                                 SizedBox(
-                                  height: 10,
+                                  height: 25,
                                 ),
                                 Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                        'Mobile Number: ${_users.mobileNumber}',
-                                        style: Theme.of(context)
-                                            .primaryTextTheme
-                                            .bodyText1)),
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    'Health Information',
+                                    style: Theme.of(context)
+                                        .primaryTextTheme
+                                        .bodyText1,
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
                                 SizedBox(
-                                  height: 10,
+                                  height: 15,
                                 ),
-                                Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text('Email: ${_users.email}',
-                                        style: Theme.of(context)
-                                            .primaryTextTheme
-                                            .bodyText1)),
-                                SizedBox(
-                                  height: 10,
+                                renderDataTableHealth(
+                                  _users.userID,
+                                  _users.closeContact,
+                                  _users.covidStatus,
+                                  _users.covidSymptoms,
+                                  _users.generalSymtoms,
+                                  _users.immunocompromised,
+                                  _users.traveled,
+                                  context,
                                 ),
-                                Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text('Address: ${_users.address}',
-                                        style: Theme.of(context)
-                                            .primaryTextTheme
-                                            .bodyText1)),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                        'Postcode: ${_users.postcode.toString()}',
-                                        style: Theme.of(context)
-                                            .primaryTextTheme
-                                            .bodyText1)),
                                 SizedBox(
                                   height: 10,
                                 ),
@@ -166,132 +164,224 @@ class _AdminHandlerState extends State<AdminHandler> {
         });
   }
 
-  //get all user details
-  Widget getUserHealthDetails() {
-    return StreamBuilder(
-        stream: _adminDA.getAllUserDetails().snapshots(),
-        builder: (context, snapshot) {
-          if (snapshot.hasError) {
-            return Text('Something went wrong');
-          }
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          }
-          if (snapshot.hasData) {
-            return StreamBuilder(
-                stream: _adminDA.getAllUserHealthDetails().snapshots(),
-                builder: (context, snapshot1) {
-                  if (snapshot1.hasError) {
-                    return Text('Something went wrong');
-                  }
-                  if (snapshot1.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator());
-                  }
-                  if (snapshot1.hasData) {
-                    return ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: snapshot1.data.docs.length,
-                        itemBuilder: (context, index) {
-                          Users _users = Users(
-                            snapshot.data.docs[index].data()["name"],
-                            snapshot.data.docs[index].data()["img"],
-                            snapshot1.data.docs[index].data()["riskStatus"],
-                            snapshot.data.docs[index].data()["userID"],
-                            snapshot.data.docs[index].data()["mobileNumber"],
-                            snapshot.data.docs[index].data()["email"],
-                            snapshot.data.docs[index].data()["address"],
-                            snapshot.data.docs[index].data()["icNo"],
-                            snapshot.data.docs[index].data()["postcode"],
-                          );
-                          return ExpansionTile(
-                              childrenPadding:
-                                  EdgeInsets.fromLTRB(70, 20, 20, 20),
-                              title: Text(
-                                _users.name,
-                                style: Theme.of(context)
-                                    .primaryTextTheme
-                                    .bodyText1,
-                              ),
-                              leading: CircleAvatar(
-                                backgroundImage: NetworkImage(_users.img),
-                              ),
-                              subtitle: Text(
-                                _users.riskStatus,
-                                style: Theme.of(context).textTheme.headline4,
-                              ),
-                              children: [
-                                Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    '${_healthStatusFormHandler.getQuestionText(0)}: \n${snapshot1.data.docs[index].data()["generalSymptoms"]}',
-                                    style: Theme.of(context)
-                                        .primaryTextTheme
-                                        .bodyText1,
-                                    textAlign: TextAlign.start,
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                        '${_healthStatusFormHandler.getQuestionText(1)}: \n${snapshot1.data.docs[index].data()["covidSymptoms"]}',
-                                        style: Theme.of(context)
-                                            .primaryTextTheme
-                                            .bodyText1,
-                                        textAlign: TextAlign.start)),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                        '${_healthStatusFormHandler.getQuestionText(2)}: \n${snapshot1.data.docs[index].data()["immunocompromised"]}',
-                                        style: Theme.of(context)
-                                            .primaryTextTheme
-                                            .bodyText1)),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                        '${_healthStatusFormHandler.getQuestionText(3)}: \n${snapshot1.data.docs[index].data()["traveled"]}',
-                                        style: Theme.of(context)
-                                            .primaryTextTheme
-                                            .bodyText1)),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                        '${_healthStatusFormHandler.getQuestionText(4)}: \n${snapshot1.data.docs[index].data()["closeContact"]}',
-                                        style: Theme.of(context)
-                                            .primaryTextTheme
-                                            .bodyText1)),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                        '${_healthStatusFormHandler.getQuestionText(5)}: \n${snapshot1.data.docs[index].data()["covidStatus"]}',
-                                        style: Theme.of(context)
-                                            .primaryTextTheme
-                                            .bodyText1)),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                              ]);
-                        });
-                  }
-                  return Center(child: CircularProgressIndicator());
-                });
-          }
-          return Center(child: CircularProgressIndicator());
-        });
+  // render data table user
+  Widget renderDataTableUserInfo(
+      uid, number, email, ic, add, pos, BuildContext context) {
+    return FittedBox(
+      child: DataTable(
+          headingRowColor:
+              MaterialStateColor.resolveWith((states) => Color(0xffA79BDB)),
+          dataRowColor:
+              MaterialStateColor.resolveWith((states) => Color(0xffDED9F5)),
+          columns: [
+            DataColumn(
+              label: Text(
+                "User ID",
+                style: Theme.of(context).primaryTextTheme.headline3,
+              ),
+            ),
+            DataColumn(
+              label: Text(
+                "Mobile Number",
+                style: Theme.of(context).primaryTextTheme.headline3,
+              ),
+            ),
+            DataColumn(
+              label: Text(
+                "Email",
+                style: Theme.of(context).primaryTextTheme.headline3,
+              ),
+            ),
+            DataColumn(
+              label: Text(
+                "IC/Passport Number",
+                style: Theme.of(context).primaryTextTheme.headline3,
+              ),
+            ),
+            DataColumn(
+              label: Text(
+                "Address",
+                style: Theme.of(context).primaryTextTheme.headline3,
+              ),
+            ),
+            DataColumn(
+              label: Text(
+                "Post Code",
+                style: Theme.of(context).primaryTextTheme.headline3,
+              ),
+            ),
+          ],
+          rows: [
+            DataRow(cells: [
+              DataCell(
+                Text(
+                  uid,
+                  style: Theme.of(context).primaryTextTheme.subtitle2,
+                ),
+              ),
+              DataCell(
+                Text(
+                  number,
+                  style: Theme.of(context).primaryTextTheme.subtitle2,
+                ),
+              ),
+              DataCell(
+                Text(
+                  email,
+                  style: Theme.of(context).primaryTextTheme.subtitle2,
+                ),
+              ),
+              DataCell(
+                Text(
+                  ic,
+                  style: Theme.of(context).primaryTextTheme.subtitle2,
+                ),
+              ),
+              DataCell(
+                Text(
+                  add,
+                  style: Theme.of(context).primaryTextTheme.subtitle2,
+                ),
+              ),
+              DataCell(
+                Text(
+                  pos.toString(),
+                  style: Theme.of(context).primaryTextTheme.subtitle2,
+                ),
+              ),
+            ])
+          ]),
+    );
+  }
+
+  // render data table health
+  Widget renderDataTableHealth(
+      uid, cc, cs, csy, gs, im, t, BuildContext context) {
+    return DataTable(
+        headingRowColor:
+            MaterialStateColor.resolveWith((states) => Color(0xffF6C3D3)),
+        dataRowColor:
+            MaterialStateColor.resolveWith((states) => Color(0xffF8DCE5)),
+        columns: [
+          DataColumn(
+            label: Text(
+              "User ID",
+              style: Theme.of(context).primaryTextTheme.headline3,
+            ),
+          ),
+          DataColumn(
+            label: Text(
+              "Close Contact",
+              style: Theme.of(context).primaryTextTheme.headline3,
+            ),
+          ),
+          DataColumn(
+            label: Text(
+              "Covid Status",
+              style: Theme.of(context).primaryTextTheme.headline3,
+            ),
+          ),
+          DataColumn(
+            label: Text(
+              "Covid Symptoms",
+              style: Theme.of(context).primaryTextTheme.headline3,
+            ),
+          ),
+          DataColumn(
+            label: Text(
+              "General Symtoms",
+              style: Theme.of(context).primaryTextTheme.headline3,
+            ),
+          ),
+          DataColumn(
+            label: Text(
+              "Immunocompromised",
+              style: Theme.of(context).primaryTextTheme.headline3,
+            ),
+          ),
+          DataColumn(
+            label: Text(
+              "Traveled",
+              style: Theme.of(context).primaryTextTheme.headline3,
+            ),
+          ),
+        ],
+        rows: [
+          DataRow(cells: [
+            DataCell(
+              Text(
+                uid,
+                style: Theme.of(context).primaryTextTheme.subtitle2,
+              ),
+            ),
+            DataCell(
+              cc == true
+                  ? Text(
+                      "Yes",
+                      style: Theme.of(context).primaryTextTheme.subtitle2,
+                    )
+                  : Text(
+                      "No",
+                      style: Theme.of(context).primaryTextTheme.subtitle2,
+                    ),
+            ),
+            DataCell(
+              cs == true
+                  ? Text(
+                      "Positive",
+                      style: Theme.of(context).primaryTextTheme.subtitle2,
+                    )
+                  : Text(
+                      "Negative",
+                      style: Theme.of(context).primaryTextTheme.subtitle2,
+                    ),
+            ),
+            DataCell(
+              csy == true
+                  ? Text(
+                      "Yes",
+                      style: Theme.of(context).primaryTextTheme.subtitle2,
+                    )
+                  : Text(
+                      "No",
+                      style: Theme.of(context).primaryTextTheme.subtitle2,
+                    ),
+            ),
+            DataCell(
+              gs == true
+                  ? Text(
+                      "Yes",
+                      style: Theme.of(context).primaryTextTheme.subtitle2,
+                    )
+                  : Text(
+                      "No",
+                      style: Theme.of(context).primaryTextTheme.subtitle2,
+                    ),
+            ),
+            DataCell(
+              im == true
+                  ? Text(
+                      "Yes",
+                      style: Theme.of(context).primaryTextTheme.subtitle2,
+                    )
+                  : Text(
+                      "No",
+                      style: Theme.of(context).primaryTextTheme.subtitle2,
+                    ),
+            ),
+            DataCell(
+              t == true
+                  ? Text(
+                      "Yes",
+                      style: Theme.of(context).primaryTextTheme.subtitle2,
+                    )
+                  : Text(
+                      "No",
+                      style: Theme.of(context).primaryTextTheme.subtitle2,
+                    ),
+            ),
+          ])
+        ]);
   }
 
   //get covid positive number

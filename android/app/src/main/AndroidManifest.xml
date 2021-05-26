@@ -14,6 +14,10 @@
    <application
         android:label="UTM CCTA"
         android:icon="@mipmap/ic_launcher">
+
+        <meta-data android:name="com.google.android.geo.API_KEY"
+              android:value="AIzaSyBE4AIf7zFoPKBi7X_gbId7384vP_OKHgo"/>
+              
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
