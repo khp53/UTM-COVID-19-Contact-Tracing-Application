@@ -56,7 +56,7 @@ class _DashBoadrdAdminState extends State<DashBoadrdAdmin> {
             ),
             Text(
               'User\'s Personal & Health Details',
-              style: Theme.of(context).primaryTextTheme.headline1,
+              style: Theme.of(context).primaryTextTheme.headline2,
             ),
             SizedBox(
               height: 20,

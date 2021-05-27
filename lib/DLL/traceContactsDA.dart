@@ -61,15 +61,15 @@ class TraceContactsDA {
   }
 
   Future<String> getNameOfContactedPerson({String uid}) async {
-    String phoneNumber = '';
+    String name = '';
     await _firestore.collection('Users').doc(uid).get().then((doc) {
       if (doc.exists) {
-        phoneNumber = doc.data()['name'];
+        name = doc.data()['name'];
       } else {
         // doc.data() will be undefined in this case
         print("No such document!");
       }
     });
-    return phoneNumber;
+    return name;
   }
 }

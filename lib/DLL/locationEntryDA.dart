@@ -19,4 +19,9 @@ class LocationEntryDA {
   DocumentReference getUserLocationEntryData() {
     return _firestore.collection("LocationEntry").doc(_auth.currentUser.uid);
   }
+
+  // get lat lang from firestore
+  Query getUsersLatLang() {
+    return _firestore.collectionGroup("contactedWith");
+  }
 }
