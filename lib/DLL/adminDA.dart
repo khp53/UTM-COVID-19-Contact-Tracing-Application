@@ -57,4 +57,9 @@ class AdminDA {
   CollectionReference getAllUserCovidStatus() {
     return _firestore.collection("HealthStatus");
   }
+
+  // get all users location entry
+  CollectionReference getAllLocationEntry() {
+    return _firestore.collection("LocationEntry");
+  }
 }

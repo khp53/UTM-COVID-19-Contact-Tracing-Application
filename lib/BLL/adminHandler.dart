@@ -495,6 +495,184 @@ class _AdminHandlerState extends State<AdminHandler> {
         });
   }
 
+  // get location entry of all user
+  Widget getLocationEntry(BuildContext context) {
+    return StreamBuilder(
+        stream: _adminDA.getAllUserDetails().snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.data != null) {
+            switch (snapshot.connectionState) {
+              case ConnectionState.none:
+                return Text("No Connections");
+              case ConnectionState.waiting:
+                return CircularProgressIndicator();
+              case ConnectionState.active:
+              case ConnectionState.done:
+                return StreamBuilder(
+                    stream: _adminDA.getAllLocationEntry().snapshots(),
+                    builder: (context, snapshot1) {
+                      if (snapshot.data != null) {
+                        switch (snapshot.connectionState) {
+                          case ConnectionState.none:
+                            return Text("No Connections");
+                          case ConnectionState.waiting:
+                            return CircularProgressIndicator();
+                          case ConnectionState.active:
+                          case ConnectionState.done:
+                            return ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: snapshot1.data.docs
+                                  .data()['locationEntry']
+                                  .length,
+                              itemBuilder: (builder, index) {
+                                return locationEntryTable(
+                                    snapshot1.data.docs[index]
+                                            .data()['locationEntry'][index]
+                                        ['entryDate'],
+                                    snapshot1.data.docs[index]
+                                            .data()['locationEntry'][index]
+                                        ['fullAddress'],
+                                    snapshot1.data.docs[index]
+                                            .data()['locationEntry'][index]
+                                        ['locationName'],
+                                    snapshot1.data.docs[index]
+                                            .data()['locationEntry'][index]
+                                        ['visitDate'],
+                                    snapshot1.data.docs[index]
+                                            .data()['locationEntry'][index]
+                                        ['visitTime'],
+                                    snapshot.data.docs[index].data()['userID'],
+                                    snapshot.data.docs[index].data()['name'],
+                                    context);
+                              },
+                            );
+                          default:
+                            break;
+                        }
+                      } else {
+                        return Container(
+                          height: MediaQuery.of(context).size.height,
+                          width: MediaQuery.of(context).size.height,
+                          color: Colors.black,
+                        );
+                      }
+                      return Center(child: CircularProgressIndicator());
+                    });
+              default:
+                break;
+            }
+          } else {
+            return Container(
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.height,
+              color: Colors.black,
+            );
+          }
+          return Center(child: CircularProgressIndicator());
+        });
+  }
+
+  Widget locationEntryTable(
+      ed, fadd, lnam, vd, vt, uid, unam, BuildContext context) {
+    return FittedBox(
+      child: DataTable(
+          headingRowColor:
+              MaterialStateColor.resolveWith((states) => Color(0xffA79BDB)),
+          dataRowColor:
+              MaterialStateColor.resolveWith((states) => Color(0xffDED9F5)),
+          columns: [
+            DataColumn(
+              label: Text(
+                "User ID",
+                style: Theme.of(context).primaryTextTheme.headline3,
+              ),
+            ),
+            DataColumn(
+              label: Text(
+                "Student Name",
+                style: Theme.of(context).primaryTextTheme.headline3,
+              ),
+            ),
+            DataColumn(
+              label: Text(
+                "Location Name",
+                style: Theme.of(context).primaryTextTheme.headline3,
+              ),
+            ),
+            DataColumn(
+              label: Text(
+                "Location Address",
+                style: Theme.of(context).primaryTextTheme.headline3,
+              ),
+            ),
+            DataColumn(
+              label: Text(
+                "Visit Date",
+                style: Theme.of(context).primaryTextTheme.headline3,
+              ),
+            ),
+            DataColumn(
+              label: Text(
+                "Visit Time",
+                style: Theme.of(context).primaryTextTheme.headline3,
+              ),
+            ),
+            DataColumn(
+              label: Text(
+                "Entry Date",
+                style: Theme.of(context).primaryTextTheme.headline3,
+              ),
+            ),
+          ],
+          rows: [
+            DataRow(cells: [
+              DataCell(
+                Text(
+                  uid,
+                  style: Theme.of(context).primaryTextTheme.subtitle2,
+                ),
+              ),
+              DataCell(
+                Text(
+                  unam,
+                  style: Theme.of(context).primaryTextTheme.subtitle2,
+                ),
+              ),
+              DataCell(
+                Text(
+                  lnam,
+                  style: Theme.of(context).primaryTextTheme.subtitle2,
+                ),
+              ),
+              DataCell(
+                Text(
+                  fadd,
+                  style: Theme.of(context).primaryTextTheme.subtitle2,
+                ),
+              ),
+              DataCell(
+                Text(
+                  vd,
+                  style: Theme.of(context).primaryTextTheme.subtitle2,
+                ),
+              ),
+              DataCell(
+                Text(
+                  vt,
+                  style: Theme.of(context).primaryTextTheme.subtitle2,
+                ),
+              ),
+              DataCell(
+                Text(
+                  ed,
+                  style: Theme.of(context).primaryTextTheme.subtitle2,
+                ),
+              ),
+            ])
+          ]),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return null;

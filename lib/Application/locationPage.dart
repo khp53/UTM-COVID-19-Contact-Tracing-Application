@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:utmccta/BLL/adminHandler.dart';
 import 'package:utmccta/BLL/googleMapsAPIHandler.dart';
 
 class LocationPage extends StatefulWidget {
@@ -8,6 +9,7 @@ class LocationPage extends StatefulWidget {
 
 class _LocationPageState extends State<LocationPage> {
   GoogleMapsAPIHandler _googleMapsAPIHandler = new GoogleMapsAPIHandler();
+  AdminHandler _adminHandler = new AdminHandler();
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -33,7 +35,15 @@ class _LocationPageState extends State<LocationPage> {
             style: Theme.of(context).primaryTextTheme.headline2,
           ),
           SizedBox(
-            height: 40,
+            height: 30,
+          ),
+          Card(
+            elevation: 0,
+            color: Color(0xffF0F0F0),
+            child: _adminHandler.createState().getLocationEntry(context),
+          ),
+          SizedBox(
+            height: 20,
           ),
         ],
       ),

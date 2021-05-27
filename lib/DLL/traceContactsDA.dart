@@ -72,4 +72,17 @@ class TraceContactsDA {
     });
     return name;
   }
+
+  Future<String> getCovidStatusOfContactedPerson({String uid}) async {
+    String covidStatus = '';
+    await _firestore.collection('HealthStatus').doc(uid).get().then((doc) {
+      if (doc.exists) {
+        covidStatus = doc.data()['covidStatus'];
+      } else {
+        // doc.data() will be undefined in this case
+        print("No such document!");
+      }
+    });
+    return covidStatus;
+  }
 }

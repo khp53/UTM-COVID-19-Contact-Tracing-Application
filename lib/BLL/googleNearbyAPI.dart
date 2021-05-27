@@ -93,6 +93,8 @@ class _GoogleNearbyAPIState extends State<GoogleNearbyAPI> {
               await _traceContactsDA.getEmailOfContactedPerson(uid: name),
           'contactNumber':
               await _traceContactsDA.getPhoneNoOfContactedPerson(uid: name),
+          'contactCovidStatus':
+              await _traceContactsDA.getCovidStatusOfContactedPerson(uid: name),
           'contactTime': DateTime.now(),
           'contactLocationLatitude': position.latitude,
           'contactLocationLongitudee': position.longitude,

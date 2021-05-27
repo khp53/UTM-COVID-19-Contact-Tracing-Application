@@ -63,7 +63,7 @@ class _DashBoadrdAdminState extends State<DashBoadrdAdmin> {
             ),
             Card(
               elevation: 0,
-              color: Color(0xffF5F5F5),
+              color: Color(0xffF0F0F0),
               child: _adminHandler.createState().getUserDetails(),
             ),
             SizedBox(
