@@ -1,5 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:utmccta/BLL/admin.dart';
 import 'package:utmccta/BLL/healthStatusFormHandler.dart';
 import 'package:utmccta/BLL/users.dart';
@@ -511,8 +511,8 @@ class _AdminHandlerState extends State<AdminHandler> {
                 return StreamBuilder(
                     stream: _adminDA.getAllLocationEntry().snapshots(),
                     builder: (context, snapshot1) {
-                      if (snapshot.data != null) {
-                        switch (snapshot.connectionState) {
+                      if (snapshot1.data != null) {
+                        switch (snapshot1.connectionState) {
                           case ConnectionState.none:
                             return Text("No Connections");
                           case ConnectionState.waiting:
@@ -521,28 +521,15 @@ class _AdminHandlerState extends State<AdminHandler> {
                           case ConnectionState.done:
                             return ListView.builder(
                               shrinkWrap: true,
-                              itemCount: snapshot1.data.docs
-                                  .data()['locationEntry']
-                                  .length,
+                              itemCount: snapshot.data.docs.length,
                               itemBuilder: (builder, index) {
                                 return locationEntryTable(
-                                    snapshot1.data.docs[index]
-                                            .data()['locationEntry'][index]
-                                        ['entryDate'],
-                                    snapshot1.data.docs[index]
-                                            .data()['locationEntry'][index]
-                                        ['fullAddress'],
-                                    snapshot1.data.docs[index]
-                                            .data()['locationEntry'][index]
-                                        ['locationName'],
-                                    snapshot1.data.docs[index]
-                                            .data()['locationEntry'][index]
-                                        ['visitDate'],
-                                    snapshot1.data.docs[index]
-                                            .data()['locationEntry'][index]
-                                        ['visitTime'],
+                                    index,
+                                    snapshot.data.docs[index]
+                                        .data()['locationEntry'],
                                     snapshot.data.docs[index].data()['userID'],
                                     snapshot.data.docs[index].data()['name'],
+                                    snapshot.data.docs[index].data()['img'],
                                     context);
                               },
                             );
@@ -573,103 +560,80 @@ class _AdminHandlerState extends State<AdminHandler> {
   }
 
   Widget locationEntryTable(
-      ed, fadd, lnam, vd, vt, uid, unam, BuildContext context) {
-    return FittedBox(
-      child: DataTable(
-          headingRowColor:
-              MaterialStateColor.resolveWith((states) => Color(0xffA79BDB)),
-          dataRowColor:
-              MaterialStateColor.resolveWith((states) => Color(0xffDED9F5)),
-          columns: [
-            DataColumn(
-              label: Text(
-                "User ID",
-                style: Theme.of(context).primaryTextTheme.headline3,
-              ),
+      index, List locations, uid, unam, img, BuildContext context) {
+    return ExpansionTile(
+      childrenPadding: EdgeInsets.fromLTRB(70, 20, 0, 20),
+      title: Text(
+        unam,
+        style: Theme.of(context).primaryTextTheme.bodyText1,
+      ),
+      leading: CircleAvatar(
+        backgroundImage: NetworkImage(img),
+      ),
+      subtitle: Text(
+        uid,
+        style: Theme.of(context).textTheme.headline4,
+      ),
+      children: [
+        Column(
+          children: [
+            Row(
+              children: [
+                Text(
+                  "Location Name",
+                  style: Theme.of(context).primaryTextTheme.headline3,
+                ),
+                Text(
+                  "Location Address",
+                  style: Theme.of(context).primaryTextTheme.headline3,
+                ),
+                Text(
+                  "Visit Date",
+                  style: Theme.of(context).primaryTextTheme.headline3,
+                ),
+                Text(
+                  "Visit Time",
+                  style: Theme.of(context).primaryTextTheme.headline3,
+                ),
+                Text(
+                  "Entry Date",
+                  style: Theme.of(context).primaryTextTheme.headline3,
+                ),
+              ],
             ),
-            DataColumn(
-              label: Text(
-                "Student Name",
-                style: Theme.of(context).primaryTextTheme.headline3,
-              ),
-            ),
-            DataColumn(
-              label: Text(
-                "Location Name",
-                style: Theme.of(context).primaryTextTheme.headline3,
-              ),
-            ),
-            DataColumn(
-              label: Text(
-                "Location Address",
-                style: Theme.of(context).primaryTextTheme.headline3,
-              ),
-            ),
-            DataColumn(
-              label: Text(
-                "Visit Date",
-                style: Theme.of(context).primaryTextTheme.headline3,
-              ),
-            ),
-            DataColumn(
-              label: Text(
-                "Visit Time",
-                style: Theme.of(context).primaryTextTheme.headline3,
-              ),
-            ),
-            DataColumn(
-              label: Text(
-                "Entry Date",
-                style: Theme.of(context).primaryTextTheme.headline3,
-              ),
+            ListView.builder(
+              shrinkWrap: true,
+              itemCount: locations.length,
+              itemBuilder: (context, index) {
+                return Row(
+                  children: [
+                    Text(
+                      locations[index]['locationName'],
+                      style: Theme.of(context).primaryTextTheme.headline3,
+                    ),
+                    Text(
+                      locations[index]['fullAddress'],
+                      style: Theme.of(context).primaryTextTheme.headline3,
+                    ),
+                    Text(
+                      locations[index]['visitDate'],
+                      style: Theme.of(context).primaryTextTheme.headline3,
+                    ),
+                    Text(
+                      locations[index]['visitTime'],
+                      style: Theme.of(context).primaryTextTheme.headline3,
+                    ),
+                    Text(
+                      locations[index]['entryDate'],
+                      style: Theme.of(context).primaryTextTheme.headline3,
+                    ),
+                  ],
+                );
+              },
             ),
           ],
-          rows: [
-            DataRow(cells: [
-              DataCell(
-                Text(
-                  uid,
-                  style: Theme.of(context).primaryTextTheme.subtitle2,
-                ),
-              ),
-              DataCell(
-                Text(
-                  unam,
-                  style: Theme.of(context).primaryTextTheme.subtitle2,
-                ),
-              ),
-              DataCell(
-                Text(
-                  lnam,
-                  style: Theme.of(context).primaryTextTheme.subtitle2,
-                ),
-              ),
-              DataCell(
-                Text(
-                  fadd,
-                  style: Theme.of(context).primaryTextTheme.subtitle2,
-                ),
-              ),
-              DataCell(
-                Text(
-                  vd,
-                  style: Theme.of(context).primaryTextTheme.subtitle2,
-                ),
-              ),
-              DataCell(
-                Text(
-                  vt,
-                  style: Theme.of(context).primaryTextTheme.subtitle2,
-                ),
-              ),
-              DataCell(
-                Text(
-                  ed,
-                  style: Theme.of(context).primaryTextTheme.subtitle2,
-                ),
-              ),
-            ])
-          ]),
+        ),
+      ],
     );
   }
 
