@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:utmccta/BLL/admin.dart';
-import 'package:utmccta/BLL/healthStatusFormHandler.dart';
 import 'package:utmccta/BLL/users.dart';
 import 'package:utmccta/DLL/adminDA.dart';
 
@@ -12,7 +11,6 @@ class AdminHandler extends StatefulWidget {
 
 class _AdminHandlerState extends State<AdminHandler> {
   AdminDA _adminDA = AdminDA();
-  HealthStatusFormHandler _healthStatusFormHandler = HealthStatusFormHandler();
   //Show admin profile image in the menue
   Widget getAdminProfileImage() {
     return StreamBuilder(
@@ -525,7 +523,7 @@ class _AdminHandlerState extends State<AdminHandler> {
                               itemBuilder: (builder, index) {
                                 return locationEntryTable(
                                     index,
-                                    snapshot.data.docs[index]
+                                    snapshot1.data.docs[index]
                                         .data()['locationEntry'],
                                     snapshot.data.docs[index].data()['userID'],
                                     snapshot.data.docs[index].data()['name'],
@@ -579,57 +577,92 @@ class _AdminHandlerState extends State<AdminHandler> {
           children: [
             Row(
               children: [
-                Text(
-                  "Location Name",
-                  style: Theme.of(context).primaryTextTheme.headline3,
+                Expanded(
+                  child: Text(
+                    "Location Name",
+                    style: Theme.of(context).primaryTextTheme.headline3,
+                  ),
                 ),
-                Text(
-                  "Location Address",
-                  style: Theme.of(context).primaryTextTheme.headline3,
+                Expanded(
+                  child: Text(
+                    "Location Address",
+                    style: Theme.of(context).primaryTextTheme.headline3,
+                  ),
                 ),
-                Text(
-                  "Visit Date",
-                  style: Theme.of(context).primaryTextTheme.headline3,
+                Expanded(
+                  child: Text(
+                    "Visit Date",
+                    style: Theme.of(context).primaryTextTheme.headline3,
+                  ),
                 ),
-                Text(
-                  "Visit Time",
-                  style: Theme.of(context).primaryTextTheme.headline3,
+                Expanded(
+                  child: Text(
+                    "Visit Time",
+                    style: Theme.of(context).primaryTextTheme.headline3,
+                  ),
                 ),
-                Text(
-                  "Entry Date",
-                  style: Theme.of(context).primaryTextTheme.headline3,
+                Expanded(
+                  child: Text(
+                    "Entry Date",
+                    style: Theme.of(context).primaryTextTheme.headline3,
+                  ),
                 ),
               ],
             ),
-            ListView.builder(
+            SizedBox(
+              width: 5,
+            ),
+            Divider(
+              color: Colors.black,
+            ),
+            SizedBox(
+              width: 5,
+            ),
+            ListView.separated(
+              separatorBuilder: (context, index) => Divider(
+                color: Colors.black,
+              ),
               shrinkWrap: true,
               itemCount: locations.length,
               itemBuilder: (context, index) {
                 return Row(
                   children: [
-                    Text(
-                      locations[index]['locationName'],
-                      style: Theme.of(context).primaryTextTheme.headline3,
+                    Expanded(
+                      child: Text(
+                        locations[index]['locationName'],
+                        style: Theme.of(context).primaryTextTheme.subtitle2,
+                      ),
                     ),
-                    Text(
-                      locations[index]['fullAddress'],
-                      style: Theme.of(context).primaryTextTheme.headline3,
+                    Expanded(
+                      child: Text(
+                        locations[index]['fullAddress'],
+                        style: Theme.of(context).primaryTextTheme.subtitle2,
+                      ),
                     ),
-                    Text(
-                      locations[index]['visitDate'],
-                      style: Theme.of(context).primaryTextTheme.headline3,
+                    Expanded(
+                      child: Text(
+                        locations[index]['visitDate'],
+                        style: Theme.of(context).primaryTextTheme.subtitle2,
+                      ),
                     ),
-                    Text(
-                      locations[index]['visitTime'],
-                      style: Theme.of(context).primaryTextTheme.headline3,
+                    Expanded(
+                      child: Text(
+                        locations[index]['visitTime'],
+                        style: Theme.of(context).primaryTextTheme.subtitle2,
+                      ),
                     ),
-                    Text(
-                      locations[index]['entryDate'],
-                      style: Theme.of(context).primaryTextTheme.headline3,
+                    Expanded(
+                      child: Text(
+                        locations[index]['entryDate'],
+                        style: Theme.of(context).primaryTextTheme.subtitle2,
+                      ),
                     ),
                   ],
                 );
               },
+            ),
+            SizedBox(
+              width: 10,
             ),
           ],
         ),
