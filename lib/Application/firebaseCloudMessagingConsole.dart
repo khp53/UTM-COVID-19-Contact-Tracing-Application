@@ -22,10 +22,33 @@ class _FirebaseCloudMessagingConsoleState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Center(
-      child: Text(
-        'Firebase Cloud Messegaing Colsole Should Open in a New Tab\nIf redirecting is unsuccessfull click the button below',
-        style: Theme.of(context).primaryTextTheme.headline1,
+        body: Container(
+      padding: EdgeInsets.all(25),
+      child: Column(
+        children: [
+          Image.asset('assets/img/notificationHelp.jpg'),
+          Text(
+            'Press The Button Below To Send Locational HotSpot Alerts\nTo All The Users Using UTM CCTA Application!',
+            style: Theme.of(context).primaryTextTheme.headline1,
+          ),
+          SizedBox(
+            height: 40,
+          ),
+          SizedBox(
+            height: 60,
+            width: MediaQuery.of(context).size.width / 4,
+            child: MaterialButton(
+              color: Theme.of(context).accentColor,
+              child: Text(
+                'Send HotSpot Alert!',
+                style: Theme.of(context).primaryTextTheme.headline2,
+              ),
+              onPressed: () {
+                launchHelpDesk();
+              },
+            ),
+          )
+        ],
       ),
     ));
   }
