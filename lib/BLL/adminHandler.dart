@@ -30,9 +30,23 @@ class _AdminHandlerState extends State<AdminHandler> {
                 snapshot.data.data()["img"],
                 snapshot.data.data()["name"],
                 snapshot.data.data()["email"]);
-            return CircleAvatar(
-              radius: 30,
-              backgroundImage: NetworkImage(admin.img),
+            return Container(
+              padding: EdgeInsets.only(right: 20),
+              child: Row(
+                children: [
+                  Text(
+                    snapshot.data.data()["name"],
+                    style: Theme.of(context).textTheme.bodyText2,
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  CircleAvatar(
+                    //radius: 30,
+                    backgroundImage: NetworkImage(admin.img),
+                  ),
+                ],
+              ),
             );
           }
           return CircularProgressIndicator();
@@ -84,75 +98,85 @@ class _AdminHandlerState extends State<AdminHandler> {
                                 .data()["immunocompromised"],
                             snapshot1.data.docs[index].data()["traveled"],
                           );
-                          return ExpansionTile(
-                              childrenPadding:
-                                  EdgeInsets.fromLTRB(70, 20, 0, 20),
-                              title: Text(
-                                _users.name,
-                                style: Theme.of(context)
-                                    .primaryTextTheme
-                                    .bodyText1,
-                              ),
-                              leading: CircleAvatar(
-                                backgroundImage: NetworkImage(_users.img),
-                              ),
-                              subtitle: Text(
-                                _users.riskStatus,
-                                style: Theme.of(context).textTheme.headline4,
-                              ),
-                              children: [
-                                Align(
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    'User Information',
+                          return Column(
+                            children: [
+                              ExpansionTile(
+                                  collapsedBackgroundColor: Colors.white,
+                                  backgroundColor: Colors.white,
+                                  childrenPadding:
+                                      EdgeInsets.fromLTRB(70, 20, 0, 20),
+                                  title: Text(
+                                    _users.name,
                                     style: Theme.of(context)
                                         .primaryTextTheme
                                         .bodyText1,
-                                    textAlign: TextAlign.center,
                                   ),
-                                ),
-                                SizedBox(
-                                  height: 15,
-                                ),
-                                renderDataTableUserInfo(
-                                  _users.userID,
-                                  _users.mobileNumber,
-                                  _users.email,
-                                  _users.icNo,
-                                  _users.address,
-                                  _users.postcode,
-                                  context,
-                                ),
-                                SizedBox(
-                                  height: 25,
-                                ),
-                                Align(
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    'Health Information',
-                                    style: Theme.of(context)
-                                        .primaryTextTheme
-                                        .bodyText1,
-                                    textAlign: TextAlign.center,
+                                  leading: CircleAvatar(
+                                    backgroundImage: NetworkImage(_users.img),
                                   ),
-                                ),
-                                SizedBox(
-                                  height: 15,
-                                ),
-                                renderDataTableHealth(
-                                  _users.userID,
-                                  _users.closeContact,
-                                  _users.covidStatus,
-                                  _users.covidSymptoms,
-                                  _users.generalSymtoms,
-                                  _users.immunocompromised,
-                                  _users.traveled,
-                                  context,
-                                ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                              ]);
+                                  subtitle: Text(
+                                    _users.riskStatus,
+                                    style:
+                                        Theme.of(context).textTheme.headline4,
+                                  ),
+                                  children: [
+                                    Align(
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        'User Information',
+                                        style: Theme.of(context)
+                                            .primaryTextTheme
+                                            .bodyText1,
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 15,
+                                    ),
+                                    renderDataTableUserInfo(
+                                      _users.userID,
+                                      _users.mobileNumber,
+                                      _users.email,
+                                      _users.icNo,
+                                      _users.address,
+                                      _users.postcode,
+                                      context,
+                                    ),
+                                    SizedBox(
+                                      height: 25,
+                                    ),
+                                    Align(
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        'Health Information',
+                                        style: Theme.of(context)
+                                            .primaryTextTheme
+                                            .bodyText1,
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      height: 15,
+                                    ),
+                                    renderDataTableHealth(
+                                      _users.userID,
+                                      _users.closeContact,
+                                      _users.covidStatus,
+                                      _users.covidSymptoms,
+                                      _users.generalSymtoms,
+                                      _users.immunocompromised,
+                                      _users.traveled,
+                                      context,
+                                    ),
+                                    SizedBox(
+                                      height: 10,
+                                    ),
+                                  ]),
+                              SizedBox(
+                                height: 7,
+                              ),
+                            ],
+                          );
                         });
                   }
                   return CircularProgressIndicator();
@@ -405,7 +429,7 @@ class _AdminHandlerState extends State<AdminHandler> {
                     child: Text(
                       'Total\nNumber of\nCOVID Positive',
                       style: TextStyle(
-                          color: Colors.white,
+                          color: Colors.black,
                           fontSize: 50,
                           fontWeight: FontWeight.bold),
                     ),
@@ -417,7 +441,10 @@ class _AdminHandlerState extends State<AdminHandler> {
                     height: 250,
                     decoration: new BoxDecoration(
                       border: Border.all(
-                          color: Theme.of(context).accentColor, width: 25),
+                          color: snapshot.data.docs.length < 20
+                              ? Colors.green
+                              : Colors.red,
+                          width: 20),
                       shape: BoxShape.circle,
                     ),
                     child: Center(
@@ -427,7 +454,7 @@ class _AdminHandlerState extends State<AdminHandler> {
                             color: snapshot.data.docs.length > 20
                                 ? Colors.red
                                 : Colors.green,
-                            fontSize: 80,
+                            fontSize: 70,
                             fontWeight: FontWeight.bold),
                       ),
                     ),
@@ -460,7 +487,7 @@ class _AdminHandlerState extends State<AdminHandler> {
                     child: Text(
                       'Total\nNumber of\nUsers',
                       style: TextStyle(
-                          color: Colors.white,
+                          color: Colors.black,
                           fontSize: 50,
                           fontWeight: FontWeight.bold),
                     ),
@@ -472,14 +499,14 @@ class _AdminHandlerState extends State<AdminHandler> {
                     height: 250,
                     decoration: new BoxDecoration(
                       border: Border.all(
-                          color: Theme.of(context).primaryColorDark, width: 25),
+                          color: Theme.of(context).primaryColorDark, width: 20),
                       shape: BoxShape.circle,
                     ),
                     child: Center(
                       child: Text(
                         '${snapshot.data.docs.length}',
                         style: TextStyle(
-                            color: Theme.of(context).accentColor,
+                            color: Theme.of(context).primaryColorDark,
                             fontSize: 80,
                             fontWeight: FontWeight.bold),
                       ),
@@ -559,113 +586,122 @@ class _AdminHandlerState extends State<AdminHandler> {
 
   Widget locationEntryTable(
       index, List locations, uid, unam, img, BuildContext context) {
-    return ExpansionTile(
-      childrenPadding: EdgeInsets.fromLTRB(70, 20, 0, 20),
-      title: Text(
-        unam,
-        style: Theme.of(context).primaryTextTheme.bodyText1,
-      ),
-      leading: CircleAvatar(
-        backgroundImage: NetworkImage(img),
-      ),
-      subtitle: Text(
-        uid,
-        style: Theme.of(context).textTheme.headline4,
-      ),
+    return Column(
       children: [
-        Column(
+        ExpansionTile(
+          backgroundColor: Colors.white,
+          collapsedBackgroundColor: Colors.white,
+          childrenPadding: EdgeInsets.fromLTRB(70, 20, 0, 20),
+          title: Text(
+            unam,
+            style: Theme.of(context).primaryTextTheme.bodyText1,
+          ),
+          leading: CircleAvatar(
+            backgroundImage: NetworkImage(img),
+          ),
+          subtitle: Text(
+            uid,
+            style: Theme.of(context).textTheme.headline4,
+          ),
           children: [
-            Row(
+            Column(
               children: [
-                Expanded(
-                  child: Text(
-                    "Location Name",
-                    style: Theme.of(context).primaryTextTheme.headline3,
-                  ),
-                ),
-                Expanded(
-                  child: Text(
-                    "Location Address",
-                    style: Theme.of(context).primaryTextTheme.headline3,
-                  ),
-                ),
-                Expanded(
-                  child: Text(
-                    "Visit Date",
-                    style: Theme.of(context).primaryTextTheme.headline3,
-                  ),
-                ),
-                Expanded(
-                  child: Text(
-                    "Visit Time",
-                    style: Theme.of(context).primaryTextTheme.headline3,
-                  ),
-                ),
-                Expanded(
-                  child: Text(
-                    "Entry Date",
-                    style: Theme.of(context).primaryTextTheme.headline3,
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(
-              width: 5,
-            ),
-            Divider(
-              color: Colors.black,
-            ),
-            SizedBox(
-              width: 5,
-            ),
-            ListView.separated(
-              separatorBuilder: (context, index) => Divider(
-                color: Colors.black,
-              ),
-              shrinkWrap: true,
-              itemCount: locations.length,
-              itemBuilder: (context, index) {
-                return Row(
+                Row(
                   children: [
                     Expanded(
                       child: Text(
-                        locations[index]['locationName'],
-                        style: Theme.of(context).primaryTextTheme.subtitle2,
+                        "Location Name",
+                        style: Theme.of(context).primaryTextTheme.headline3,
                       ),
                     ),
                     Expanded(
                       child: Text(
-                        locations[index]['fullAddress'],
-                        style: Theme.of(context).primaryTextTheme.subtitle2,
+                        "Location Address",
+                        style: Theme.of(context).primaryTextTheme.headline3,
                       ),
                     ),
                     Expanded(
                       child: Text(
-                        locations[index]['visitDate'],
-                        style: Theme.of(context).primaryTextTheme.subtitle2,
+                        "Visit Date",
+                        style: Theme.of(context).primaryTextTheme.headline3,
                       ),
                     ),
                     Expanded(
                       child: Text(
-                        locations[index]['visitTime'],
-                        style: Theme.of(context).primaryTextTheme.subtitle2,
+                        "Visit Time",
+                        style: Theme.of(context).primaryTextTheme.headline3,
                       ),
                     ),
                     Expanded(
                       child: Text(
-                        locations[index]['entryDate'],
-                        style: Theme.of(context).primaryTextTheme.subtitle2,
+                        "Entry Date",
+                        style: Theme.of(context).primaryTextTheme.headline3,
                       ),
                     ),
                   ],
-                );
-              },
-            ),
-            SizedBox(
-              width: 10,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Divider(
+                  color: Colors.black,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                ListView.separated(
+                  separatorBuilder: (context, index) => Divider(
+                    color: Colors.black,
+                  ),
+                  shrinkWrap: true,
+                  itemCount: locations.length,
+                  itemBuilder: (context, index) {
+                    return Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            locations[index]['locationName'],
+                            style: Theme.of(context).primaryTextTheme.subtitle2,
+                          ),
+                        ),
+                        Expanded(
+                          child: Text(
+                            locations[index]['fullAddress'],
+                            style: Theme.of(context).primaryTextTheme.subtitle2,
+                          ),
+                        ),
+                        Expanded(
+                          child: Text(
+                            locations[index]['visitDate'],
+                            style: Theme.of(context).primaryTextTheme.subtitle2,
+                          ),
+                        ),
+                        Expanded(
+                          child: Text(
+                            locations[index]['visitTime'],
+                            style: Theme.of(context).primaryTextTheme.subtitle2,
+                          ),
+                        ),
+                        Expanded(
+                          child: Text(
+                            locations[index]['entryDate'],
+                            style: Theme.of(context).primaryTextTheme.subtitle2,
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+              ],
             ),
           ],
         ),
+        SizedBox(
+          height: 7,
+        )
       ],
     );
   }

@@ -23,10 +23,13 @@ class _FirebaseCloudMessagingConsoleState
   Widget build(BuildContext context) {
     return Scaffold(
         body: Container(
-      padding: EdgeInsets.all(25),
+      padding: EdgeInsets.all(20),
       child: Column(
         children: [
-          Image.asset('assets/img/notificationHelp.jpg'),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Image.asset('assets/img/notificationHelpBanner.jpg'),
+          ),
           SizedBox(
             height: 40,
           ),

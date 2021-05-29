@@ -47,17 +47,18 @@ class _GoogleMapsAPIHandlerState extends State<GoogleMapsAPIHandler> {
           title: contactMarker['contactName'],
           snippet: contactMarker['contactNumber']),
     );
-
-    setState(() {
-      // adding a new marker to map
-      markers[markerId] = marker;
-    });
+    if (this.mounted) {
+      setState(() {
+        // adding a new marker to map
+        markers[markerId] = marker;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 600,
+      height: 400,
       child: GoogleMap(
         markers: Set<Marker>.of(markers.values),
         initialCameraPosition: _kInitialPosition,

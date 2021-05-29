@@ -208,7 +208,9 @@ class _WebLoginLayoutState extends State<WebLoginLayout> {
                                                 showPassword = !showPassword;
                                               });
                                             },
-                                            child: Icon(Icons.toggle_off)),
+                                            child: showPassword
+                                                ? Icon(Icons.visibility_off)
+                                                : Icon(Icons.visibility)),
                                         enabledBorder: OutlineInputBorder(
                                           borderRadius:
                                               BorderRadius.circular(5),

@@ -37,11 +37,7 @@ class _LocationPageState extends State<LocationPage> {
           SizedBox(
             height: 30,
           ),
-          Card(
-            elevation: 0,
-            color: Color(0xffF0F0F0),
-            child: _adminHandler.createState().getLocationEntry(context),
-          ),
+          _adminHandler.createState().getLocationEntry(context),
           SizedBox(
             height: 20,
           ),

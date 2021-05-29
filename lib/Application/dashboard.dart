@@ -8,68 +8,70 @@ class DashBoadrdAdmin extends StatefulWidget {
 
 class _DashBoadrdAdminState extends State<DashBoadrdAdmin> {
   AdminHandler _adminHandler = AdminHandler();
+  final ScrollController _scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
     var w = MediaQuery.of(context).size.width;
     var h = MediaQuery.of(context).size.height;
-    return SingleChildScrollView(
-      child: Container(
-        padding: EdgeInsets.all(20),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    margin: EdgeInsets.only(right: 10),
-                    width: w / 2,
-                    height: h / 2,
-                    decoration: new BoxDecoration(
-                      color: Color(0xff8E2D50),
-                      borderRadius: new BorderRadius.all(
-                        Radius.circular(25),
+    return Scrollbar(
+      controller: _scrollController,
+      child: SingleChildScrollView(
+        child: Container(
+          padding: EdgeInsets.all(20),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                      margin: EdgeInsets.only(right: 10),
+                      width: w / 2,
+                      height: h / 2,
+                      decoration: new BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: new BorderRadius.all(
+                          Radius.circular(25),
+                        ),
                       ),
+                      child: _adminHandler
+                          .createState()
+                          .getTotalUserNumber(context),
                     ),
-                    child:
-                        _adminHandler.createState().getTotalUserNumber(context),
                   ),
-                ),
-                Expanded(
-                  child: Container(
-                    margin: EdgeInsets.only(left: 10),
-                    width: w / 2,
-                    height: h / 2,
-                    decoration: new BoxDecoration(
-                      color: Color(0xffC56CFF),
-                      borderRadius: new BorderRadius.all(
-                        Radius.circular(25),
+                  Expanded(
+                    child: Container(
+                      margin: EdgeInsets.only(left: 10),
+                      width: w / 2,
+                      height: h / 2,
+                      decoration: new BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: new BorderRadius.all(
+                          Radius.circular(25),
+                        ),
                       ),
+                      child:
+                          _adminHandler.createState().getTotalCovidPositive(),
                     ),
-                    child: _adminHandler.createState().getTotalCovidPositive(),
                   ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 35,
-            ),
-            Text(
-              'User\'s Personal & Health Details',
-              style: Theme.of(context).primaryTextTheme.headline2,
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Card(
-              elevation: 0,
-              color: Color(0xffF0F0F0),
-              child: _adminHandler.createState().getUserDetails(),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-          ],
+                ],
+              ),
+              SizedBox(
+                height: 35,
+              ),
+              Text(
+                'User\'s Personal & Health Details',
+                style: Theme.of(context).primaryTextTheme.headline2,
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              _adminHandler.createState().getUserDetails(),
+              SizedBox(
+                height: 20,
+              ),
+            ],
+          ),
         ),
       ),
     );

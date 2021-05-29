@@ -44,7 +44,6 @@ class _DashBoardSideNavClinicState extends State<DashBoardSideNavClinic>
         key: _scaffoldKey,
         appBar: AppBar(
           backgroundColor: Colors.white,
-          elevation: 1,
           title: Text(
             'UTM Clinic Dashboard UTM CCTA',
             style: Theme.of(context).primaryTextTheme.headline2,
