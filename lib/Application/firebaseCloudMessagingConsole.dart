@@ -27,8 +27,12 @@ class _FirebaseCloudMessagingConsoleState
       child: Column(
         children: [
           Image.asset('assets/img/notificationHelp.jpg'),
+          SizedBox(
+            height: 40,
+          ),
           Text(
             'Press The Button Below To Send Locational HotSpot Alerts\nTo All The Users Using UTM CCTA Application!',
+            textAlign: TextAlign.center,
             style: Theme.of(context).primaryTextTheme.headline1,
           ),
           SizedBox(
