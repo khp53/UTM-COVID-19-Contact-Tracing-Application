@@ -1,8 +1,4 @@
-import 'dart:html';
-import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter_web/google_maps_flutter_web.dart';
-//import 'package:google_maps/google_maps.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:utmccta/DLL/locationEntryDA.dart';
 
@@ -13,19 +9,6 @@ class GoogleMapsAPIHandler extends StatefulWidget {
 
 class _GoogleMapsAPIHandlerState extends State<GoogleMapsAPIHandler> {
   LocationEntryDA _locationEntryDA = LocationEntryDA();
-
-  var clients = [];
-
-  // populateClients() {
-  //   clients = [];
-  //   _locationEntryDA.getUsersLatLang().get().then((docs) {
-  //     if (docs.docs.isNotEmpty) {
-  //       for (int i = 0; i < docs.docs.length; ++i) {
-  //         clients.add(docs.docs[i].data);
-  //       }
-  //     }
-  //   });
-  // }
 
   static final LatLng _kMapCenter = LatLng(23.703379, 90.3958962);
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
