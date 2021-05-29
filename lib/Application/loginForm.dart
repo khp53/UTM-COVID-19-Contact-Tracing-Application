@@ -53,23 +53,28 @@ class _WebLoginLayoutState extends State<WebLoginLayout> {
             showDialog(
                 context: context,
                 builder: (BuildContext context) {
-                  return AlertDialog(
-                    title: Text(
-                      "Oops!",
-                      style: Theme.of(context).primaryTextTheme.bodyText1,
+                  return Theme(
+                    data: ThemeData(
+                        dialogTheme:
+                            DialogTheme(backgroundColor: Colors.white)),
+                    child: AlertDialog(
+                      title: Text(
+                        "Oops!",
+                        style: Theme.of(context).primaryTextTheme.bodyText1,
+                      ),
+                      content: Text(
+                        "Invalid Email or Password! Enter correct Email & Password and try again!",
+                        style: Theme.of(context).primaryTextTheme.bodyText1,
+                      ),
+                      actions: [
+                        TextButton(
+                          child: Text("OK"),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        )
+                      ],
                     ),
-                    content: Text(
-                      "Invalid Email or Password! Enter correct Email & Password and try again!",
-                      style: Theme.of(context).primaryTextTheme.bodyText1,
-                    ),
-                    actions: [
-                      TextButton(
-                        child: Text("OK"),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                      )
-                    ],
                   );
                 });
           });
@@ -190,7 +195,7 @@ class _WebLoginLayoutState extends State<WebLoginLayout> {
                                 Container(
                                   padding: EdgeInsets.only(left: 5, right: 5),
                                   child: TextFormField(
-                                    textInputAction: TextInputAction.done,
+                                    textInputAction: TextInputAction.go,
                                     validator: (val) {
                                       return val.length > 6
                                           ? null
