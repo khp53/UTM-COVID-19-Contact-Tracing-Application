@@ -73,8 +73,8 @@ class TraceContactsDA {
     return name;
   }
 
-  Future<String> getCovidStatusOfContactedPerson({String uid}) async {
-    String covidStatus = '';
+  Future<bool> getCovidStatusOfContactedPerson({String uid}) async {
+    bool covidStatus;
     await _firestore.collection('HealthStatus').doc(uid).get().then((doc) {
       if (doc.exists) {
         covidStatus = doc.data()['covidStatus'];
