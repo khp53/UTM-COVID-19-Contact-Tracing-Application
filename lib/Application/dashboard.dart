@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:utmccta/BLL/adminHandler.dart';
+import 'package:utmccta/BLL/utmHealthAuthorityHandler.dart';
 
 class DashBoadrdAdmin extends StatefulWidget {
   @override
@@ -86,12 +87,93 @@ class DashboardHealthAuthorities extends StatefulWidget {
 
 class _DashboardHealthAuthoritiesState
     extends State<DashboardHealthAuthorities> {
+  final ScrollController _scrollController = ScrollController();
+  UTMHealthAuthorityHandler _authorityHandler = UTMHealthAuthorityHandler();
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.blueAccent,
-      height: 500,
-      width: 500,
+    var w = MediaQuery.of(context).size.width;
+    var h = MediaQuery.of(context).size.height;
+    return Scrollbar(
+      controller: _scrollController,
+      child: SingleChildScrollView(
+        child: Container(
+          padding: EdgeInsets.all(20),
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                      margin: EdgeInsets.only(right: 10),
+                      width: w / 2,
+                      height: h / 2,
+                      decoration: new BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: new BorderRadius.all(
+                          Radius.circular(25),
+                        ),
+                      ),
+                      child: _authorityHandler.getTotalUserNumber(context),
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(
+                      margin: EdgeInsets.only(left: 10),
+                      width: w / 2,
+                      height: h / 2,
+                      decoration: new BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: new BorderRadius.all(
+                          Radius.circular(25),
+                        ),
+                      ),
+                      child: _authorityHandler.getTotalCovidPositive(),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 35,
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                      margin: EdgeInsets.only(right: 10),
+                      width: w / 2,
+                      height: h / 2,
+                      decoration: new BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: new BorderRadius.all(
+                          Radius.circular(25),
+                        ),
+                      ),
+                      child: _authorityHandler.getTotalCovidSymptom(context),
+                    ),
+                  ),
+                  Expanded(
+                    child: Container(
+                      margin: EdgeInsets.only(left: 10),
+                      width: w / 2,
+                      height: h / 2,
+                      decoration: new BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: new BorderRadius.all(
+                          Radius.circular(25),
+                        ),
+                      ),
+                      child: _authorityHandler.getTotalCloseContacts(),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 20,
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

@@ -1,20 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:utmccta/BLL/admin.dart';
 import 'package:utmccta/BLL/users.dart';
-import 'package:utmccta/DLL/adminDA.dart';
+import 'package:utmccta/BLL/utmHealthAuthorities.dart';
+import 'package:utmccta/DLL/utmHealthAuthoritiesDA.dart';
 
-class AdminHandler extends StatefulWidget {
-  @override
-  _AdminHandlerState createState() => _AdminHandlerState();
-}
-
-class _AdminHandlerState extends State<AdminHandler> {
-  AdminDA _adminDA = AdminDA();
-  //Show admin profile image in the menue
-  Widget getAdminProfileImage() {
+class UTMHealthAuthorityHandler {
+  UTMHealthAuthoritiesDA _authoritiesDA = UTMHealthAuthoritiesDA();
+  //Show clinic profile image in the menue
+  Widget getClinicProfileImage() {
     return StreamBuilder(
-        stream: _adminDA.getUserProfile().snapshots(),
+        stream: _authoritiesDA.getUserProfile().snapshots(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return Text('Something went wrong');
@@ -23,19 +17,15 @@ class _AdminHandlerState extends State<AdminHandler> {
             return Center(child: CircularProgressIndicator());
           }
           if (snapshot.hasData) {
-            Admin admin = Admin.extended(
-                snapshot.data.data()["staffID"],
-                snapshot.data.data()["mobileNumber"],
-                snapshot.data.data()["icNo"],
-                snapshot.data.data()["img"],
-                snapshot.data.data()["name"],
-                snapshot.data.data()["email"]);
+            UTMHealthAuthorities _healthAuth =
+                UTMHealthAuthorities.fromMap(snapshot.data.data());
+
             return Container(
               padding: EdgeInsets.only(right: 20),
               child: Row(
                 children: [
                   Text(
-                    admin.name,
+                    _healthAuth.name,
                     style: Theme.of(context).textTheme.bodyText2,
                   ),
                   SizedBox(
@@ -43,7 +33,7 @@ class _AdminHandlerState extends State<AdminHandler> {
                   ),
                   CircleAvatar(
                     //radius: 30,
-                    backgroundImage: NetworkImage(admin.img),
+                    backgroundImage: NetworkImage(_healthAuth.img),
                   ),
                 ],
               ),
@@ -54,9 +44,12 @@ class _AdminHandlerState extends State<AdminHandler> {
   }
 
   //get all user details
-  Widget getUserDetails() {
+  Widget getUserDetails(searchTerm) {
     return StreamBuilder(
-        stream: _adminDA.getAllUserDetails().snapshots(),
+        stream: _authoritiesDA
+            .getAllUserDetails()
+            .where("name", isEqualTo: searchTerm)
+            .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return Text('Something went wrong');
@@ -66,7 +59,7 @@ class _AdminHandlerState extends State<AdminHandler> {
           }
           if (snapshot.hasData) {
             return StreamBuilder(
-                stream: _adminDA.getAllUserHealthDetails().snapshots(),
+                stream: _authoritiesDA.getAllUserHealthDetails().snapshots(),
                 builder: (context, snapshot1) {
                   if (snapshot1.hasError) {
                     return Text('Something went wrong');
@@ -77,7 +70,7 @@ class _AdminHandlerState extends State<AdminHandler> {
                   if (snapshot1.hasData) {
                     return ListView.builder(
                         shrinkWrap: true,
-                        itemCount: snapshot1.data.docs.length,
+                        itemCount: snapshot.data.docs.length,
                         itemBuilder: (context, index) {
                           Users _users = Users(
                             snapshot.data.docs[index].data()["name"],
@@ -409,8 +402,8 @@ class _AdminHandlerState extends State<AdminHandler> {
   //get covid positive number
   Widget getTotalCovidPositive() {
     return StreamBuilder(
-        stream: _adminDA
-            .getAllUserCovidStatus()
+        stream: _authoritiesDA
+            .getAllUserHealthDetails()
             .where("covidStatus", isEqualTo: true)
             .snapshots(),
         builder: (context, snapshot) {
@@ -467,10 +460,127 @@ class _AdminHandlerState extends State<AdminHandler> {
         });
   }
 
+  //get covid symptoms number
+  Widget getTotalCovidSymptom(context) {
+    return StreamBuilder(
+        stream: _authoritiesDA
+            .getAllUserHealthDetails()
+            .where("covidSymptoms", isEqualTo: true)
+            .snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Text('Something went wrong');
+          }
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          }
+          if (snapshot.hasData) {
+            return Row(
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 30),
+                    child: Text(
+                      'Total\nNumber of\nUsers Showing\nCOVID Symptoms',
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 35,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Container(
+                    width: 250,
+                    height: 250,
+                    decoration: new BoxDecoration(
+                      border: Border.all(
+                          color: Theme.of(context).accentColor, width: 20),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Center(
+                      child: Text(
+                        '${snapshot.data.docs.length}',
+                        style: TextStyle(
+                            color: Theme.of(context).accentColor,
+                            fontSize: 70,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            );
+          }
+          return Center(child: CircularProgressIndicator());
+        });
+  }
+
+  //get close contact number
+  Widget getTotalCloseContacts() {
+    return StreamBuilder(
+        stream: _authoritiesDA
+            .getAllUserHealthDetails()
+            .where("closeContact", isEqualTo: true)
+            .snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Text('Something went wrong');
+          }
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          }
+          if (snapshot.hasData) {
+            return Row(
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 30),
+                    child: Text(
+                      'User\'s Had Close Contact With Another COVID Patient',
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 40,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Container(
+                    width: 250,
+                    height: 250,
+                    decoration: new BoxDecoration(
+                      border: Border.all(
+                          color: snapshot.data.docs.length < 20
+                              ? Colors.green
+                              : Colors.red,
+                          width: 20),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Center(
+                      child: Text(
+                        '${snapshot.data.docs.length}',
+                        style: TextStyle(
+                            color: snapshot.data.docs.length > 20
+                                ? Colors.red
+                                : Colors.green,
+                            fontSize: 70,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            );
+          }
+          return Center(child: CircularProgressIndicator());
+        });
+  }
+
   // get total user number
   Widget getTotalUserNumber(BuildContext context) {
     return StreamBuilder(
-        stream: _adminDA.getAllUserDetails().snapshots(),
+        stream: _authoritiesDA.getAllUserDetails().snapshots(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return Text('Something went wrong');
@@ -518,196 +628,5 @@ class _AdminHandlerState extends State<AdminHandler> {
           }
           return Center(child: CircularProgressIndicator());
         });
-  }
-
-  // get location entry of all user
-  Widget getLocationEntry(BuildContext context) {
-    return StreamBuilder(
-        stream: _adminDA.getAllUserDetails().snapshots(),
-        builder: (context, snapshot) {
-          if (snapshot.data != null) {
-            switch (snapshot.connectionState) {
-              case ConnectionState.none:
-                return Text("No Connections");
-              case ConnectionState.waiting:
-                return CircularProgressIndicator();
-              case ConnectionState.active:
-              case ConnectionState.done:
-                return StreamBuilder(
-                    stream: _adminDA.getAllLocationEntry().snapshots(),
-                    builder: (context, snapshot1) {
-                      if (snapshot1.data != null) {
-                        switch (snapshot1.connectionState) {
-                          case ConnectionState.none:
-                            return Text("No Connections");
-                          case ConnectionState.waiting:
-                            return CircularProgressIndicator();
-                          case ConnectionState.active:
-                          case ConnectionState.done:
-                            return ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: snapshot.data.docs.length,
-                              itemBuilder: (builder, index) {
-                                return locationEntryTable(
-                                    index,
-                                    snapshot1.data.docs[index]
-                                        .data()['locationEntry'],
-                                    snapshot.data.docs[index].data()['userID'],
-                                    snapshot.data.docs[index].data()['name'],
-                                    snapshot.data.docs[index].data()['img'],
-                                    context);
-                              },
-                            );
-                          default:
-                            break;
-                        }
-                      } else {
-                        return Container(
-                          height: MediaQuery.of(context).size.height,
-                          width: MediaQuery.of(context).size.height,
-                          color: Colors.black,
-                        );
-                      }
-                      return Center(child: CircularProgressIndicator());
-                    });
-              default:
-                break;
-            }
-          } else {
-            return Container(
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.height,
-              color: Colors.black,
-            );
-          }
-          return Center(child: CircularProgressIndicator());
-        });
-  }
-
-  Widget locationEntryTable(
-      index, List locations, uid, unam, img, BuildContext context) {
-    return Column(
-      children: [
-        ExpansionTile(
-          backgroundColor: Colors.white,
-          collapsedBackgroundColor: Colors.white,
-          childrenPadding: EdgeInsets.fromLTRB(70, 20, 0, 20),
-          title: Text(
-            unam,
-            style: Theme.of(context).primaryTextTheme.bodyText1,
-          ),
-          leading: CircleAvatar(
-            backgroundImage: NetworkImage(img),
-          ),
-          subtitle: Text(
-            uid,
-            style: Theme.of(context).textTheme.headline4,
-          ),
-          children: [
-            Column(
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        "Location Name",
-                        style: Theme.of(context).primaryTextTheme.headline3,
-                      ),
-                    ),
-                    Expanded(
-                      child: Text(
-                        "Location Address",
-                        style: Theme.of(context).primaryTextTheme.headline3,
-                      ),
-                    ),
-                    Expanded(
-                      child: Text(
-                        "Visit Date",
-                        style: Theme.of(context).primaryTextTheme.headline3,
-                      ),
-                    ),
-                    Expanded(
-                      child: Text(
-                        "Visit Time",
-                        style: Theme.of(context).primaryTextTheme.headline3,
-                      ),
-                    ),
-                    Expanded(
-                      child: Text(
-                        "Entry Date",
-                        style: Theme.of(context).primaryTextTheme.headline3,
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  width: 5,
-                ),
-                Divider(
-                  color: Colors.black,
-                ),
-                SizedBox(
-                  width: 5,
-                ),
-                ListView.separated(
-                  separatorBuilder: (context, index) => Divider(
-                    color: Colors.black,
-                  ),
-                  shrinkWrap: true,
-                  itemCount: locations.length,
-                  itemBuilder: (context, index) {
-                    return Row(
-                      children: [
-                        Expanded(
-                          child: Text(
-                            locations[index]['locationName'],
-                            style: Theme.of(context).primaryTextTheme.subtitle2,
-                          ),
-                        ),
-                        Expanded(
-                          child: Text(
-                            locations[index]['fullAddress'],
-                            style: Theme.of(context).primaryTextTheme.subtitle2,
-                          ),
-                        ),
-                        Expanded(
-                          child: Text(
-                            locations[index]['visitDate'],
-                            style: Theme.of(context).primaryTextTheme.subtitle2,
-                          ),
-                        ),
-                        Expanded(
-                          child: Text(
-                            locations[index]['visitTime'],
-                            style: Theme.of(context).primaryTextTheme.subtitle2,
-                          ),
-                        ),
-                        Expanded(
-                          child: Text(
-                            locations[index]['entryDate'],
-                            style: Theme.of(context).primaryTextTheme.subtitle2,
-                          ),
-                        ),
-                      ],
-                    );
-                  },
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-              ],
-            ),
-          ],
-        ),
-        SizedBox(
-          height: 7,
-        )
-      ],
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return null;
   }
 }

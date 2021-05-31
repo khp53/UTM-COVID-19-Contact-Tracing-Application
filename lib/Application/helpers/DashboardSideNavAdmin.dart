@@ -117,13 +117,10 @@ class _DashBoardSideNavAdminState extends State<DashBoardSideNavAdmin>
   }
 
   Widget listDrawerItems(bool drawerStatus) {
-    return ListView(
-      children: <Widget>[
+    return Column(
+      children: [
         SizedBox(
-          height: MediaQuery.of(context).size.height / 50,
-        ),
-        SizedBox(
-          height: MediaQuery.of(context).size.height / 50,
+          height: 30,
         ),
         // ignore: deprecated_member_use
         FlatButton(
@@ -155,7 +152,7 @@ class _DashBoardSideNavAdminState extends State<DashBoardSideNavAdmin>
             ),
           ),
         ),
-
+        Spacer(),
         // ignore: deprecated_member_use
         FlatButton(
           color: tabController.index == 1
@@ -187,7 +184,7 @@ class _DashBoardSideNavAdminState extends State<DashBoardSideNavAdmin>
             ),
           ),
         ),
-
+        Spacer(),
         // ignore: deprecated_member_use
         FlatButton(
           color: tabController.index == 2
@@ -220,11 +217,12 @@ class _DashBoardSideNavAdminState extends State<DashBoardSideNavAdmin>
           ),
         ),
 
-        SizedBox(
-          height: MediaQuery.of(context).size.height / 1.8,
+        Spacer(
+          flex: 20,
         ),
 
         Container(
+          width: 200,
           padding: EdgeInsets.only(
             left: 10,
             right: 10,
@@ -239,7 +237,10 @@ class _DashBoardSideNavAdminState extends State<DashBoardSideNavAdmin>
               style: Theme.of(context).textTheme.bodyText1,
             ),
           ),
-        )
+        ),
+        SizedBox(
+          height: 30,
+        ),
       ],
     );
   }
