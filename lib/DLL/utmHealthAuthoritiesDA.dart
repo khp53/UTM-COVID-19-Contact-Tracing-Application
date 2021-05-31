@@ -20,4 +20,12 @@ class UTMHealthAuthoritiesDA {
   CollectionReference getAllUserHealthDetails() {
     return _firestore.collection("HealthStatus");
   }
+
+  // get all users contact list
+  CollectionReference getAllUsersContactList(id) {
+    return _firestore
+        .collection("TraceContacts")
+        .doc("id")
+        .collection("contactedWith");
+  }
 }

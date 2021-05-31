@@ -18,7 +18,8 @@ class UserHandler extends StatefulWidget {
       "mobileNumber": mobileNumber,
       "email": email,
       "address": address,
-      "postcode": int.parse(postcode)
+      "postcode": int.parse(postcode),
+      "documentID": _userDA.getUID(),
     };
     _userDA.uploadUserInfo(userInfoMap);
     _userDA.createBlankLocationEntry();

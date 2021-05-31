@@ -8,6 +8,11 @@ class UserDA {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  // get USer uid
+  getUID() {
+    return _auth.currentUser.uid;
+  }
+
   // old user auto sign in
   signIn(AuthCredential authCreds) async {
     try {

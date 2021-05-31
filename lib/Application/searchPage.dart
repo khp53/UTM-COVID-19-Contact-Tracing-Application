@@ -14,6 +14,19 @@ class _SearchPageState extends State<SearchPage> {
 
   UTMHealthAuthorityHandler _healthAuthorityHandler =
       UTMHealthAuthorityHandler();
+
+  initiateSearch() async {
+    if (_search.text.isNotEmpty) {
+      setState(() {
+        isLoading = true;
+      });
+      _healthAuthorityHandler.getUserDetails(_search.text);
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -24,7 +37,7 @@ class _SearchPageState extends State<SearchPage> {
           child: Column(
             children: [
               Text(
-                'Search For a User\nTo Change Their COVID Status\nAnd To Check Their Contact List!',
+                'Search For a User By Their Matric Number\nTo Change Their COVID Status And To Check Their Contact List!',
                 textAlign: TextAlign.center,
                 style: Theme.of(context).primaryTextTheme.headline2,
               ),
@@ -36,6 +49,9 @@ class _SearchPageState extends State<SearchPage> {
                   Expanded(flex: 5, child: buildTextFormField(context)),
                   Expanded(flex: 1, child: buildMaterialButton(context))
                 ],
+              ),
+              SizedBox(
+                height: 30,
               ),
               _healthAuthorityHandler.getUserDetails(_search.text),
             ],
@@ -50,7 +66,7 @@ class _SearchPageState extends State<SearchPage> {
       padding: EdgeInsets.only(left: 20),
       child: MaterialButton(
         elevation: 0,
-        onPressed: () => _healthAuthorityHandler.getUserDetails(_search.text),
+        onPressed: () => initiateSearch(),
         color: Theme.of(context).accentColor,
         height: 60,
         child: Row(
@@ -73,6 +89,7 @@ class _SearchPageState extends State<SearchPage> {
 
   TextFormField buildTextFormField(BuildContext context) {
     return TextFormField(
+      onEditingComplete: () => initiateSearch(),
       textInputAction: TextInputAction.search,
       validator: (val) {
         return val.length > 6 ? null : "Password should be 6+ chars";

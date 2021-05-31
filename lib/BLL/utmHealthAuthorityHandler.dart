@@ -5,6 +5,7 @@ import 'package:utmccta/DLL/utmHealthAuthoritiesDA.dart';
 
 class UTMHealthAuthorityHandler {
   UTMHealthAuthoritiesDA _authoritiesDA = UTMHealthAuthoritiesDA();
+
   //Show clinic profile image in the menue
   Widget getClinicProfileImage() {
     return StreamBuilder(
@@ -44,11 +45,11 @@ class UTMHealthAuthorityHandler {
   }
 
   //get all user details
-  Widget getUserDetails(searchTerm) {
+  Widget getUserDetails(String searchTerm) {
     return StreamBuilder(
         stream: _authoritiesDA
             .getAllUserDetails()
-            .where("name", isEqualTo: searchTerm)
+            .where("userID", isEqualTo: searchTerm)
             .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
@@ -58,6 +59,9 @@ class UTMHealthAuthorityHandler {
             return Center(child: CircularProgressIndicator());
           }
           if (snapshot.hasData) {
+            if (snapshot.data.docs.length > 0) {
+              var docID = snapshot.data.docs[0].data()['documentID'];
+            }
             return StreamBuilder(
                 stream: _authoritiesDA.getAllUserHealthDetails().snapshots(),
                 builder: (context, snapshot1) {
@@ -72,6 +76,9 @@ class UTMHealthAuthorityHandler {
                         shrinkWrap: true,
                         itemCount: snapshot.data.docs.length,
                         itemBuilder: (context, index) {
+                          var docID =
+                              snapshot.data.docs[index].data()['documentID'];
+                          print(docID);
                           Users _users = Users(
                             snapshot.data.docs[index].data()["name"],
                             snapshot.data.docs[index].data()["img"],
@@ -116,31 +123,6 @@ class UTMHealthAuthorityHandler {
                                     Align(
                                       alignment: Alignment.center,
                                       child: Text(
-                                        'User Information',
-                                        style: Theme.of(context)
-                                            .primaryTextTheme
-                                            .bodyText1,
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 15,
-                                    ),
-                                    renderDataTableUserInfo(
-                                      _users.userID,
-                                      _users.mobileNumber,
-                                      _users.email,
-                                      _users.icNo,
-                                      _users.address,
-                                      _users.postcode,
-                                      context,
-                                    ),
-                                    SizedBox(
-                                      height: 25,
-                                    ),
-                                    Align(
-                                      alignment: Alignment.center,
-                                      child: Text(
                                         'Health Information',
                                         style: Theme.of(context)
                                             .primaryTextTheme
@@ -162,6 +144,19 @@ class UTMHealthAuthorityHandler {
                                       context,
                                     ),
                                     SizedBox(
+                                      height: 25,
+                                    ),
+                                    Align(
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        'User\'s Contact List',
+                                        style: Theme.of(context)
+                                            .primaryTextTheme
+                                            .bodyText1,
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                    SizedBox(
                                       height: 10,
                                     ),
                                   ]),
@@ -172,16 +167,22 @@ class UTMHealthAuthorityHandler {
                           );
                         });
                   }
-                  return CircularProgressIndicator();
+                  return Text(
+                    'No User Found',
+                    style: TextStyle(color: Colors.black),
+                  );
                 });
           }
-          return CircularProgressIndicator();
+          return Text(
+            'No User Found',
+            style: TextStyle(color: Colors.black),
+          );
         });
   }
 
   // render data table user
-  Widget renderDataTableUserInfo(
-      uid, number, email, ic, add, pos, BuildContext context) {
+  Widget renderDataTableUserContact(
+      name, number, email, covstat, BuildContext context) {
     return FittedBox(
       child: DataTable(
           headingRowColor:
@@ -191,7 +192,7 @@ class UTMHealthAuthorityHandler {
           columns: [
             DataColumn(
               label: Text(
-                "User ID",
+                "Contact Name",
                 style: Theme.of(context).primaryTextTheme.headline3,
               ),
             ),
@@ -209,19 +210,7 @@ class UTMHealthAuthorityHandler {
             ),
             DataColumn(
               label: Text(
-                "IC/Passport Number",
-                style: Theme.of(context).primaryTextTheme.headline3,
-              ),
-            ),
-            DataColumn(
-              label: Text(
-                "Address",
-                style: Theme.of(context).primaryTextTheme.headline3,
-              ),
-            ),
-            DataColumn(
-              label: Text(
-                "Post Code",
+                "COVID Status",
                 style: Theme.of(context).primaryTextTheme.headline3,
               ),
             ),
@@ -230,7 +219,7 @@ class UTMHealthAuthorityHandler {
             DataRow(cells: [
               DataCell(
                 Text(
-                  uid,
+                  name,
                   style: Theme.of(context).primaryTextTheme.subtitle2,
                 ),
               ),
@@ -248,19 +237,7 @@ class UTMHealthAuthorityHandler {
               ),
               DataCell(
                 Text(
-                  ic,
-                  style: Theme.of(context).primaryTextTheme.subtitle2,
-                ),
-              ),
-              DataCell(
-                Text(
-                  add,
-                  style: Theme.of(context).primaryTextTheme.subtitle2,
-                ),
-              ),
-              DataCell(
-                Text(
-                  pos.toString(),
+                  covstat,
                   style: Theme.of(context).primaryTextTheme.subtitle2,
                 ),
               ),

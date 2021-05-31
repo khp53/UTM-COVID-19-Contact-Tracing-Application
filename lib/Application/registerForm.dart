@@ -497,13 +497,14 @@ class _RegisterUserDataState extends State<RegisterUserData> {
       });
 
       _userHandler.registerUserDataHandler(
-          _userIDController.text,
-          _icNoController.text,
-          _nameController.text,
-          widget.phoneNo,
-          _emailController.text,
-          _currentAddressController.text,
-          _postCodeController.text);
+        _userIDController.text,
+        _icNoController.text,
+        _nameController.text,
+        widget.phoneNo,
+        _emailController.text,
+        _currentAddressController.text,
+        _postCodeController.text,
+      );
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(
