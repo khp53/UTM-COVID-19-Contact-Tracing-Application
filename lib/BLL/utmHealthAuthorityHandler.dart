@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:utmccta/BLL/users.dart';
 import 'package:utmccta/BLL/utmHealthAuthorities.dart';
@@ -5,7 +6,7 @@ import 'package:utmccta/DLL/utmHealthAuthoritiesDA.dart';
 
 class UTMHealthAuthorityHandler {
   UTMHealthAuthoritiesDA _authoritiesDA = UTMHealthAuthoritiesDA();
-
+  QuerySnapshot searchSnap;
   //Show clinic profile image in the menue
   Widget getClinicProfileImage() {
     return StreamBuilder(
@@ -59,9 +60,6 @@ class UTMHealthAuthorityHandler {
             return Center(child: CircularProgressIndicator());
           }
           if (snapshot.hasData) {
-            if (snapshot.data.docs.length > 0) {
-              var docID = snapshot.data.docs[0].data()['documentID'];
-            }
             return StreamBuilder(
                 stream: _authoritiesDA.getAllUserHealthDetails().snapshots(),
                 builder: (context, snapshot1) {
@@ -98,73 +96,52 @@ class UTMHealthAuthorityHandler {
                                 .data()["immunocompromised"],
                             snapshot1.data.docs[index].data()["traveled"],
                           );
-                          return Column(
-                            children: [
-                              ExpansionTile(
-                                  collapsedBackgroundColor: Colors.white,
-                                  backgroundColor: Colors.white,
-                                  childrenPadding:
-                                      EdgeInsets.fromLTRB(70, 20, 0, 20),
-                                  title: Text(
-                                    _users.name,
+                          return ExpansionTile(
+                              collapsedBackgroundColor: Colors.white,
+                              backgroundColor: Colors.white,
+                              childrenPadding:
+                                  EdgeInsets.fromLTRB(70, 20, 0, 20),
+                              title: Text(
+                                _users.name,
+                                style: Theme.of(context)
+                                    .primaryTextTheme
+                                    .bodyText1,
+                              ),
+                              leading: CircleAvatar(
+                                backgroundImage: NetworkImage(_users.img),
+                              ),
+                              subtitle: Text(
+                                _users.riskStatus,
+                                style: Theme.of(context).textTheme.headline4,
+                              ),
+                              children: [
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    'Health Information',
                                     style: Theme.of(context)
                                         .primaryTextTheme
                                         .bodyText1,
+                                    textAlign: TextAlign.center,
                                   ),
-                                  leading: CircleAvatar(
-                                    backgroundImage: NetworkImage(_users.img),
-                                  ),
-                                  subtitle: Text(
-                                    _users.riskStatus,
-                                    style:
-                                        Theme.of(context).textTheme.headline4,
-                                  ),
-                                  children: [
-                                    Align(
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        'Health Information',
-                                        style: Theme.of(context)
-                                            .primaryTextTheme
-                                            .bodyText1,
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 15,
-                                    ),
-                                    renderDataTableHealth(
-                                      _users.userID,
-                                      _users.closeContact,
-                                      _users.covidStatus,
-                                      _users.covidSymptoms,
-                                      _users.generalSymtoms,
-                                      _users.immunocompromised,
-                                      _users.traveled,
-                                      context,
-                                    ),
-                                    SizedBox(
-                                      height: 25,
-                                    ),
-                                    Align(
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        'User\'s Contact List',
-                                        style: Theme.of(context)
-                                            .primaryTextTheme
-                                            .bodyText1,
-                                        textAlign: TextAlign.center,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: 10,
-                                    ),
-                                  ]),
-                              SizedBox(
-                                height: 7,
-                              ),
-                            ],
-                          );
+                                ),
+                                SizedBox(
+                                  height: 15,
+                                ),
+                                renderDataTableHealth(
+                                  _users.userID,
+                                  _users.closeContact,
+                                  _users.covidStatus,
+                                  _users.covidSymptoms,
+                                  _users.generalSymtoms,
+                                  _users.immunocompromised,
+                                  _users.traveled,
+                                  context,
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                              ]);
                         });
                   }
                   return Text(
@@ -180,37 +157,180 @@ class UTMHealthAuthorityHandler {
         });
   }
 
-  // render data table user
-  Widget renderDataTableUserContact(
-      name, number, email, covstat, BuildContext context) {
-    return FittedBox(
+  // search for user contact list
+  searchUsersBasedOnRegID(search) async {
+    await _authoritiesDA.getAllUsersContactList(search).then((value) {
+      searchSnap = value;
+    });
+  }
+
+  Widget showContactList(context) {
+    return searchSnap != null
+        ? Container(
+            width: MediaQuery.of(context).size.width,
+            child: DataTable(
+                headingRowColor: MaterialStateColor.resolveWith(
+                    (states) => Color(0xffA79BDB)),
+                dataRowColor: MaterialStateColor.resolveWith(
+                    (states) => Color(0xffDED9F5)),
+                columns: [
+                  DataColumn(
+                    label: Text(
+                      "Contact Name",
+                      style: Theme.of(context).primaryTextTheme.headline3,
+                    ),
+                  ),
+                  DataColumn(
+                    label: Text(
+                      "Mobile Number",
+                      style: Theme.of(context).primaryTextTheme.headline3,
+                    ),
+                  ),
+                  DataColumn(
+                    label: Text(
+                      "Email",
+                      style: Theme.of(context).primaryTextTheme.headline3,
+                    ),
+                  ),
+                  DataColumn(
+                    label: Text(
+                      "COVID Status",
+                      style: Theme.of(context).primaryTextTheme.headline3,
+                    ),
+                  ),
+                ],
+                rows: searchSnap.docs != null
+                    ? _buildRow(context, searchSnap.docs)
+                    : Center(
+                        child: Column(
+                        children: [
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Icon(
+                            Icons.people,
+                            size: 60,
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            "No Contact List Found",
+                            style: TextStyle(color: Colors.black, fontSize: 20),
+                          ),
+                        ],
+                      ))),
+          )
+        : Center(
+            child: Column(
+            children: [
+              SizedBox(
+                height: 10,
+              ),
+              Icon(
+                Icons.people,
+                size: 60,
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Text(
+                "All The Contact List Will Show Here.",
+                style: TextStyle(color: Colors.black, fontSize: 20),
+              ),
+            ],
+          ));
+  }
+
+  List<DataRow> _buildRow(
+      BuildContext context, List<DocumentSnapshot> snapshot) {
+    return snapshot
+        .map((data) => renderDataTableUserContact(data, context))
+        .toList();
+  }
+
+  // render data table user contcat list
+  DataRow renderDataTableUserContact(
+      DocumentSnapshot data, BuildContext context) {
+    return DataRow(cells: [
+      DataCell(
+        Text(
+          data.data()['contactName'],
+          style: Theme.of(context).primaryTextTheme.subtitle2,
+        ),
+      ),
+      DataCell(
+        Text(
+          data.data()['contactNumber'],
+          style: Theme.of(context).primaryTextTheme.subtitle2,
+        ),
+      ),
+      DataCell(
+        Text(
+          data.data()['contactEmail'],
+          style: Theme.of(context).primaryTextTheme.subtitle2,
+        ),
+      ),
+      DataCell(
+        Text(
+          data.data()['contactCovidStatus'].toString(),
+          style: Theme.of(context).primaryTextTheme.subtitle2,
+        ),
+      ),
+    ]);
+  }
+
+  // render data table health
+  Widget renderDataTableHealth(
+      uid, cc, cs, csy, gs, im, t, BuildContext context) {
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      padding: EdgeInsets.only(right: 40),
       child: DataTable(
           headingRowColor:
-              MaterialStateColor.resolveWith((states) => Color(0xffA79BDB)),
+              MaterialStateColor.resolveWith((states) => Color(0xffF6C3D3)),
           dataRowColor:
-              MaterialStateColor.resolveWith((states) => Color(0xffDED9F5)),
+              MaterialStateColor.resolveWith((states) => Color(0xffF8DCE5)),
           columns: [
             DataColumn(
               label: Text(
-                "Contact Name",
+                "User ID",
                 style: Theme.of(context).primaryTextTheme.headline3,
               ),
             ),
             DataColumn(
               label: Text(
-                "Mobile Number",
+                "Close Contact",
                 style: Theme.of(context).primaryTextTheme.headline3,
               ),
             ),
             DataColumn(
               label: Text(
-                "Email",
+                "Covid Status",
                 style: Theme.of(context).primaryTextTheme.headline3,
               ),
             ),
             DataColumn(
               label: Text(
-                "COVID Status",
+                "Covid Symptoms",
+                style: Theme.of(context).primaryTextTheme.headline3,
+              ),
+            ),
+            DataColumn(
+              label: Text(
+                "General Symtoms",
+                style: Theme.of(context).primaryTextTheme.headline3,
+              ),
+            ),
+            DataColumn(
+              label: Text(
+                "Immunocompromised",
+                style: Theme.of(context).primaryTextTheme.headline3,
+              ),
+            ),
+            DataColumn(
+              label: Text(
+                "Traveled",
                 style: Theme.of(context).primaryTextTheme.headline3,
               ),
             ),
@@ -219,161 +339,79 @@ class UTMHealthAuthorityHandler {
             DataRow(cells: [
               DataCell(
                 Text(
-                  name,
+                  uid,
                   style: Theme.of(context).primaryTextTheme.subtitle2,
                 ),
               ),
               DataCell(
-                Text(
-                  number,
-                  style: Theme.of(context).primaryTextTheme.subtitle2,
-                ),
+                cc == true
+                    ? Text(
+                        "Yes",
+                        style: Theme.of(context).primaryTextTheme.subtitle2,
+                      )
+                    : Text(
+                        "No",
+                        style: Theme.of(context).primaryTextTheme.subtitle2,
+                      ),
               ),
               DataCell(
-                Text(
-                  email,
-                  style: Theme.of(context).primaryTextTheme.subtitle2,
-                ),
+                cs == true
+                    ? Text(
+                        "Positive",
+                        style: Theme.of(context).primaryTextTheme.subtitle2,
+                      )
+                    : Text(
+                        "Negative",
+                        style: Theme.of(context).primaryTextTheme.subtitle2,
+                      ),
               ),
               DataCell(
-                Text(
-                  covstat,
-                  style: Theme.of(context).primaryTextTheme.subtitle2,
-                ),
+                csy == true
+                    ? Text(
+                        "Yes",
+                        style: Theme.of(context).primaryTextTheme.subtitle2,
+                      )
+                    : Text(
+                        "No",
+                        style: Theme.of(context).primaryTextTheme.subtitle2,
+                      ),
+              ),
+              DataCell(
+                gs == true
+                    ? Text(
+                        "Yes",
+                        style: Theme.of(context).primaryTextTheme.subtitle2,
+                      )
+                    : Text(
+                        "No",
+                        style: Theme.of(context).primaryTextTheme.subtitle2,
+                      ),
+              ),
+              DataCell(
+                im == true
+                    ? Text(
+                        "Yes",
+                        style: Theme.of(context).primaryTextTheme.subtitle2,
+                      )
+                    : Text(
+                        "No",
+                        style: Theme.of(context).primaryTextTheme.subtitle2,
+                      ),
+              ),
+              DataCell(
+                t == true
+                    ? Text(
+                        "Yes",
+                        style: Theme.of(context).primaryTextTheme.subtitle2,
+                      )
+                    : Text(
+                        "No",
+                        style: Theme.of(context).primaryTextTheme.subtitle2,
+                      ),
               ),
             ])
           ]),
     );
-  }
-
-  // render data table health
-  Widget renderDataTableHealth(
-      uid, cc, cs, csy, gs, im, t, BuildContext context) {
-    return DataTable(
-        headingRowColor:
-            MaterialStateColor.resolveWith((states) => Color(0xffF6C3D3)),
-        dataRowColor:
-            MaterialStateColor.resolveWith((states) => Color(0xffF8DCE5)),
-        columns: [
-          DataColumn(
-            label: Text(
-              "User ID",
-              style: Theme.of(context).primaryTextTheme.headline3,
-            ),
-          ),
-          DataColumn(
-            label: Text(
-              "Close Contact",
-              style: Theme.of(context).primaryTextTheme.headline3,
-            ),
-          ),
-          DataColumn(
-            label: Text(
-              "Covid Status",
-              style: Theme.of(context).primaryTextTheme.headline3,
-            ),
-          ),
-          DataColumn(
-            label: Text(
-              "Covid Symptoms",
-              style: Theme.of(context).primaryTextTheme.headline3,
-            ),
-          ),
-          DataColumn(
-            label: Text(
-              "General Symtoms",
-              style: Theme.of(context).primaryTextTheme.headline3,
-            ),
-          ),
-          DataColumn(
-            label: Text(
-              "Immunocompromised",
-              style: Theme.of(context).primaryTextTheme.headline3,
-            ),
-          ),
-          DataColumn(
-            label: Text(
-              "Traveled",
-              style: Theme.of(context).primaryTextTheme.headline3,
-            ),
-          ),
-        ],
-        rows: [
-          DataRow(cells: [
-            DataCell(
-              Text(
-                uid,
-                style: Theme.of(context).primaryTextTheme.subtitle2,
-              ),
-            ),
-            DataCell(
-              cc == true
-                  ? Text(
-                      "Yes",
-                      style: Theme.of(context).primaryTextTheme.subtitle2,
-                    )
-                  : Text(
-                      "No",
-                      style: Theme.of(context).primaryTextTheme.subtitle2,
-                    ),
-            ),
-            DataCell(
-              cs == true
-                  ? Text(
-                      "Positive",
-                      style: Theme.of(context).primaryTextTheme.subtitle2,
-                    )
-                  : Text(
-                      "Negative",
-                      style: Theme.of(context).primaryTextTheme.subtitle2,
-                    ),
-            ),
-            DataCell(
-              csy == true
-                  ? Text(
-                      "Yes",
-                      style: Theme.of(context).primaryTextTheme.subtitle2,
-                    )
-                  : Text(
-                      "No",
-                      style: Theme.of(context).primaryTextTheme.subtitle2,
-                    ),
-            ),
-            DataCell(
-              gs == true
-                  ? Text(
-                      "Yes",
-                      style: Theme.of(context).primaryTextTheme.subtitle2,
-                    )
-                  : Text(
-                      "No",
-                      style: Theme.of(context).primaryTextTheme.subtitle2,
-                    ),
-            ),
-            DataCell(
-              im == true
-                  ? Text(
-                      "Yes",
-                      style: Theme.of(context).primaryTextTheme.subtitle2,
-                    )
-                  : Text(
-                      "No",
-                      style: Theme.of(context).primaryTextTheme.subtitle2,
-                    ),
-            ),
-            DataCell(
-              t == true
-                  ? Text(
-                      "Yes",
-                      style: Theme.of(context).primaryTextTheme.subtitle2,
-                    )
-                  : Text(
-                      "No",
-                      style: Theme.of(context).primaryTextTheme.subtitle2,
-                    ),
-            ),
-          ])
-        ]);
   }
 
   //get covid positive number

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:utmccta/BLL/utmHealthAuthorityHandler.dart';
 
-class SearchPage extends StatefulWidget {
+class ContactList extends StatefulWidget {
   @override
-  _SearchPageState createState() => _SearchPageState();
+  _ContactListState createState() => _ContactListState();
 }
 
-class _SearchPageState extends State<SearchPage> {
+class _ContactListState extends State<ContactList> {
   TextEditingController _search = TextEditingController();
 
   final formKey = GlobalKey<FormState>();
@@ -20,7 +20,7 @@ class _SearchPageState extends State<SearchPage> {
       setState(() {
         isLoading = true;
       });
-      _healthAuthorityHandler.getUserDetails(_search.text);
+      await _healthAuthorityHandler.searchUsersBasedOnRegID(_search.text);
       setState(() {
         isLoading = false;
       });
@@ -37,7 +37,7 @@ class _SearchPageState extends State<SearchPage> {
           child: Column(
             children: [
               Text(
-                'Search For a User By Their Matric Number\nTo Change Their COVID Status',
+                'Search For a User\'s Contacted Persons List By Their Registration ID\nFound In The App',
                 textAlign: TextAlign.center,
                 style: Theme.of(context).primaryTextTheme.headline2,
               ),
@@ -53,7 +53,7 @@ class _SearchPageState extends State<SearchPage> {
               SizedBox(
                 height: 30,
               ),
-              _healthAuthorityHandler.getUserDetails(_search.text),
+              _healthAuthorityHandler.showContactList(context)
             ],
           ),
         ),
@@ -67,7 +67,7 @@ class _SearchPageState extends State<SearchPage> {
       child: MaterialButton(
         elevation: 0,
         onPressed: () => initiateSearch(),
-        color: Theme.of(context).accentColor,
+        color: Theme.of(context).primaryColorDark,
         height: 65,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -113,7 +113,7 @@ class _SearchPageState extends State<SearchPage> {
               color: Colors.black,
             ),
           ),
-          labelText: "Search For a User",
+          labelText: "Enter Registration ID",
           labelStyle: Theme.of(context).primaryTextTheme.bodyText2),
     );
   }

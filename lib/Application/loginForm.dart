@@ -195,6 +195,7 @@ class _WebLoginLayoutState extends State<WebLoginLayout> {
                                 Container(
                                   padding: EdgeInsets.only(left: 5, right: 5),
                                   child: TextFormField(
+                                    onEditingComplete: () => adminLogin(),
                                     textInputAction: TextInputAction.send,
                                     validator: (val) {
                                       return val.length > 6

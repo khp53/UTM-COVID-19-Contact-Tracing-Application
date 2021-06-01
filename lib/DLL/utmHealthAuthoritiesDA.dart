@@ -22,10 +22,11 @@ class UTMHealthAuthoritiesDA {
   }
 
   // get all users contact list
-  CollectionReference getAllUsersContactList(id) {
+  Future getAllUsersContactList(String id) async {
     return _firestore
         .collection("TraceContacts")
-        .doc("id")
-        .collection("contactedWith");
+        .doc(id)
+        .collection("contactedWith")
+        .get();
   }
 }

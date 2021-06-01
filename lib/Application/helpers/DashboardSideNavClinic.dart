@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:utmccta/Application/contactList.dart';
 import 'package:utmccta/Application/dashboard.dart';
 import 'package:utmccta/Application/searchPage.dart';
 import 'package:utmccta/BLL/utmHealthAuthorityHandler.dart';
@@ -21,7 +22,7 @@ class _DashBoardSideNavClinicState extends State<DashBoardSideNavClinic>
   @override
   void initState() {
     super.initState();
-    tabController = new TabController(vsync: this, length: 2, initialIndex: 0)
+    tabController = new TabController(vsync: this, length: 3, initialIndex: 0)
       ..addListener(() {
         setState(() {
           active = tabController.index;
@@ -95,6 +96,7 @@ class _DashBoardSideNavClinicState extends State<DashBoardSideNavClinic>
                 children: [
                   DashboardHealthAuthorities(),
                   SearchPage(),
+                  ContactList(),
                 ],
               ),
             )
@@ -173,6 +175,38 @@ class _DashBoardSideNavClinicState extends State<DashBoardSideNavClinic>
                 ),
                 Text(
                   "Search Users",
+                  style: Theme.of(context).textTheme.bodyText1,
+                ),
+              ]),
+            ),
+          ),
+        ),
+        Spacer(),
+        // ignore: deprecated_member_use
+        FlatButton(
+          color: tabController.index == 2
+              ? Theme.of(context).accentColor
+              : Colors.transparent,
+          //color: Colors.grey[100],
+          onPressed: () {
+            tabController.animateTo(2);
+            drawerStatus ? Navigator.pop(context) : print("");
+          },
+
+          child: Align(
+            alignment: Alignment.centerLeft,
+            child: Container(
+              padding: EdgeInsets.only(top: 22, bottom: 22, right: 22),
+              child: Row(children: [
+                Icon(
+                  Icons.people,
+                  color: Colors.white,
+                ),
+                SizedBox(
+                  width: 8,
+                ),
+                Text(
+                  "Contact List",
                   style: Theme.of(context).textTheme.bodyText1,
                 ),
               ]),
