@@ -29,4 +29,9 @@ class UTMHealthAuthoritiesDA {
         .collection("contactedWith")
         .get();
   }
+
+  // update heath status
+  Future updateHealthDataUser(dID, Map healthMap) {
+    return _firestore.collection("HealthStatus").doc("$dID").update(healthMap);
+  }
 }

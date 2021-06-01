@@ -1,7 +1,9 @@
 import 'package:utmccta/DLL/healthStatusDA.dart';
+import 'package:utmccta/DLL/utmHealthAuthoritiesDA.dart';
 
 class HealthStatusFormHandler {
   HealthStatusDA _healthStatusDA = HealthStatusDA();
+  UTMHealthAuthoritiesDA _authoritiesDA = UTMHealthAuthoritiesDA();
 
   // List of questions
   List<String> _questions = [
@@ -57,5 +59,17 @@ class HealthStatusFormHandler {
       "riskStatus": riskStatus
     };
     _healthStatusDA.uploadUserInfo(userHealthMap);
+  }
+
+  updateUserData(dID, ccTxt, csTxt, csyTxt, gsTxt, immunText, trText) async {
+    Map<String, dynamic> healthMap = {
+      "closeContact": ccTxt == "YES" ? true : false,
+      "covidStatus": csTxt == "POSITIVE" ? true : false,
+      "covidSymptoms": csyTxt == "YES" ? true : false,
+      "generalSymptoms": gsTxt == "YES" ? true : false,
+      "immunocompromised": immunText == "YES" ? true : false,
+      "traveled": trText == "YES" ? true : false,
+    };
+    await _authoritiesDA.updateHealthDataUser(dID, healthMap);
   }
 }

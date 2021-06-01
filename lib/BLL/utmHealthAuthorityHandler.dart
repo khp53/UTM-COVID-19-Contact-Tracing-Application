@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:utmccta/Application/healthStatusUpdateForm.dart';
 import 'package:utmccta/BLL/users.dart';
 import 'package:utmccta/BLL/utmHealthAuthorities.dart';
 import 'package:utmccta/DLL/utmHealthAuthoritiesDA.dart';
@@ -7,6 +8,8 @@ import 'package:utmccta/DLL/utmHealthAuthoritiesDA.dart';
 class UTMHealthAuthorityHandler {
   UTMHealthAuthoritiesDA _authoritiesDA = UTMHealthAuthoritiesDA();
   QuerySnapshot searchSnap;
+  QuerySnapshot searchSnap1;
+
   //Show clinic profile image in the menue
   Widget getClinicProfileImage() {
     return StreamBuilder(
@@ -128,6 +131,47 @@ class UTMHealthAuthorityHandler {
                                 SizedBox(
                                   height: 15,
                                 ),
+                                Container(
+                                  width: 150,
+                                  margin: EdgeInsets.only(
+                                      left: MediaQuery.of(context).size.width /
+                                          1.55),
+                                  child: MaterialButton(
+                                    elevation: 0,
+                                    onPressed: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (_) =>
+                                                  HealthStatusUpdateForm(
+                                                    userName: _users.name,
+                                                    docID: docID,
+                                                  )));
+                                    },
+                                    color: Theme.of(context).accentColor,
+                                    height: 50,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          'EDIT',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodyText1,
+                                        ),
+                                        SizedBox(width: 8),
+                                        Icon(
+                                          Icons.edit,
+                                          color: Colors.white,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  height: 15,
+                                ),
                                 renderDataTableHealth(
                                   _users.userID,
                                   _users.closeContact,
@@ -139,7 +183,7 @@ class UTMHealthAuthorityHandler {
                                   context,
                                 ),
                                 SizedBox(
-                                  height: 10,
+                                  height: 20,
                                 ),
                               ]);
                         });
@@ -155,6 +199,153 @@ class UTMHealthAuthorityHandler {
             style: TextStyle(color: Colors.black),
           );
         });
+  }
+
+  searchUSersBasedOnUserID(searchT) async {
+    await _authoritiesDA
+        .getAllUserDetails()
+        .where('userID', isEqualTo: searchT)
+        .get()
+        .then((value) {
+      searchSnap1 = value;
+    });
+  }
+
+  Widget showUserDetails() {
+    return searchSnap1 != null
+        ? StreamBuilder(
+            stream: _authoritiesDA.getAllUserHealthDetails().snapshots(),
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return Text('Something went wrong');
+              }
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Center(child: CircularProgressIndicator());
+              }
+              if (snapshot.hasData) {
+                return ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: snapshot.data.docs.length,
+                    itemBuilder: (context, index) {
+                      var docID =
+                          snapshot.data.docs[index].data()['documentID'];
+                      print(docID);
+
+                      return _buildListTile(
+                          context, searchSnap1.docs, index, snapshot, docID);
+                    });
+              }
+              return Text(
+                'No User Found',
+                style: TextStyle(color: Colors.black),
+              );
+            })
+        : Center(
+            child: Column(
+            children: [
+              SizedBox(
+                height: 10,
+              ),
+              Icon(
+                Icons.people,
+                size: 60,
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Text(
+                "No User Yet Found",
+                style: TextStyle(color: Colors.black, fontSize: 20),
+              ),
+            ],
+          ));
+  }
+
+  _buildListTile(context, List<DocumentSnapshot> snap, index,
+      AsyncSnapshot<dynamic> snapshot, docID) {
+    return snap
+        .map((e) => extendedListtile(e, context, index, snapshot, docID));
+  }
+
+  Widget extendedListtile(DocumentSnapshot data, context, index,
+      AsyncSnapshot<dynamic> snapshot, docID) {
+    return ExpansionTile(
+        collapsedBackgroundColor: Colors.white,
+        backgroundColor: Colors.white,
+        childrenPadding: EdgeInsets.fromLTRB(70, 20, 0, 20),
+        title: Text(
+          data.data()['name'],
+          style: Theme.of(context).primaryTextTheme.bodyText1,
+        ),
+        leading: CircleAvatar(
+          backgroundImage: NetworkImage(data.data()['img']),
+        ),
+        subtitle: Text(
+          snapshot.data.docs[index].data()['riskStatus'],
+          style: Theme.of(context).textTheme.headline4,
+        ),
+        children: [
+          Align(
+            alignment: Alignment.center,
+            child: Text(
+              'Health Information',
+              style: Theme.of(context).primaryTextTheme.bodyText1,
+              textAlign: TextAlign.center,
+            ),
+          ),
+          SizedBox(
+            height: 15,
+          ),
+          Container(
+            width: 150,
+            margin:
+                EdgeInsets.only(left: MediaQuery.of(context).size.width / 1.55),
+            child: MaterialButton(
+              elevation: 0,
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => HealthStatusUpdateForm(
+                              userName: data.data()['name'],
+                              docID: docID,
+                            )));
+              },
+              color: Theme.of(context).accentColor,
+              height: 50,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    'EDIT',
+                    style: Theme.of(context).textTheme.bodyText1,
+                  ),
+                  SizedBox(width: 8),
+                  Icon(
+                    Icons.edit,
+                    color: Colors.white,
+                  ),
+                ],
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 15,
+          ),
+          renderDataTableHealth(
+            data.data()['userID'],
+            snapshot.data.docs[index].data()['closeContact'],
+            snapshot.data.docs[index].data()['covidStatus'],
+            snapshot.data.docs[index].data()['covidSymptoms'],
+            snapshot.data.docs[index].data()['generalSymptoms'],
+            snapshot.data.docs[index].data()['immunocompromised'],
+            snapshot.data.docs[index].data()['traveled'],
+            context,
+          ),
+          SizedBox(
+            height: 20,
+          ),
+        ]);
   }
 
   // search for user contact list
@@ -343,72 +534,60 @@ class UTMHealthAuthorityHandler {
                   style: Theme.of(context).primaryTextTheme.subtitle2,
                 ),
               ),
-              DataCell(
-                cc == true
-                    ? Text(
-                        "Yes",
-                        style: Theme.of(context).primaryTextTheme.subtitle2,
-                      )
-                    : Text(
-                        "No",
-                        style: Theme.of(context).primaryTextTheme.subtitle2,
-                      ),
-              ),
-              DataCell(
-                cs == true
-                    ? Text(
-                        "Positive",
-                        style: Theme.of(context).primaryTextTheme.subtitle2,
-                      )
-                    : Text(
-                        "Negative",
-                        style: Theme.of(context).primaryTextTheme.subtitle2,
-                      ),
-              ),
-              DataCell(
-                csy == true
-                    ? Text(
-                        "Yes",
-                        style: Theme.of(context).primaryTextTheme.subtitle2,
-                      )
-                    : Text(
-                        "No",
-                        style: Theme.of(context).primaryTextTheme.subtitle2,
-                      ),
-              ),
-              DataCell(
-                gs == true
-                    ? Text(
-                        "Yes",
-                        style: Theme.of(context).primaryTextTheme.subtitle2,
-                      )
-                    : Text(
-                        "No",
-                        style: Theme.of(context).primaryTextTheme.subtitle2,
-                      ),
-              ),
-              DataCell(
-                im == true
-                    ? Text(
-                        "Yes",
-                        style: Theme.of(context).primaryTextTheme.subtitle2,
-                      )
-                    : Text(
-                        "No",
-                        style: Theme.of(context).primaryTextTheme.subtitle2,
-                      ),
-              ),
-              DataCell(
-                t == true
-                    ? Text(
-                        "Yes",
-                        style: Theme.of(context).primaryTextTheme.subtitle2,
-                      )
-                    : Text(
-                        "No",
-                        style: Theme.of(context).primaryTextTheme.subtitle2,
-                      ),
-              ),
+              DataCell(cc == true
+                  ? Text(
+                      "Yes",
+                      style: Theme.of(context).primaryTextTheme.subtitle2,
+                    )
+                  : Text(
+                      "No",
+                      style: Theme.of(context).primaryTextTheme.subtitle2,
+                    )),
+              DataCell(cs == true
+                  ? Text(
+                      "Positive",
+                      style: Theme.of(context).primaryTextTheme.subtitle2,
+                    )
+                  : Text(
+                      "Negative",
+                      style: Theme.of(context).primaryTextTheme.subtitle2,
+                    )),
+              DataCell(csy == true
+                  ? Text(
+                      "Yes",
+                      style: Theme.of(context).primaryTextTheme.subtitle2,
+                    )
+                  : Text(
+                      "No",
+                      style: Theme.of(context).primaryTextTheme.subtitle2,
+                    )),
+              DataCell(gs == true
+                  ? Text(
+                      "Yes",
+                      style: Theme.of(context).primaryTextTheme.subtitle2,
+                    )
+                  : Text(
+                      "No",
+                      style: Theme.of(context).primaryTextTheme.subtitle2,
+                    )),
+              DataCell(im == true
+                  ? Text(
+                      "Yes",
+                      style: Theme.of(context).primaryTextTheme.subtitle2,
+                    )
+                  : Text(
+                      "No",
+                      style: Theme.of(context).primaryTextTheme.subtitle2,
+                    )),
+              DataCell(t == true
+                  ? Text(
+                      "Yes",
+                      style: Theme.of(context).primaryTextTheme.subtitle2,
+                    )
+                  : Text(
+                      "No",
+                      style: Theme.of(context).primaryTextTheme.subtitle2,
+                    )),
             ])
           ]),
     );
