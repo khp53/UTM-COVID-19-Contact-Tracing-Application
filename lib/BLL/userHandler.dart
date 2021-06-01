@@ -19,7 +19,7 @@ class UserHandler extends StatefulWidget {
       "email": email,
       "address": address,
       "postcode": int.parse(postcode),
-      "documentID": _userDA.getUID(),
+      "documentID": _userDA.getUID().toString(),
     };
     _userDA.uploadUserInfo(userInfoMap);
     _userDA.createBlankLocationEntry();
@@ -173,7 +173,7 @@ class _UserHandlerState extends State<UserHandler> {
                               child: Text(
                                 snapshot3.data.data()["mobileNumber"],
                                 style: TextStyle(
-                                    color: Colors.white, fontSize: 14),
+                                    color: Colors.white, fontSize: 13),
                               ),
                             ),
                           ],
@@ -195,6 +195,28 @@ class _UserHandlerState extends State<UserHandler> {
                               flex: 1,
                               child: Text(
                                 snapshot3.data.data()["icNo"],
+                                style: Theme.of(context).textTheme.bodyText1,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height / 65,
+                        ),
+                        // ic / passport number
+                        Row(
+                          children: [
+                            Expanded(
+                              flex: 2,
+                              child: Text(
+                                'Registration No:',
+                                style: Theme.of(context).textTheme.bodyText2,
+                              ),
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: Text(
+                                snapshot3.data.data()["documentID"],
                                 style: Theme.of(context).textTheme.bodyText1,
                               ),
                             ),

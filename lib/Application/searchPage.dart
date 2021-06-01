@@ -53,7 +53,7 @@ class _SearchPageState extends State<SearchPage> {
               SizedBox(
                 height: 30,
               ),
-              _healthAuthorityHandler.getUserDetails(_search.text)
+              _healthAuthorityHandler.getUserDetails(_search.text),
             ],
           ),
         ),

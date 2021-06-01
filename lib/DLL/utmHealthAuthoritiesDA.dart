@@ -21,6 +21,11 @@ class UTMHealthAuthoritiesDA {
     return _firestore.collection("HealthStatus");
   }
 
+  //get specific user health data
+  DocumentReference getSpecificUserHealthData(docID) {
+    return _firestore.collection("HealthStatus").doc("$docID");
+  }
+
   // get all users contact list
   Future getAllUsersContactList(String id) async {
     return _firestore

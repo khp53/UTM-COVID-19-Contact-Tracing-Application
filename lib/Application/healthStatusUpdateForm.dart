@@ -243,8 +243,8 @@ class _HealthStatusUpdateFormState extends State<HealthStatusUpdateForm> {
               immunController.text.toUpperCase(),
               trController.text.toUpperCase());
 
-          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              margin: EdgeInsets.all(20), content: Text('Update Sucessful')));
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text('Update Sucessful')));
 
           Navigator.pop(context);
         },
