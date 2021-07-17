@@ -55,7 +55,7 @@ class _DashBoardSideNavClinicState extends State<DashBoardSideNavClinic>
                   width: 10,
                 ),
                 Text(
-                  'Admin Dashboard  UTM CCTA',
+                  'Health Authorities Dashboard UTM CCTA',
                   style: Theme.of(context).textTheme.headline2,
                 ),
               ],

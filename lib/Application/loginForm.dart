@@ -45,8 +45,10 @@ class _WebLoginLayoutState extends State<WebLoginLayout> {
               passwordTextEditingController.text)
           .then((result) async {
         if (result != null) {
-          Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => DashboardHandler()));
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => DashboardHandler()),
+              (route) => false);
         } else {
           setState(() {
             isLoading = false;
