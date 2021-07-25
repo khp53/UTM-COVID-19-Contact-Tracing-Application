@@ -98,6 +98,8 @@ class _GoogleNearbyAPIState extends State<GoogleNearbyAPI> {
           'contactTime': DateTime.now(),
           'contactLocationLatitude': position.latitude,
           'contactLocationLongitudee': position.longitude,
+          'deviceToken':
+              await _traceContactsDA.getDeviceTokenOfContactedPerson(uid: name),
         });
       }, onEndpointLost: (id) {
         print(id);

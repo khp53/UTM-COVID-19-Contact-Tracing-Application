@@ -1,9 +1,11 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:utmccta/Application/locationEntryForm.dart';
 import 'package:utmccta/Application/locationHistoryPage.dart';
 import 'package:utmccta/BLL/googleNearbyAPI.dart';
 import 'package:utmccta/Application/manageProfile.dart';
+import 'package:utmccta/DLL/userDA.dart';
 
 class Homepage extends StatefulWidget {
   @override
@@ -12,6 +14,8 @@ class Homepage extends StatefulWidget {
 
 class _HomepageState extends State<Homepage> {
   int _selectedIndex = 0;
+
+  FirebaseMessaging _fcm = FirebaseMessaging.instance;
 
   //stab text style
   // static const TextStyle optionStyle =
@@ -29,6 +33,17 @@ class _HomepageState extends State<Homepage> {
     setState(() {
       _selectedIndex = index;
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getToken();
+  }
+
+  getToken() async {
+    String deviceToken = await _fcm.getToken();
+    UserDA().uploadUserDeviceToken(deviceToken);
   }
 
   @override

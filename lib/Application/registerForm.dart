@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:utmccta/Application/healthStatusForm.dart';
@@ -490,21 +491,20 @@ class _RegisterUserDataState extends State<RegisterUserData> {
       TextEditingController();
   final TextEditingController _postCodeController = TextEditingController();
 
-  registerUserData() {
+  registerUserData() async {
     if (formKey.currentState.validate()) {
       setState(() {
         isLoading = false;
       });
 
       _userHandler.registerUserDataHandler(
-        _userIDController.text,
-        _icNoController.text,
-        _nameController.text,
-        widget.phoneNo,
-        _emailController.text,
-        _currentAddressController.text,
-        _postCodeController.text,
-      );
+          _userIDController.text,
+          _icNoController.text,
+          _nameController.text,
+          widget.phoneNo,
+          _emailController.text,
+          _currentAddressController.text,
+          _postCodeController.text);
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(

@@ -20,9 +20,11 @@ exports.sendExposureNotification = functions.firestore.document('HealthStatus/{u
 
         const payload = {
             notification: {
+            android_channel_id: "high_importance_channel",
             title: 'Contact Exposure Alert!',
             body: 'One of your contacts has been tested positive for COVID-19!',
-            click_action: 'FLUTTER_NOTIFICATION_CLICK'
+            click_action: 'FLUTTER_NOTIFICATION_CLICK',
+            priority: "high",
             }
         };
     

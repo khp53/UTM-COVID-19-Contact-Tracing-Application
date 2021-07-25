@@ -7,6 +7,7 @@ class Users {
   final String img;
   final String name;
   final int postcode;
+  final String deviceToken;
   final String riskStatus;
   final bool closeContact;
   final bool covidStatus;
@@ -30,7 +31,8 @@ class Users {
       this.covidSymptoms,
       this.generalSymtoms,
       this.immunocompromised,
-      this.traveled);
+      this.traveled,
+      this.deviceToken);
 
   Users.fromMap(Map<String, dynamic> userMap)
       : assert(userMap['userID'] != null),
@@ -41,6 +43,7 @@ class Users {
         assert(userMap['img'] != null),
         assert(userMap['name'] != null),
         assert(userMap['postcode'] != null),
+        assert(userMap['deviceToken'] != null),
         assert(userMap['riskStatus'] != null),
         assert(userMap['closeContact'] != null),
         assert(userMap['covidStatus'] != null),
@@ -56,6 +59,7 @@ class Users {
         img = userMap['img'],
         name = userMap['name'],
         postcode = userMap['postcode'],
+        deviceToken = userMap['deviceToken'],
         riskStatus = userMap['riskStatus'],
         closeContact = userMap['closeContact'],
         covidStatus = userMap['covidStatus'],

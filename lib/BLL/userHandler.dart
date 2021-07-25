@@ -76,6 +76,7 @@ class _UserHandlerState extends State<UserHandler> {
                       snapshot2.data.data()["generalSymtoms"],
                       snapshot2.data.data()["immunocompromised"],
                       snapshot2.data.data()["traveled"],
+                      snapshot1.data.data()["deviceToken"],
                     );
                     return ClipRRect(
                       borderRadius: BorderRadius.all(Radius.circular(5)),

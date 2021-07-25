@@ -89,6 +89,7 @@ class _AdminHandlerState extends State<AdminHandler> {
                             snapshot.data.docs[index].data()["address"],
                             snapshot.data.docs[index].data()["icNo"],
                             snapshot.data.docs[index].data()["postcode"],
+                            snapshot.data.docs[index].data()["deviceToken"],
                             snapshot1.data.docs[index].data()["closeContact"],
                             snapshot1.data.docs[index].data()["covidStatus"],
                             snapshot1.data.docs[index].data()["covidSymptoms"],

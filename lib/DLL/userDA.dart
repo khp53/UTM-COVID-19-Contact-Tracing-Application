@@ -46,6 +46,14 @@ class UserDA {
         .set(userMap);
   }
 
+  //save device token from homepage
+  Future uploadUserDeviceToken(deviceToken) async {
+    return await FirebaseFirestore.instance
+        .collection("Users")
+        .doc(_auth.currentUser.uid)
+        .update({'deviceToken': deviceToken});
+  }
+
   // get user profiles based on uid
   DocumentReference getUserProfile() {
     return _firestore.collection("Users").doc(_auth.currentUser.uid);

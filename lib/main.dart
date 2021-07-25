@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:utmccta/Application/healthStatusForm.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:utmccta/Application/loginForm.dart';
@@ -10,14 +12,62 @@ import 'package:utmccta/Application/welcome_screen.dart';
 import 'package:utmccta/BLL/dashboardHandler.dart';
 import 'Application/homepage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:after_layout/after_layout.dart';
 
+const AndroidNotificationChannel channel = AndroidNotificationChannel(
+    'high_importance_channel', // id
+    'High Importance Notifications', // title
+    'This channel is used for important notifications.', // description
+    importance: Importance.high,
+    playSound: true,
+    showBadge: true);
+
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(UTMCCTA());
 }
 
-class UTMCCTA extends StatelessWidget {
+class UTMCCTA extends StatefulWidget {
+  @override
+  _UTMCCTAState createState() => _UTMCCTAState();
+}
+
+class _UTMCCTAState extends State<UTMCCTA> {
+  @override
+  void initState() {
+    super.initState();
+    var initialzationSettingsAndroid =
+        AndroidInitializationSettings('@mipmap/ic_launcher');
+    var initializationSettings =
+        InitializationSettings(android: initialzationSettingsAndroid);
+
+    flutterLocalNotificationsPlugin.initialize(initializationSettings);
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      RemoteNotification notification = message.notification;
+      AndroidNotification android = message.notification?.android;
+      if (notification != null && android != null) {
+        flutterLocalNotificationsPlugin.show(
+            notification.hashCode,
+            notification.title,
+            notification.body,
+            NotificationDetails(
+              android: AndroidNotificationDetails(
+                channel.id,
+                channel.name,
+                channel.description,
+                icon: android?.smallIcon,
+                priority: Priority.high,
+                playSound: true,
+                channelShowBadge: true,
+              ),
+            ));
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -29,10 +79,11 @@ class UTMCCTA extends StatelessWidget {
 
 class InfoScreen extends StatefulWidget {
   @override
-  _InfoScreenState createState() => _InfoScreenState();
+  InfoScreenState createState() => InfoScreenState();
 }
 
-class _InfoScreenState extends State<InfoScreen> {
+class InfoScreenState extends State<InfoScreen>
+    with AfterLayoutMixin<InfoScreen> {
   Future checkFirstSeen() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool _seen = (prefs.getBool('seen') ?? false);
@@ -44,6 +95,9 @@ class _InfoScreenState extends State<InfoScreen> {
       return '/welcome';
     }
   }
+
+  @override
+  void afterFirstLayout(BuildContext context) => checkFirstSeen();
 
   @override
   Widget build(BuildContext context) {

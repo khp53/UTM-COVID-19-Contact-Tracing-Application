@@ -35,42 +35,55 @@ class TraceContactsDA {
   }
 
   Future<String> getEmailOfContactedPerson({uid}) async {
-    String email = '';
+    String _email = '';
     await _firestore.collection('Users').doc(uid).get().then((doc) {
       if (doc.exists) {
-        email = doc.data()['email'];
+        _email = doc.data()['email'];
       } else {
         // doc.data() will be undefined in this case
         print("No such document!");
       }
     });
-    return email;
+    return _email;
   }
 
   Future<String> getPhoneNoOfContactedPerson({String uid}) async {
-    String phoneNumber = '';
+    String _phoneNumber = '';
     await _firestore.collection('Users').doc(uid).get().then((doc) {
       if (doc.exists) {
-        phoneNumber = doc.data()['mobileNumber'];
+        _phoneNumber = doc.data()['mobileNumber'];
       } else {
         // doc.data() will be undefined in this case
         print("No such document!");
       }
     });
-    return phoneNumber;
+    return _phoneNumber;
   }
 
   Future<String> getNameOfContactedPerson({String uid}) async {
-    String name = '';
+    String _name = '';
     await _firestore.collection('Users').doc(uid).get().then((doc) {
       if (doc.exists) {
-        name = doc.data()['name'];
+        _name = doc.data()['name'];
       } else {
         // doc.data() will be undefined in this case
         print("No such document!");
       }
     });
-    return name;
+    return _name;
+  }
+
+  Future<String> getDeviceTokenOfContactedPerson({String uid}) async {
+    String _deviceToken = '';
+    await _firestore.collection('Users').doc(uid).get().then((doc) {
+      if (doc.exists) {
+        _deviceToken = doc.data()['deviceToken'];
+      } else {
+        // doc.data() will be undefined in this case
+        print("No such document!");
+      }
+    });
+    return _deviceToken;
   }
 
   Future<bool> getCovidStatusOfContactedPerson({String uid}) async {

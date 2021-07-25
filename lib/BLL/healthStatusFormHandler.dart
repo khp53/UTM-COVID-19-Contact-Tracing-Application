@@ -1,9 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:utmccta/DLL/healthStatusDA.dart';
 import 'package:utmccta/DLL/utmHealthAuthoritiesDA.dart';
 
 class HealthStatusFormHandler {
   HealthStatusDA _healthStatusDA = HealthStatusDA();
   UTMHealthAuthoritiesDA _authoritiesDA = UTMHealthAuthoritiesDA();
+  FirebaseAuth _auth = FirebaseAuth.instance;
 
   // List of questions
   List<String> _questions = [
@@ -56,7 +58,8 @@ class HealthStatusFormHandler {
       "traveled": q4Answer,
       "closeContact": q5Answer,
       "covidStatus": q6Answer,
-      "riskStatus": riskStatus
+      "riskStatus": riskStatus,
+      "documentId": _auth.currentUser.uid
     };
     _healthStatusDA.uploadUserInfo(userHealthMap);
   }
