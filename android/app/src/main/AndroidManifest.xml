@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <!-- Optional: only required for FILE payloads-->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
@@ -15,7 +16,7 @@
         android:name=".Application"
         android:label="UTM CCTA"
         android:icon="@mipmap/ic_launcher">
-
+       <service android:name=".MyService" android:exported="true" android:enabled="true"/>
         <meta-data android:name="com.google.android.geo.API_KEY"
               android:value="AIzaSyBE4AIf7zFoPKBi7X_gbId7384vP_OKHgo"/>
               
@@ -49,6 +50,8 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+            <intent-filter>
                 <action android:name="FLUTTER_NOTIFICATION_CLICK" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>

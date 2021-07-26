@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:utmccta/Application/locationEntryForm.dart';
 import 'package:utmccta/Application/locationHistoryPage.dart';
@@ -108,6 +111,22 @@ class _HomeState extends State<Home> {
     _api.createState().checkIfGPSOn();
   }
 
+  void startServiceInPlatform() async {
+    if (Platform.isAndroid) {
+      var methodChannel = MethodChannel("com.karimul.utmccta");
+      String data = await methodChannel.invokeMethod("startService");
+      debugPrint(data);
+    }
+  }
+
+  void stopServiceInPlatform() async {
+    if (Platform.isAndroid) {
+      var methodChannel = MethodChannel("com.karimul.utmccta");
+      String data = await methodChannel.invokeMethod("stopService");
+      debugPrint(data);
+    }
+  }
+
   Widget scanButton() {
     return Container(
         child: Column(
@@ -151,6 +170,7 @@ class _HomeState extends State<Home> {
                       }
                       _api.createState().adverise();
                       _api.createState().discovery();
+                      startServiceInPlatform();
                     }
                   },
                   child: Center(
@@ -199,6 +219,8 @@ class _HomeState extends State<Home> {
                         }
                         _api.createState().stopAdvertising();
                         _api.createState().stopDiscovery();
+
+                        stopServiceInPlatform();
                       },
                       child: Center(
                         child: Text(
