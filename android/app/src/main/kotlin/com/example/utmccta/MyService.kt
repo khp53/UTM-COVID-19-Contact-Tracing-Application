@@ -14,9 +14,9 @@ class MyService : Service() {
         super.onCreate()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val builder =  NotificationCompat.Builder(this, "messages")
-                    .setContentText("This is running in Background")
-                    .setContentTitle("Flutter Background")
-                    .setSmallIcon(R.drawable.launch_background)
+                    .setContentText("Contact Tracing Running In The Background")
+                    .setContentTitle("UTM CCTA")
+                    .setSmallIcon(R.mipmap.ic_stat_notification_icon_one)
             startForeground(101, builder.build())
         }
     }

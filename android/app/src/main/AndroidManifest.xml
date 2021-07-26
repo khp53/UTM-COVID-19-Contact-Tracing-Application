@@ -17,9 +17,12 @@
         android:label="UTM CCTA"
         android:icon="@mipmap/ic_launcher">
        <service android:name=".MyService" android:exported="true" android:enabled="true"/>
-        <meta-data android:name="com.google.android.geo.API_KEY"
-              android:value="AIzaSyBE4AIf7zFoPKBi7X_gbId7384vP_OKHgo"/>
-              
+        <meta-data 
+          android:name="com.google.android.geo.API_KEY"
+          android:value="AIzaSyBE4AIf7zFoPKBi7X_gbId7384vP_OKHgo"/>
+        <meta-data 
+          android:name="com.google.firebase.messaging.default_notification_icon"
+          android:resource="@mipmap/ic_stat_notification_icon_one"/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

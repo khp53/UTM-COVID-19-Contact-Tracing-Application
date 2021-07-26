@@ -77,7 +77,7 @@ class _AdminHandlerState extends State<AdminHandler> {
                   if (snapshot1.hasData) {
                     return ListView.builder(
                         shrinkWrap: true,
-                        itemCount: snapshot1.data.docs.length,
+                        itemCount: snapshot.data.docs.length,
                         itemBuilder: (context, index) {
                           Users _users = Users(
                             snapshot.data.docs[index].data()["name"],
@@ -89,7 +89,6 @@ class _AdminHandlerState extends State<AdminHandler> {
                             snapshot.data.docs[index].data()["address"],
                             snapshot.data.docs[index].data()["icNo"],
                             snapshot.data.docs[index].data()["postcode"],
-                            snapshot.data.docs[index].data()["deviceToken"],
                             snapshot1.data.docs[index].data()["closeContact"],
                             snapshot1.data.docs[index].data()["covidStatus"],
                             snapshot1.data.docs[index].data()["covidSymptoms"],
@@ -98,6 +97,7 @@ class _AdminHandlerState extends State<AdminHandler> {
                             snapshot1.data.docs[index]
                                 .data()["immunocompromised"],
                             snapshot1.data.docs[index].data()["traveled"],
+                            snapshot.data.docs[index].data()["deviceToken"],
                           );
                           return Column(
                             children: [
