@@ -40,8 +40,8 @@ class _UTMCCTAState extends State<UTMCCTA> {
   void initState() {
     super.initState();
     if (!kIsWeb) {
-      var initialzationSettingsAndroid =
-          AndroidInitializationSettings('@mipmap/ic_launcher');
+      var initialzationSettingsAndroid = AndroidInitializationSettings(
+          '@mipmap/ic_stat_notification_icon_one');
       var initializationSettings =
           InitializationSettings(android: initialzationSettingsAndroid);
 
