@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:utmccta/Application/healthStatusForm.dart';
 import 'package:utmccta/Application/homepage.dart';
 import 'package:utmccta/BLL/userHandler.dart';
@@ -21,13 +21,14 @@ class _RegisterMobileNumberState extends State<RegisterMobileNumber> {
   bool isLoading = false;
   String verificationId;
   bool codeSent = false;
+  String _otp = '';
 
   // visibility status toggle of edit number button
   bool _visibility = false;
 
   //text field controller
-  final TextEditingController _phoneNumberController = TextEditingController();
-  final TextEditingController _otpController = TextEditingController();
+  TextEditingController _phoneNumberController = TextEditingController();
+  //TextEditingController _otpController = TextEditingController();
 
   AuthCredential authCreds;
 
@@ -119,7 +120,7 @@ class _RegisterMobileNumberState extends State<RegisterMobileNumber> {
       });
 
       authCreds = PhoneAuthProvider.credential(
-          verificationId: verificationId, smsCode: _otpController.text.trim());
+          verificationId: verificationId, smsCode: _otp.trim());
 
       final UserCredential authResult = await FirebaseAuth.instance
           .signInWithCredential(authCreds)
@@ -183,14 +184,6 @@ class _RegisterMobileNumberState extends State<RegisterMobileNumber> {
   }
 
   @override
-  void dispose() {
-    // Clean up the controller when the Widget is disposed
-    _phoneNumberController.dispose();
-    _otpController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return codeSent ? otpForm() : phoneNumberForm();
   }
@@ -225,33 +218,7 @@ class _RegisterMobileNumberState extends State<RegisterMobileNumber> {
                     SizedBox(
                       height: MediaQuery.of(context).size.height / 15,
                     ),
-                    TextFormField(
-                      controller: _phoneNumberController,
-                      keyboardType: TextInputType.phone,
-                      textInputAction: TextInputAction.done,
-                      validator: (value) {
-                        return value.isEmpty
-                            ? "Please Enter a Valid Phone Number"
-                            : null;
-                      },
-                      style: Theme.of(context).textTheme.bodyText1,
-                      decoration: InputDecoration(
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5),
-                          borderSide: BorderSide(
-                            color: Colors.white70,
-                          ),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(5),
-                          borderSide: BorderSide(
-                            color: Colors.white,
-                          ),
-                        ),
-                        labelText: "Phone Number (ie: +60XXXXXXXXXX)",
-                        labelStyle: Theme.of(context).textTheme.bodyText2,
-                      ),
-                    ),
+                    _buildPhoneNumberFormFIeld(),
                     SizedBox(
                       height: MediaQuery.of(context).size.height / 30,
                     ),
@@ -263,7 +230,7 @@ class _RegisterMobileNumberState extends State<RegisterMobileNumber> {
                             elevation: 0,
                             color: Theme.of(context).accentColor,
                             onPressed: () {
-                              verifyPhone(_phoneNumberController.text);
+                              verifyPhone('+60${_phoneNumberController.text}');
                             },
                             child: Center(
                                 child: Text('Verify',
@@ -280,6 +247,65 @@ class _RegisterMobileNumberState extends State<RegisterMobileNumber> {
           ),
         ),
       ),
+    );
+  }
+
+  Row _buildPhoneNumberFormFIeld() {
+    return Row(
+      children: [
+        Expanded(
+          child: TextFormField(
+            readOnly: true,
+            decoration: InputDecoration(
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(5),
+                borderSide: BorderSide(
+                  color: Colors.white70,
+                ),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(5),
+                borderSide: BorderSide(
+                  color: Colors.white,
+                ),
+              ),
+              hintText: "+60",
+              hintStyle: Theme.of(context).textTheme.bodyText1,
+            ),
+          ),
+        ),
+        SizedBox(
+          width: 10,
+        ),
+        Expanded(
+          flex: 5,
+          child: TextFormField(
+            controller: _phoneNumberController,
+            keyboardType: TextInputType.phone,
+            textInputAction: TextInputAction.done,
+            validator: (value) {
+              return value.isEmpty ? "Please Enter a Valid Phone Number" : null;
+            },
+            style: Theme.of(context).textTheme.bodyText1,
+            decoration: InputDecoration(
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(5),
+                borderSide: BorderSide(
+                  color: Colors.white70,
+                ),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(5),
+                borderSide: BorderSide(
+                  color: Colors.white,
+                ),
+              ),
+              labelText: "Phone Number (ie: 1123456789)",
+              labelStyle: Theme.of(context).textTheme.bodyText2,
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -319,39 +345,14 @@ class _RegisterMobileNumberState extends State<RegisterMobileNumber> {
                             Container(
                               alignment: Alignment.centerLeft,
                               child: Text(
-                                'Enter the OTP sent to ${_phoneNumberController.text}',
+                                'Enter the OTP sent to +60${_phoneNumberController.text}',
                                 style: Theme.of(context).textTheme.subtitle1,
                               ),
                             ),
                             SizedBox(
                               height: MediaQuery.of(context).size.height / 60,
                             ),
-                            Container(
-                              child: TextFormField(
-                                keyboardType: TextInputType.number,
-                                inputFormatters: <TextInputFormatter>[
-                                  FilteringTextInputFormatter.digitsOnly
-                                ],
-                                controller: _otpController,
-                                style: Theme.of(context).textTheme.bodyText1,
-                                decoration: InputDecoration(
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(5),
-                                      borderSide: BorderSide(
-                                        color: Colors.white70,
-                                      ),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(5),
-                                      borderSide: BorderSide(
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    labelText: "OTP",
-                                    labelStyle:
-                                        Theme.of(context).textTheme.bodyText2),
-                              ),
-                            ),
+                            _otpPinCodeTextField(),
                             SizedBox(
                               height: MediaQuery.of(context).size.height / 80,
                             ),
@@ -460,6 +461,46 @@ class _RegisterMobileNumberState extends State<RegisterMobileNumber> {
                 ),
               ),
       ),
+    );
+  }
+
+  PinCodeTextField _otpPinCodeTextField() {
+    return PinCodeTextField(
+      textStyle: Theme.of(context).primaryTextTheme.bodyText1,
+      appContext: context,
+      length: 6,
+      obscureText: true,
+      obscuringCharacter: '•',
+      blinkWhenObscuring: true,
+      animationType: AnimationType.fade,
+      validator: (v) {
+        if (v.length < 6) {
+          return "Please Enter The Correct OTP";
+        } else {
+          return null;
+        }
+      },
+      pinTheme: PinTheme(
+          shape: PinCodeFieldShape.box,
+          borderRadius: BorderRadius.circular(5),
+          fieldHeight: 50,
+          fieldWidth: 40,
+          activeFillColor: Colors.white,
+          inactiveColor: Colors.white,
+          inactiveFillColor: Colors.transparent,
+          selectedFillColor: Colors.white,
+          selectedColor: Theme.of(context).accentColor),
+      cursorColor: Colors.black,
+      animationDuration: Duration(milliseconds: 300),
+      enableActiveFill: true,
+      onChanged: (String val) {
+        setState(() {
+          _otp = val;
+        });
+      },
+      beforeTextPaste: (text) {
+        return false;
+      },
     );
   }
 }

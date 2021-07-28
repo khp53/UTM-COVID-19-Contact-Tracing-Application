@@ -57,24 +57,6 @@ class _ManageProfileState extends State<ManageProfile> {
               borderRadius: BorderRadius.all(Radius.circular(5)),
               child: ListTile(
                 tileColor: Color(0xff131313),
-                onTap: () {},
-                leading: Icon(
-                  Icons.privacy_tip,
-                  color: Colors.white,
-                ),
-                title: Text(
-                  'Privacy Policy',
-                  style: Theme.of(context).textTheme.bodyText1,
-                ),
-              ),
-            ),
-            SizedBox(
-              height: MediaQuery.of(context).size.height / 55,
-            ),
-            ClipRRect(
-              borderRadius: BorderRadius.all(Radius.circular(5)),
-              child: ListTile(
-                tileColor: Color(0xff131313),
                 onTap: () {
                   _userHandler.userSignOut();
                   Navigator.pushReplacementNamed(context, '/authManagement');

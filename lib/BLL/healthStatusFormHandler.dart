@@ -47,6 +47,9 @@ class HealthStatusFormHandler {
       riskStatus = 'High risk all symptoms';
     } else if (q6Answer == true || q5Answer == true || q4Answer == true) {
       riskStatus = 'High risk no symptoms';
+    } else if ((q6Answer == true || q5Answer == true || q4Answer == true) &&
+        (q1Answer == true || q2Answer == true || q3Answer == true)) {
+      riskStatus = 'High risk have symptoms';
     } else {
       riskStatus = 'Low risk no symptoms';
     }

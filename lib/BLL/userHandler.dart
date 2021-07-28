@@ -15,14 +15,14 @@ class UserHandler extends StatefulWidget {
       "userID": userID,
       "icNo": icNo,
       "name": name,
-      "mobileNumber": mobileNumber,
+      "mobileNumber": '+60$mobileNumber',
       "email": email,
       "address": address,
       "postcode": int.parse(postcode),
       "documentID": _userDA.getUID().toString(),
     };
     _userDA.uploadUserInfo(userInfoMap);
-    _userDA.createBlankLocationEntry();
+    //_userDA.createBlankLocationEntry();
   }
 
   // signOut The user

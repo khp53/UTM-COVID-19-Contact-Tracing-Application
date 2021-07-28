@@ -107,17 +107,19 @@ class _HealthStatusFormState extends State<HealthStatusForm> {
                         height: MediaQuery.of(context).size.height / 45,
                       ),
                       // radio button value
-                      _q1RadioButton(
+                      _buildRadioButton(
                         title: "No",
                         value: 0,
                         onChanged: (newValue) =>
                             setState(() => _question1Value = newValue),
+                        qvalue: _question1Value,
                       ),
-                      _q1RadioButton(
+                      _buildRadioButton(
                         title: "Yes",
                         value: 1,
                         onChanged: (newValue) =>
                             setState(() => _question1Value = newValue),
+                        qvalue: _question1Value,
                       ),
                       SizedBox(
                         height: MediaQuery.of(context).size.height / 35,
@@ -133,17 +135,19 @@ class _HealthStatusFormState extends State<HealthStatusForm> {
                         height: MediaQuery.of(context).size.height / 45,
                       ),
                       // radio button value
-                      _q2RadioButton(
+                      _buildRadioButton(
                         title: "No",
                         value: 0,
                         onChanged: (newValue) =>
                             setState(() => _question2Value = newValue),
+                        qvalue: _question2Value,
                       ),
-                      _q2RadioButton(
+                      _buildRadioButton(
                         title: "Yes",
                         value: 1,
                         onChanged: (newValue) =>
                             setState(() => _question2Value = newValue),
+                        qvalue: _question2Value,
                       ),
                       SizedBox(
                         height: MediaQuery.of(context).size.height / 35,
@@ -159,17 +163,19 @@ class _HealthStatusFormState extends State<HealthStatusForm> {
                         height: MediaQuery.of(context).size.height / 45,
                       ),
                       // radio button value
-                      _q3RadioButton(
+                      _buildRadioButton(
                         title: "No",
                         value: 0,
                         onChanged: (newValue) =>
                             setState(() => _question3Value = newValue),
+                        qvalue: _question3Value,
                       ),
-                      _q3RadioButton(
+                      _buildRadioButton(
                         title: "Yes",
                         value: 1,
                         onChanged: (newValue) =>
                             setState(() => _question3Value = newValue),
+                        qvalue: _question3Value,
                       ),
                       SizedBox(
                         height: MediaQuery.of(context).size.height / 35,
@@ -185,17 +191,19 @@ class _HealthStatusFormState extends State<HealthStatusForm> {
                         height: MediaQuery.of(context).size.height / 45,
                       ),
                       // radio button value
-                      _q4RadioButton(
+                      _buildRadioButton(
                         title: "No",
                         value: 0,
                         onChanged: (newValue) =>
                             setState(() => _question4Value = newValue),
+                        qvalue: _question4Value,
                       ),
-                      _q4RadioButton(
+                      _buildRadioButton(
                         title: "Yes",
                         value: 1,
                         onChanged: (newValue) =>
                             setState(() => _question4Value = newValue),
+                        qvalue: _question4Value,
                       ),
                       SizedBox(
                         height: MediaQuery.of(context).size.height / 35,
@@ -211,17 +219,19 @@ class _HealthStatusFormState extends State<HealthStatusForm> {
                         height: MediaQuery.of(context).size.height / 45,
                       ),
                       // radio button value
-                      _q5RadioButton(
+                      _buildRadioButton(
                         title: "No",
                         value: 0,
                         onChanged: (newValue) =>
                             setState(() => _question5Value = newValue),
+                        qvalue: _question5Value,
                       ),
-                      _q5RadioButton(
+                      _buildRadioButton(
                         title: "Yes",
                         value: 1,
                         onChanged: (newValue) =>
                             setState(() => _question5Value = newValue),
+                        qvalue: _question5Value,
                       ),
                       SizedBox(
                         height: MediaQuery.of(context).size.height / 35,
@@ -237,17 +247,19 @@ class _HealthStatusFormState extends State<HealthStatusForm> {
                         height: MediaQuery.of(context).size.height / 45,
                       ),
                       // radio button value
-                      _q6RadioButton(
+                      _buildRadioButton(
                         title: "No / Negative",
                         value: 0,
                         onChanged: (newValue) =>
                             setState(() => _question6Value = newValue),
+                        qvalue: _question6Value,
                       ),
-                      _q6RadioButton(
+                      _buildRadioButton(
                         title: "Yes / Positive",
                         value: 1,
                         onChanged: (newValue) =>
                             setState(() => _question6Value = newValue),
+                        qvalue: _question6Value,
                       ),
                       SizedBox(
                         height: MediaQuery.of(context).size.height / 35,
@@ -276,89 +288,15 @@ class _HealthStatusFormState extends State<HealthStatusForm> {
   }
 
   // build q1 radio list
-  Widget _q1RadioButton({String title, int value, Function onChanged}) {
+  Widget _buildRadioButton(
+      {String title, int value, Function onChanged, qvalue}) {
     return Theme(
       data: Theme.of(context).copyWith(unselectedWidgetColor: Colors.white54),
       child: RadioListTile(
         contentPadding:
             EdgeInsets.only(right: MediaQuery.of(context).size.width / 2),
         value: value,
-        groupValue: _question1Value,
-        onChanged: onChanged,
-        title: Text(title, style: Theme.of(context).textTheme.bodyText1),
-      ),
-    );
-  }
-
-  // buiild q2 radio list
-  Widget _q2RadioButton({String title, int value, Function onChanged}) {
-    return Theme(
-      data: Theme.of(context).copyWith(unselectedWidgetColor: Colors.white54),
-      child: RadioListTile(
-        contentPadding:
-            EdgeInsets.only(right: MediaQuery.of(context).size.width / 2),
-        value: value,
-        groupValue: _question2Value,
-        onChanged: onChanged,
-        title: Text(title, style: Theme.of(context).textTheme.bodyText1),
-      ),
-    );
-  }
-
-  // buiild q3 radio list
-  Widget _q3RadioButton({String title, int value, Function onChanged}) {
-    return Theme(
-      data: Theme.of(context).copyWith(unselectedWidgetColor: Colors.white54),
-      child: RadioListTile(
-        contentPadding:
-            EdgeInsets.only(right: MediaQuery.of(context).size.width / 2),
-        value: value,
-        groupValue: _question3Value,
-        onChanged: onChanged,
-        title: Text(title, style: Theme.of(context).textTheme.bodyText1),
-      ),
-    );
-  }
-
-  // buiild q4 radio list
-  Widget _q4RadioButton({String title, int value, Function onChanged}) {
-    return Theme(
-      data: Theme.of(context).copyWith(unselectedWidgetColor: Colors.white54),
-      child: RadioListTile(
-        contentPadding:
-            EdgeInsets.only(right: MediaQuery.of(context).size.width / 2),
-        value: value,
-        groupValue: _question4Value,
-        onChanged: onChanged,
-        title: Text(title, style: Theme.of(context).textTheme.bodyText1),
-      ),
-    );
-  }
-
-  // buiild q5 radio list
-  Widget _q5RadioButton({String title, int value, Function onChanged}) {
-    return Theme(
-      data: Theme.of(context).copyWith(unselectedWidgetColor: Colors.white54),
-      child: RadioListTile(
-        contentPadding:
-            EdgeInsets.only(right: MediaQuery.of(context).size.width / 2),
-        value: value,
-        groupValue: _question5Value,
-        onChanged: onChanged,
-        title: Text(title, style: Theme.of(context).textTheme.bodyText1),
-      ),
-    );
-  }
-
-  // buiild q6 radio list
-  Widget _q6RadioButton({String title, int value, Function onChanged}) {
-    return Theme(
-      data: Theme.of(context).copyWith(unselectedWidgetColor: Colors.white54),
-      child: RadioListTile(
-        contentPadding:
-            EdgeInsets.only(right: MediaQuery.of(context).size.width / 2),
-        value: value,
-        groupValue: _question6Value,
+        groupValue: qvalue,
         onChanged: onChanged,
         title: Text(title, style: Theme.of(context).textTheme.bodyText1),
       ),

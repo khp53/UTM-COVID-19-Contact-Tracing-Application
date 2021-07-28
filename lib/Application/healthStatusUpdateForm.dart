@@ -38,7 +38,7 @@ class _HealthStatusUpdateFormState extends State<HealthStatusUpdateForm> {
               width: 10,
             ),
             Text(
-              'Admin Dashboard  UTM CCTA',
+              'Health Authority Dashboard  UTM CCTA',
               style: Theme.of(context).textTheme.headline2,
             ),
           ],

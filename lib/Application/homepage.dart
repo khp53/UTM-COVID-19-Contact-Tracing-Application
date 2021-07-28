@@ -17,7 +17,8 @@ class Homepage extends StatefulWidget {
 
 class _HomepageState extends State<Homepage> {
   int _selectedIndex = 0;
-
+  List<Widget> _pages;
+  PageController _pageController;
   FirebaseMessaging _fcm = FirebaseMessaging.instance;
 
   //stab text style
@@ -25,16 +26,17 @@ class _HomepageState extends State<Homepage> {
   //     TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
 
   // classes or widgets to show after clicking bottom nav
-  static List<Widget> _widgetOptions = <Widget>[
-    Home(),
-    LocationEntryForm(),
-    LocationHistoryPage(),
-    ManageProfile()
-  ];
+  // static List<Widget> _widgetOptions = <Widget>[
+  //   Home(),
+  //   LocationEntryForm(),
+  //   LocationHistoryPage(),
+  //   ManageProfile()
+  // ];
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
+      _pageController.jumpToPage(index);
     });
   }
 
@@ -42,11 +44,26 @@ class _HomepageState extends State<Homepage> {
   void initState() {
     super.initState();
     getToken();
+    _pages = [
+      Home(),
+      LocationEntryForm(),
+      LocationHistoryPage(),
+      ManageProfile()
+    ];
+
+    _pageController = PageController(initialPage: _selectedIndex);
   }
 
   getToken() async {
     String deviceToken = await _fcm.getToken();
     UserDA().uploadUserDeviceToken(deviceToken);
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+
+    super.dispose();
   }
 
   @override
@@ -61,7 +78,11 @@ class _HomepageState extends State<Homepage> {
           style: Theme.of(context).textTheme.headline2,
         ),
       ),
-      body: _widgetOptions.elementAt(_selectedIndex),
+      body: PageView(
+        controller: _pageController,
+        physics: NeverScrollableScrollPhysics(),
+        children: _pages,
+      ),
       bottomNavigationBar: BottomNavigationBar(
         elevation: 2,
         unselectedItemColor: Colors.white,
@@ -98,7 +119,9 @@ class Home extends StatefulWidget {
   _HomeState createState() => _HomeState();
 }
 
-class _HomeState extends State<Home> {
+class _HomeState extends State<Home> with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
   GoogleNearbyAPI _api = GoogleNearbyAPI();
   bool isLoading = false;
 
@@ -238,6 +261,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return SingleChildScrollView(
       child: Container(
         padding: EdgeInsets.fromLTRB(15, 0, 15, 0),

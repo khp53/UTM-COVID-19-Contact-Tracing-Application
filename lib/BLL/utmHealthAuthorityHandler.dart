@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:utmccta/Application/healthStatusUpdateForm.dart';
-import 'package:utmccta/BLL/users.dart';
 import 'package:utmccta/BLL/utmHealthAuthorities.dart';
 import 'package:utmccta/DLL/utmHealthAuthoritiesDA.dart';
 
