@@ -68,6 +68,34 @@ class HealthStatusFormHandler {
   }
 
   updateUserData(dID, ccTxt, csTxt, csyTxt, gsTxt, immunText, trText) async {
+    String riskStatus = '';
+    // check risk condition
+    if (gsTxt == "YES") {
+      riskStatus = 'Low risk few symptoms';
+    } else if (csyTxt == "YES") {
+      riskStatus = 'High risk few symptoms';
+    } else if (csyTxt == "YES" && gsTxt == "YES") {
+      riskStatus = 'High risk all symptoms';
+    } else if (ccTxt == "YES" || immunText == "YES" || trText == "YES") {
+      riskStatus = 'High risk no symptoms';
+    } else if (gsTxt == "YES" && immunText == "YES") {
+      riskStatus = 'High risk few symptoms';
+    } else if (trText == "YES") {
+      riskStatus = 'High risk no symptoms';
+    } else if (trText == "YES" && gsTxt == "YES") {
+      riskStatus = 'High risk few symptoms';
+    } else if (trText == "YES" && csyTxt == "YES") {
+      riskStatus = 'High risk few symptoms';
+    } else if (trText == "YES" && gsTxt == "YES" && csyTxt == "YES") {
+      riskStatus = 'High risk all symptoms';
+    } else if (csTxt == "POSITIVE" || ccTxt == "YES" || trText == "YES") {
+      riskStatus = 'High risk no symptoms';
+    } else if ((csTxt == "POSITIVE" || ccTxt == "YES" || trText == "YES") &&
+        (gsTxt == "YES" || csyTxt == "YES" || immunText == "YES")) {
+      riskStatus = 'High risk have symptoms';
+    } else {
+      riskStatus = 'Low risk no symptoms';
+    }
     Map<String, dynamic> healthMap = {
       "closeContact": ccTxt == "YES" ? true : false,
       "covidStatus": csTxt == "POSITIVE" ? true : false,
@@ -75,6 +103,7 @@ class HealthStatusFormHandler {
       "generalSymptoms": gsTxt == "YES" ? true : false,
       "immunocompromised": immunText == "YES" ? true : false,
       "traveled": trText == "YES" ? true : false,
+      "riskStatus": riskStatus
     };
     await _authoritiesDA.updateHealthDataUser(dID, healthMap);
   }

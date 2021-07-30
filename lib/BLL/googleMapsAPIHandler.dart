@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:utmccta/DLL/locationEntryDA.dart';
@@ -60,6 +62,11 @@ class _GoogleMapsAPIHandlerState extends State<GoogleMapsAPIHandler> {
     return Container(
       height: 400,
       child: GoogleMap(
+        gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>[
+          new Factory<OneSequenceGestureRecognizer>(
+            () => new EagerGestureRecognizer(),
+          ),
+        ].toSet(),
         markers: Set<Marker>.of(markers.values),
         initialCameraPosition: _kInitialPosition,
       ),

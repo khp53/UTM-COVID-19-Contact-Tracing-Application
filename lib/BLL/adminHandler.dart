@@ -280,131 +280,133 @@ class _AdminHandlerState extends State<AdminHandler> {
   // render data table health
   Widget renderDataTableHealth(
       uid, cc, cs, csy, gs, im, t, BuildContext context) {
-    return DataTable(
-        headingRowColor:
-            MaterialStateColor.resolveWith((states) => Color(0xffF6C3D3)),
-        dataRowColor:
-            MaterialStateColor.resolveWith((states) => Color(0xffF8DCE5)),
-        columns: [
-          DataColumn(
-            label: Text(
-              "User ID",
-              style: Theme.of(context).primaryTextTheme.headline3,
-            ),
-          ),
-          DataColumn(
-            label: Text(
-              "Close Contact",
-              style: Theme.of(context).primaryTextTheme.headline3,
-            ),
-          ),
-          DataColumn(
-            label: Text(
-              "Covid Status",
-              style: Theme.of(context).primaryTextTheme.headline3,
-            ),
-          ),
-          DataColumn(
-            label: Text(
-              "Covid Symptoms",
-              style: Theme.of(context).primaryTextTheme.headline3,
-            ),
-          ),
-          DataColumn(
-            label: Text(
-              "General Symtoms",
-              style: Theme.of(context).primaryTextTheme.headline3,
-            ),
-          ),
-          DataColumn(
-            label: Text(
-              "Immunocompromised",
-              style: Theme.of(context).primaryTextTheme.headline3,
-            ),
-          ),
-          DataColumn(
-            label: Text(
-              "Traveled",
-              style: Theme.of(context).primaryTextTheme.headline3,
-            ),
-          ),
-        ],
-        rows: [
-          DataRow(cells: [
-            DataCell(
-              Text(
-                uid,
-                style: Theme.of(context).primaryTextTheme.subtitle2,
+    return FittedBox(
+      child: DataTable(
+          headingRowColor:
+              MaterialStateColor.resolveWith((states) => Color(0xffF6C3D3)),
+          dataRowColor:
+              MaterialStateColor.resolveWith((states) => Color(0xffF8DCE5)),
+          columns: [
+            DataColumn(
+              label: Text(
+                "User ID",
+                style: Theme.of(context).primaryTextTheme.headline3,
               ),
             ),
-            DataCell(
-              cc == true
-                  ? Text(
-                      "Yes",
-                      style: Theme.of(context).primaryTextTheme.subtitle2,
-                    )
-                  : Text(
-                      "No",
-                      style: Theme.of(context).primaryTextTheme.subtitle2,
-                    ),
+            DataColumn(
+              label: Text(
+                "Close Contact",
+                style: Theme.of(context).primaryTextTheme.headline3,
+              ),
             ),
-            DataCell(
-              cs == true
-                  ? Text(
-                      "Positive",
-                      style: Theme.of(context).primaryTextTheme.subtitle2,
-                    )
-                  : Text(
-                      "Negative",
-                      style: Theme.of(context).primaryTextTheme.subtitle2,
-                    ),
+            DataColumn(
+              label: Text(
+                "Covid Status",
+                style: Theme.of(context).primaryTextTheme.headline3,
+              ),
             ),
-            DataCell(
-              csy == true
-                  ? Text(
-                      "Yes",
-                      style: Theme.of(context).primaryTextTheme.subtitle2,
-                    )
-                  : Text(
-                      "No",
-                      style: Theme.of(context).primaryTextTheme.subtitle2,
-                    ),
+            DataColumn(
+              label: Text(
+                "Covid Symptoms",
+                style: Theme.of(context).primaryTextTheme.headline3,
+              ),
             ),
-            DataCell(
-              gs == true
-                  ? Text(
-                      "Yes",
-                      style: Theme.of(context).primaryTextTheme.subtitle2,
-                    )
-                  : Text(
-                      "No",
-                      style: Theme.of(context).primaryTextTheme.subtitle2,
-                    ),
+            DataColumn(
+              label: Text(
+                "General Symtoms",
+                style: Theme.of(context).primaryTextTheme.headline3,
+              ),
             ),
-            DataCell(
-              im == true
-                  ? Text(
-                      "Yes",
-                      style: Theme.of(context).primaryTextTheme.subtitle2,
-                    )
-                  : Text(
-                      "No",
-                      style: Theme.of(context).primaryTextTheme.subtitle2,
-                    ),
+            DataColumn(
+              label: Text(
+                "Immunocompromised",
+                style: Theme.of(context).primaryTextTheme.headline3,
+              ),
             ),
-            DataCell(
-              t == true
-                  ? Text(
-                      "Yes",
-                      style: Theme.of(context).primaryTextTheme.subtitle2,
-                    )
-                  : Text(
-                      "No",
-                      style: Theme.of(context).primaryTextTheme.subtitle2,
-                    ),
+            DataColumn(
+              label: Text(
+                "Traveled",
+                style: Theme.of(context).primaryTextTheme.headline3,
+              ),
             ),
-          ])
-        ]);
+          ],
+          rows: [
+            DataRow(cells: [
+              DataCell(
+                Text(
+                  uid,
+                  style: Theme.of(context).primaryTextTheme.subtitle2,
+                ),
+              ),
+              DataCell(
+                cc == true
+                    ? Text(
+                        "Yes",
+                        style: Theme.of(context).primaryTextTheme.subtitle2,
+                      )
+                    : Text(
+                        "No",
+                        style: Theme.of(context).primaryTextTheme.subtitle2,
+                      ),
+              ),
+              DataCell(
+                cs == true
+                    ? Text(
+                        "Positive",
+                        style: Theme.of(context).primaryTextTheme.subtitle2,
+                      )
+                    : Text(
+                        "Negative",
+                        style: Theme.of(context).primaryTextTheme.subtitle2,
+                      ),
+              ),
+              DataCell(
+                csy == true
+                    ? Text(
+                        "Yes",
+                        style: Theme.of(context).primaryTextTheme.subtitle2,
+                      )
+                    : Text(
+                        "No",
+                        style: Theme.of(context).primaryTextTheme.subtitle2,
+                      ),
+              ),
+              DataCell(
+                gs == true
+                    ? Text(
+                        "Yes",
+                        style: Theme.of(context).primaryTextTheme.subtitle2,
+                      )
+                    : Text(
+                        "No",
+                        style: Theme.of(context).primaryTextTheme.subtitle2,
+                      ),
+              ),
+              DataCell(
+                im == true
+                    ? Text(
+                        "Yes",
+                        style: Theme.of(context).primaryTextTheme.subtitle2,
+                      )
+                    : Text(
+                        "No",
+                        style: Theme.of(context).primaryTextTheme.subtitle2,
+                      ),
+              ),
+              DataCell(
+                t == true
+                    ? Text(
+                        "Yes",
+                        style: Theme.of(context).primaryTextTheme.subtitle2,
+                      )
+                    : Text(
+                        "No",
+                        style: Theme.of(context).primaryTextTheme.subtitle2,
+                      ),
+              ),
+            ])
+          ]),
+    );
   }
 
   //get covid positive number
@@ -547,7 +549,7 @@ class _AdminHandlerState extends State<AdminHandler> {
                           case ConnectionState.done:
                             return ListView.builder(
                               shrinkWrap: true,
-                              itemCount: snapshot.data.docs.length,
+                              itemCount: snapshot1.data.docs.length,
                               itemBuilder: (builder, index) {
                                 return locationEntryTable(
                                     index,

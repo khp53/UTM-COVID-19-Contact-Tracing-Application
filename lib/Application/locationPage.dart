@@ -12,10 +12,10 @@ class _LocationPageState extends State<LocationPage> {
   AdminHandler _adminHandler = new AdminHandler();
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-        child: Container(
+    return Container(
       padding: EdgeInsets.all(20),
-      child: Column(
+      child: ListView(
+        shrinkWrap: true,
         children: [
           Text(
             'Location of Contact of All COVID-19 Positive Users',
@@ -43,6 +43,6 @@ class _LocationPageState extends State<LocationPage> {
           ),
         ],
       ),
-    ));
+    );
   }
 }
