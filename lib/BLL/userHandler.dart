@@ -48,6 +48,9 @@ class _UserHandlerState extends State<UserHandler> {
           if (snapshot1.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
           }
+          if (snapshot1.connectionState == ConnectionState.none) {
+            return Center(child: CircularProgressIndicator());
+          }
           if (snapshot1.hasData) {
             return StreamBuilder(
                 stream: _userDA.getUserRiskStat().snapshots(),
@@ -55,8 +58,10 @@ class _UserHandlerState extends State<UserHandler> {
                   if (snapshot2.hasError) {
                     return Text('Something went wrong');
                   }
-
                   if (snapshot2.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+                  if (snapshot2.connectionState == ConnectionState.none) {
                     return Center(child: CircularProgressIndicator());
                   }
                   if (snapshot2.hasData) {

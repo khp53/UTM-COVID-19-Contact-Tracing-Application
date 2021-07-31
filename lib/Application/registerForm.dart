@@ -466,6 +466,7 @@ class _RegisterMobileNumberState extends State<RegisterMobileNumber> {
 
   PinCodeTextField _otpPinCodeTextField() {
     return PinCodeTextField(
+      keyboardType: TextInputType.number,
       textStyle: Theme.of(context).primaryTextTheme.bodyText1,
       appContext: context,
       length: 6,
