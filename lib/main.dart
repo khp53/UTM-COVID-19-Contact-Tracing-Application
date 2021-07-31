@@ -91,7 +91,7 @@ class InfoScreenState extends State<InfoScreen>
     bool _seen = (prefs.getBool('seen') ?? false);
 
     if (_seen) {
-      return '/authManagement';
+      return '/homepage';
     } else {
       await prefs.setBool('seen', true);
       return '/welcome';
@@ -163,13 +163,13 @@ class InfoScreenState extends State<InfoScreen>
               ),
               initialRoute: snapshot.data,
               routes: {
-                '/authManagement': (context) => StateMangement(),
+                '/homepage': (context) => StateMangement(),
                 '/welcome': (context) => WelcomeScreen(),
                 '/home': (context) => Homepage(),
                 '/privacyinfo': (context) => PrivacyInfo(),
                 '/register': (context) => RegisterMobileNumber(),
                 '/login': (context) => LogIn(),
-                '/healthstatusform': (context) => HealthStatusForm()
+                '/healthstatusform': (context) => HealthStatusForm(),
               },
             );
           }

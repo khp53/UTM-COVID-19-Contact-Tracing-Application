@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:utmccta/Application/manageProfile.dart';
 import 'package:utmccta/BLL/admin.dart';
 import 'package:utmccta/BLL/users.dart';
 import 'package:utmccta/DLL/adminDA.dart';
@@ -32,20 +33,32 @@ class _AdminHandlerState extends State<AdminHandler> {
                 snapshot.data.data()["email"]);
             return Container(
               padding: EdgeInsets.only(right: 20),
-              child: Row(
-                children: [
-                  Text(
-                    admin.name,
-                    style: Theme.of(context).textTheme.bodyText2,
+              child: InkWell(
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => ManageProfileWebLayout(
+                      name: snapshot.data.data()["name"],
+                      mobileNumber: snapshot.data.data()["mobileNumber"],
+                      img: snapshot.data.data()["img"],
+                    ),
                   ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  CircleAvatar(
-                    //radius: 30,
-                    backgroundImage: NetworkImage(admin.img),
-                  ),
-                ],
+                ),
+                child: Row(
+                  children: [
+                    Text(
+                      admin.name,
+                      style: Theme.of(context).textTheme.bodyText2,
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    CircleAvatar(
+                      //radius: 30,
+                      backgroundImage: NetworkImage(admin.img),
+                    ),
+                  ],
+                ),
               ),
             );
           }
@@ -77,7 +90,7 @@ class _AdminHandlerState extends State<AdminHandler> {
                   if (snapshot1.hasData) {
                     return ListView.builder(
                         shrinkWrap: true,
-                        itemCount: snapshot.data.docs.length,
+                        itemCount: snapshot1.data.docs.length,
                         itemBuilder: (context, index) {
                           Users _users = Users(
                             snapshot.data.docs[index].data()["name"],
@@ -533,7 +546,7 @@ class _AdminHandlerState extends State<AdminHandler> {
               case ConnectionState.none:
                 return Text("No Connections");
               case ConnectionState.waiting:
-                return CircularProgressIndicator();
+                return Center(child: CircularProgressIndicator());
               case ConnectionState.active:
               case ConnectionState.done:
                 return StreamBuilder(
@@ -565,25 +578,17 @@ class _AdminHandlerState extends State<AdminHandler> {
                             break;
                         }
                       } else {
-                        return Container(
-                          height: MediaQuery.of(context).size.height,
-                          width: MediaQuery.of(context).size.height,
-                          color: Colors.black,
-                        );
+                        return Center(child: CircularProgressIndicator());
                       }
-                      return Center(child: CircularProgressIndicator());
+                      return Center(child: Text("Loading..."));
                     });
               default:
                 break;
             }
           } else {
-            return Container(
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.height,
-              color: Colors.black,
-            );
+            return Center(child: Text("Loading..."));
           }
-          return Center(child: CircularProgressIndicator());
+          return Center(child: Text("Loading..."));
         });
   }
 
@@ -707,6 +712,15 @@ class _AdminHandlerState extends State<AdminHandler> {
         )
       ],
     );
+  }
+
+  // update the profile
+  updateProfile(name, mobileNumber) async {
+    Map<String, dynamic> data = {
+      "name": name,
+      "mobileNumber": mobileNumber,
+    };
+    await _adminDA.updateProfile(data);
   }
 
   @override

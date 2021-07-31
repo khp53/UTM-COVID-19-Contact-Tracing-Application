@@ -70,8 +70,7 @@ class _DashBoardSideNavAdminState extends State<DashBoardSideNavAdmin>
                   )
                 : null,
             actions: [
-              InkWell(
-                  child: _adminHandler.createState().getAdminProfileImage()),
+              _adminHandler.createState().getAdminProfileImage(),
             ]),
         body: Row(
           children: <Widget>[

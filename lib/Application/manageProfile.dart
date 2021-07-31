@@ -4,6 +4,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+
+import 'package:utmccta/Application/helpers/WebAppbar.dart';
+import 'package:utmccta/BLL/adminHandler.dart';
 import 'package:utmccta/BLL/userHandler.dart';
 import 'package:utmccta/Application/helpers/helpDesk.dart';
 import 'package:utmccta/DLL/userDA.dart';
@@ -310,13 +313,143 @@ class _EditProfileMobileState extends State<EditProfileMobile> {
 
 // if the user is admin or UTM health auth then show this
 class ManageProfileWebLayout extends StatefulWidget {
+  final name;
+  final mobileNumber;
+  final img;
+
+  const ManageProfileWebLayout({this.name, this.mobileNumber, this.img});
   @override
   _ManageProfileWebLayoutState createState() => _ManageProfileWebLayoutState();
 }
 
 class _ManageProfileWebLayoutState extends State<ManageProfileWebLayout> {
+  bool isLoading = false;
+
+  TextEditingController name;
+  TextEditingController mobileNumber;
+
+  @override
+  void initState() {
+    super.initState();
+    name = TextEditingController();
+    mobileNumber = TextEditingController();
+    name.text = widget.name;
+    mobileNumber.text = widget.mobileNumber;
+    name.addListener(() {});
+    mobileNumber.addListener(() {});
+  }
+
+  AdminHandler _adminHandler = AdminHandler();
+
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      appBar: WebAppBar(
+        title: "Update Profile",
+      ),
+      body: SingleChildScrollView(
+        child: Container(
+          padding: EdgeInsets.all(150),
+          child: Column(
+            children: [
+              //name Form Field.
+              Container(
+                child: TextFormField(
+                  controller: name,
+                  style: Theme.of(context).primaryTextTheme.bodyText1,
+                  decoration: InputDecoration(
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5),
+                      borderSide: BorderSide(
+                        color: Colors.black54,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5),
+                      borderSide: BorderSide(
+                        color: Theme.of(context).primaryColorDark,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height / 40,
+              ),
+              //Current phoneno Form Field.
+              Container(
+                child: TextFormField(
+                  controller: mobileNumber,
+                  style: Theme.of(context).primaryTextTheme.bodyText1,
+                  decoration: InputDecoration(
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5),
+                      borderSide: BorderSide(
+                        color: Colors.black54,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5),
+                      borderSide: BorderSide(
+                        color: Theme.of(context).primaryColorDark,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height / 40,
+              ),
+              Container(
+                child: !isLoading
+                    ? MaterialButton(
+                        elevation: 0,
+                        color: Theme.of(context).accentColor,
+                        height: 50,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5)),
+                        onPressed: () async {
+                          if (name.text.isNotEmpty &&
+                              mobileNumber.text.isNotEmpty) {
+                            setState(() {
+                              isLoading = true;
+                            });
+
+                            _adminHandler
+                                .createState()
+                                .updateProfile(name.text, mobileNumber.text);
+                            setState(() {
+                              isLoading = false;
+                            });
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                content: Text('Profile Update Sucessful')));
+                          } else {
+                            setState(() {
+                              isLoading = false;
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(content: Text('Update Failed')));
+                            });
+                            print("error");
+                          }
+                        },
+                        child: Center(
+                            child: Text('Submit',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 15))),
+                      )
+                    : CircularProgressIndicator(),
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height / 25,
+              ),
+              Container(
+                child: Text(
+                    'For security and privacy reasons you cannot change your name or ic/passport number. If you no longer have your phone number you can contact UTM CCTA from our help desk!'),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

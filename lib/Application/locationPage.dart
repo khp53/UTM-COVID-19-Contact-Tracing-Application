@@ -17,9 +17,11 @@ class _LocationPageState extends State<LocationPage> {
       child: ListView(
         shrinkWrap: true,
         children: [
-          Text(
-            'Location of Contact of All COVID-19 Positive Users',
-            style: Theme.of(context).primaryTextTheme.headline2,
+          Center(
+            child: Text(
+              'Location of Contact of All COVID-19 Positive Users',
+              style: Theme.of(context).primaryTextTheme.headline2,
+            ),
           ),
           SizedBox(
             height: 30,
@@ -30,9 +32,11 @@ class _LocationPageState extends State<LocationPage> {
           SizedBox(
             height: 40,
           ),
-          Text(
-            'All User\'s Location Entires',
-            style: Theme.of(context).primaryTextTheme.headline2,
+          Center(
+            child: Text(
+              'All User\'s Location Entires',
+              style: Theme.of(context).primaryTextTheme.headline2,
+            ),
           ),
           SizedBox(
             height: 30,

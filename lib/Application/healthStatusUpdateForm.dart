@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:utmccta/Application/helpers/WebAppbar.dart';
 import 'package:utmccta/BLL/healthStatusFormHandler.dart';
 
 class HealthStatusUpdateForm extends StatefulWidget {
@@ -24,25 +25,8 @@ class _HealthStatusUpdateFormState extends State<HealthStatusUpdateForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: Theme.of(context).primaryColorDark,
-        title: Row(
-          children: [
-            Image.asset(
-              'assets/img/logo.png',
-              width: 50,
-              height: 50,
-            ),
-            SizedBox(
-              width: 10,
-            ),
-            Text(
-              'Health Authority Dashboard  UTM CCTA',
-              style: Theme.of(context).textTheme.headline2,
-            ),
-          ],
-        ),
+      appBar: WebAppBar(
+        title: 'Health Authority Dashboard  UTM CCTA',
       ),
       body: SingleChildScrollView(
         child: Container(

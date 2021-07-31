@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:utmccta/Application/healthStatusUpdateForm.dart';
+import 'package:utmccta/Application/manageProfile.dart';
 import 'package:utmccta/BLL/utmHealthAuthorities.dart';
 import 'package:utmccta/DLL/utmHealthAuthoritiesDA.dart';
 
@@ -26,20 +27,30 @@ class UTMHealthAuthorityHandler {
 
             return Container(
               padding: EdgeInsets.only(right: 20),
-              child: Row(
-                children: [
-                  Text(
-                    _healthAuth.name,
-                    style: Theme.of(context).textTheme.bodyText2,
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  CircleAvatar(
-                    //radius: 30,
-                    backgroundImage: NetworkImage(_healthAuth.img),
-                  ),
-                ],
+              child: InkWell(
+                onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => ManageProfileWebLayout(
+                              name: snapshot.data.data()['name'],
+                              mobileNumber:
+                                  snapshot.data.data()['mobileNumber'],
+                            ))),
+                child: Row(
+                  children: [
+                    Text(
+                      _healthAuth.name,
+                      style: Theme.of(context).textTheme.bodyText2,
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    CircleAvatar(
+                      //radius: 30,
+                      backgroundImage: NetworkImage(_healthAuth.img),
+                    ),
+                  ],
+                ),
               ),
             );
           }

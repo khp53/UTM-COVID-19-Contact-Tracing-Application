@@ -62,4 +62,12 @@ class AdminDA {
   CollectionReference getAllLocationEntry() {
     return _firestore.collection("LocationEntry");
   }
+
+  //update admin data
+  Future<void> updateProfile(Map data) async {
+    return FirebaseFirestore.instance
+        .collection('System Administrators')
+        .doc(_auth.currentUser.uid)
+        .update(data);
+  }
 }

@@ -70,7 +70,7 @@ class _DashBoardSideNavClinicState extends State<DashBoardSideNavClinic>
                   )
                 : null,
             actions: [
-              InkWell(child: _authorityHandler.getClinicProfileImage()),
+              _authorityHandler.getClinicProfileImage(),
             ]),
         body: Row(
           children: <Widget>[
