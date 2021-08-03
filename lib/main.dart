@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:utmccta/Application/healthStatusForm.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -28,6 +29,14 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(UTMCCTA());
+}
+
+// This function is used to update the page title
+void setPageTitle(String title, BuildContext context) {
+  SystemChrome.setApplicationSwitcherDescription(ApplicationSwitcherDescription(
+    label: title,
+    primaryColor: Theme.of(context).primaryColor.value, // This line is required
+  ));
 }
 
 class UTMCCTA extends StatefulWidget {
@@ -73,6 +82,7 @@ class _UTMCCTAState extends State<UTMCCTA> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: "UTM CCTA",
       debugShowCheckedModeBanner: false,
       home: InfoScreen(),
     );
@@ -103,6 +113,7 @@ class InfoScreenState extends State<InfoScreen>
 
   @override
   Widget build(BuildContext context) {
+    setPageTitle('UTM CCTA', context);
     return FutureBuilder(
         future: checkFirstSeen(),
         builder: (context, snapshot) {
@@ -112,6 +123,7 @@ class InfoScreenState extends State<InfoScreen>
             );
           } else {
             return MaterialApp(
+              title: "UTM CCTA",
               debugShowCheckedModeBanner: false,
               theme: ThemeData(
                 accentColor: Color(0xffB454E7),

@@ -324,7 +324,7 @@ class UTMHealthAuthorityHandler {
       ),
       DataCell(
         Text(
-          data.data()['contactCovidStatus'].toString(),
+          data.data()['contactCovidStatus'] == true ? "Positive" : "Negative",
           style: Theme.of(context).primaryTextTheme.subtitle2,
         ),
       ),
