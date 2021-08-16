@@ -82,8 +82,11 @@ class _GoogleNearbyAPIState extends State<GoogleNearbyAPI> {
         //  also get the current time & location and add it to the database
         Position position = await Geolocator.getCurrentPosition(
             desiredAccuracy: LocationAccuracy.high);
+        var regID = await _traceContactsDA.getRegID();
+        print("Reg ID $regID");
         _traceContactsDA
-            .traceContactsDocument()
+            .traceContactsCollection()
+            .doc(regID)
             .collection('contactedWith')
             .doc(name)
             .set({

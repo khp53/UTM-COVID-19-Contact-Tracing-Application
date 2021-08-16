@@ -1,3 +1,4 @@
+import 'package:nanoid/nanoid.dart';
 import 'package:utmccta/Application/manageProfile.dart';
 import 'package:utmccta/BLL/users.dart';
 import 'package:utmccta/DLL/userDA.dart';
@@ -6,6 +7,7 @@ import 'package:flutter/material.dart';
 // ignore: must_be_immutable
 class UserHandler extends StatefulWidget {
   UserDA _userDA = UserDA();
+  var _regID = nanoid(5);
   //user data handler
   registerUserDataHandler(
       userID, icNo, name, mobileNumber, email, address, postcode) {
@@ -20,6 +22,7 @@ class UserHandler extends StatefulWidget {
       "address": address,
       "postcode": int.parse(postcode),
       "documentID": _userDA.getUID().toString(),
+      "regID": _regID,
     };
     _userDA.uploadUserInfo(userInfoMap);
     //_userDA.createBlankLocationEntry();
@@ -222,7 +225,7 @@ class _UserHandlerState extends State<UserHandler> {
                             Expanded(
                               flex: 1,
                               child: Text(
-                                snapshot3.data.data()["documentID"],
+                                snapshot3.data.data()["regID"],
                                 style: Theme.of(context).textTheme.bodyText1,
                               ),
                             ),

@@ -22,17 +22,31 @@ class TraceContactsDA {
     return _auth.currentUser.uid;
   }
 
-  // access or create trace contacts collection
-  CollectionReference traceContactsCollection() {
-    return _firestore
-        .collection('TraceContacts')
+  Future<String> getRegID() async {
+    String _regID = '';
+    await _firestore
+        .collection('Users')
         .doc(_auth.currentUser.uid)
-        .collection('contactedWith');
+        .get()
+        .then((doc) {
+      if (doc.exists) {
+        _regID = doc.data()['regID'];
+      } else {
+        // doc.data() will be undefined in this case
+        print("No such document!");
+      }
+    });
+    return _regID;
   }
 
-  DocumentReference traceContactsDocument() {
-    return _firestore.collection('TraceContacts').doc(_auth.currentUser.uid);
+  // access or create trace contacts collection
+  CollectionReference traceContactsCollection() {
+    return _firestore.collection('TraceContacts');
   }
+
+  // CollectionReference traceContactsDocument() {
+  //   return _firestore.collection('TraceContacts');
+  // }
 
   Future<String> getEmailOfContactedPerson({uid}) async {
     String _email = '';
