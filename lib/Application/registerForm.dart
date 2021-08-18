@@ -284,7 +284,9 @@ class _RegisterMobileNumberState extends State<RegisterMobileNumber> {
             keyboardType: TextInputType.phone,
             textInputAction: TextInputAction.done,
             validator: (value) {
-              return value.isEmpty ? "Please Enter a Valid Phone Number" : null;
+              return value.isEmpty || value.length < 10
+                  ? "Please Enter a Valid Phone Number"
+                  : null;
             },
             style: Theme.of(context).textTheme.bodyText1,
             decoration: InputDecoration(
