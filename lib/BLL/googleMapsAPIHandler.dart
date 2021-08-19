@@ -12,10 +12,10 @@ class GoogleMapsAPIHandler extends StatefulWidget {
 class _GoogleMapsAPIHandlerState extends State<GoogleMapsAPIHandler> {
   LocationEntryDA _locationEntryDA = LocationEntryDA();
 
-  static final LatLng _kMapCenter = LatLng(23.703379, 90.3958962);
+  static final LatLng _kMapCenter = LatLng(1.5568528, 103.6409754);
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
   static final CameraPosition _kInitialPosition =
-      CameraPosition(target: _kMapCenter, zoom: 17, tilt: 0, bearing: 0);
+      CameraPosition(target: _kMapCenter, zoom: 15, tilt: 0, bearing: 0);
   @override
   void initState() {
     getMapMarkerData();
