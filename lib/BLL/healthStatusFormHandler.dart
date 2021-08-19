@@ -1,10 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:utmccta/DLL/healthStatusDA.dart';
+import 'package:utmccta/DLL/traceContactsDA.dart';
 import 'package:utmccta/DLL/utmHealthAuthoritiesDA.dart';
 
 class HealthStatusFormHandler {
   HealthStatusDA _healthStatusDA = HealthStatusDA();
   UTMHealthAuthoritiesDA _authoritiesDA = UTMHealthAuthoritiesDA();
+  TraceContactsDA _traceContactsDA = TraceContactsDA();
   FirebaseAuth _auth = FirebaseAuth.instance;
 
   // List of questions
@@ -24,7 +26,7 @@ class HealthStatusFormHandler {
 
   // handle user health data
   collectUserHealthData(
-      q1Answer, q2Answer, q3Answer, q4Answer, q5Answer, q6Answer) {
+      q1Answer, q2Answer, q3Answer, q4Answer, q5Answer, q6Answer) async {
     String riskStatus = '';
     // check risk condition
     if (q1Answer == true) {
@@ -54,6 +56,8 @@ class HealthStatusFormHandler {
       riskStatus = 'Low risk no symptoms';
     }
 
+    var regID = await _traceContactsDA.getRegID();
+
     Map<String, dynamic> userHealthMap = {
       "generalSymptoms": q1Answer,
       "covidSymptoms": q2Answer,
@@ -62,7 +66,7 @@ class HealthStatusFormHandler {
       "closeContact": q5Answer,
       "covidStatus": q6Answer,
       "riskStatus": riskStatus,
-      "documentId": _auth.currentUser.uid
+      "regID": regID
     };
     _healthStatusDA.uploadUserInfo(userHealthMap);
   }

@@ -13,7 +13,7 @@ exports.sendExposureNotification = functions.firestore.document('HealthStatus/{u
 
     if (oldSnap.covidStatus == false && newSnap.covidStatus == true){
 
-        const querySnapshot = await db.collection('TraceContacts').doc(newSnap.documentId).collection('contactedWith').get();
+        const querySnapshot = await db.collection('TraceContacts').doc(newSnap.regID).collection('contactedWith').get();
         for (var token of querySnapshot.docs) {
             tokens.push(token.data().deviceToken);
         }
