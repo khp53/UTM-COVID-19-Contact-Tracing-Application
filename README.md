@@ -1,16 +1,43 @@
-# utmccta
+# UTM COVID-19 Contact Tracing Application (UTM CCTA)
 
-A new Flutter project.
+## Features:
+- Dark Interface for Battery Saving
+- Flare 60 FPS Animations
+- END-to-End Encrypted Contact Tracing Using Nearby API
+- Automatic Bluetooth Turn On
+- GPS Turn On Alert
+- FCM Notification Using Cloud Fuction for Contact Exposure (To be implemented)
+- Admin Can Send Location Hotspot Alert From Admin Web Dashboard
+- Three Actors Health Authorities, Users, Admin
+- Flutter Web Dashboard
+- BLE for Less Power Consumption
+- App Will Run in The Background (To be implemented)
 
-## Getting Started
+## Screen Caps Mobile App
 
-This project is a starting point for a Flutter application.
+<p align="center">
+  <img src="https://github.com/khp53/UTM-COVID19-Contact-Tracing-System/blob/master/assets/Screeshots/1.jpg" width="350">
+  <img src="https://github.com/khp53/UTM-COVID19-Contact-Tracing-System/blob/master/assets/Screeshots/2.jpg" width="350">
+  <img src="https://github.com/khp53/UTM-COVID19-Contact-Tracing-System/blob/master/assets/Screeshots/3.jpg" width="350">
+  <img src="https://github.com/khp53/UTM-COVID19-Contact-Tracing-System/blob/master/assets/Screeshots/4.jpg" width="350">
+  <img src="https://github.com/khp53/UTM-COVID19-Contact-Tracing-System/blob/master/assets/Screeshots/5.jpg" width="350">
+  <img src="https://github.com/khp53/UTM-COVID19-Contact-Tracing-System/blob/master/assets/Screeshots/6.jpg" width="350">
+  <img src="https://github.com/khp53/UTM-COVID19-Contact-Tracing-System/blob/master/assets/Screeshots/7.jpg" width="350">
+  <img src="https://github.com/khp53/UTM-COVID19-Contact-Tracing-System/blob/master/assets/Screeshots/8.jpg" width="350">
+  <img src="https://github.com/khp53/UTM-COVID19-Contact-Tracing-System/blob/master/assets/Screeshots/9.jpg" width="350">
+  <img src="https://github.com/khp53/UTM-COVID19-Contact-Tracing-System/blob/master/assets/Screeshots/10.jpg" width="350">
+</p>
 
-A few resources to get you started if this is your first Flutter project:
+## Screen Caps Web App
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+<p align="center">
+  <img src="https://github.com/khp53/UTM-COVID19-Contact-Tracing-System/blob/master/assets/Screeshots/1web.jpg" width="550">
+  <img src="https://github.com/khp53/UTM-COVID19-Contact-Tracing-System/blob/master/assets/Screeshots/2web.jpg" width="550">
+  <img src="https://github.com/khp53/UTM-COVID19-Contact-Tracing-System/blob/master/assets/Screeshots/3web.jpg" width="550">
+  <img src="https://github.com/khp53/UTM-COVID19-Contact-Tracing-System/blob/master/assets/Screeshots/4web.jpg" width="550">
+  <img src="https://github.com/khp53/UTM-COVID19-Contact-Tracing-System/blob/master/assets/Screeshots/5web.jpg" width="550">
+  <img src="https://github.com/khp53/UTM-COVID19-Contact-Tracing-System/blob/master/assets/Screeshots/6web.jpg" width="550">
+  <img src="https://github.com/khp53/UTM-COVID19-Contact-Tracing-System/blob/master/assets/Screeshots/7web.jpg" width="550">
+  <img src="https://github.com/khp53/UTM-COVID19-Contact-Tracing-System/blob/master/assets/Screeshots/8web.jpg" width="550">
+  <img src="https://github.com/khp53/UTM-COVID19-Contact-Tracing-System/blob/master/assets/Screeshots/9web.jpg" width="550">
+</p>
